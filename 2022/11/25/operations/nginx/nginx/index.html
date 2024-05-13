@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yang Xin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.基本介绍  Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。 Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。 Nginx 特点是占有内存少，并发能力强。  事实上 nginx 的并发能力确实在同类型的网页服务器中表现较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx介绍，安装">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/11/25/operations/nginx/nginx/index.html">
+<meta property="og:site_name" content="nanchengjiumeng123.top">
+<meta property="og:description" content="1.基本介绍  Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。 Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。 Nginx 特点是占有内存少，并发能力强。  事实上 nginx 的并发能力确实在同类型的网页服务器中表现较">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/mmexport1664532469195.jpg">
+<meta property="article:published_time" content="2022-11-25T03:21:56.929Z">
+<meta property="article:modified_time" content="2024-05-13T04:45:45.186Z">
+<meta property="article:author" content="Yang Xin">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/mmexport1664532469195.jpg">
+  
+  
+  
+  <title>Nginx介绍，安装 - nanchengjiumeng123.top</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"nanchengjiumeng123.top","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wangwang&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/mmexport1664532469195.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Nginx介绍，安装"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-25 11:21" pubdate>
+          2022年11月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Nginx介绍，安装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="基本介绍">1.基本介绍</h2>
+<ul>
+<li><p><code>Nginx</code> 是一个高性能的 <code>HTTP</code> 和反向代理
+<code>web</code> 服务器，同时也提供了 <code>IMAP/POP3/SMTP</code>
+服务。</p></li>
+<li><p><code>Nginx</code> 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的
+<code>Rambler.ru</code> 站点开发的，第一个公开版本 <code>0.1.0</code>
+发布于 <code>2004</code> 年 <code>10</code> 月 <code>4</code>
+日。</p></li>
+<li><p><code>Nginx</code> 特点是占有内存少，并发能力强。</p></li>
+</ul>
+<p>事实上 <code>nginx</code>
+的并发能力确实在同类型的网页服务器中表现较好，一般来说，如果我们在项目中引入了
+<code>Nginx</code> ，我们的项目架构可能是这样：</p>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/15-1.png" srcset="/img/loading.gif" lazyload
+alt="15-1" />
+<figcaption aria-hidden="true">15-1</figcaption>
+</figure>
+<p>在这样的架构中 ， <code>Nginx</code>
+所代表的角色叫做负载均衡服务器或者反向代理服务器，所有请求首先到达
+<code>Nginx</code> 上，再由 <code>Nginx</code>
+根据提前配置好的转发规则，将客户端发来的请求转发到某一个
+<code>Tomcat</code> 上去。</p>
+<blockquote>
+<p>Nginx 是一款轻量级的 HTTP
+服务器，采用事件驱动的异步非阻塞处理方式框架，这让其具有极好的 IO
+性能，时常用于服务端的<strong>反向代理</strong>和<strong>负载均衡</strong>。</p>
+</blockquote>
+<p>那么这里涉及到两个概念：负载均衡服务器、反向代理服务器。</p>
+<h2 id="负载均衡服务器">2.负载均衡服务器</h2>
+<p>负载均衡（Load
+Balance）建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、加强网络数据处理能力、提高网络的灵活性和可用性。</p>
+<p>我们可以建立很多很多服务器，组成一个服务器集群，当用户访问网站时，先访问一个<strong>中间服务器</strong>，再让这个中间服务器在服务器集群中通过负载均衡算法选择一个服务器，然后将该访问请求引入该服务器。如此以来，用户的每次访问，都会保证服务器集群中的每个服务器压力趋于平衡，分担了服务器压力，避免了服务器崩溃的情况。</p>
+<p>负载均衡策略很多，也有很多层，对于一些大型网站基本上从
+<code>DNS</code>
+就开始负载均衡，负载均衡有硬件和软件之分，各自代表分别是 <code>F5</code>
+和 <code>Nginx</code> （目前 <code>Nginx</code> 已经被 <code>F5</code>
+收购），早些年，也可以使用 <code>Apache</code>
+来做负载均衡，但是效率不如 <code>Nginx</code> ，所以现在主流方案是
+<code>Nginx</code> 。</p>
+<h3 id="load-balancing-methods">2.1 Load Balancing Methods</h3>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/nginx-server.png" srcset="/img/loading.gif" lazyload
+alt="nginx-server" />
+<figcaption aria-hidden="true">nginx-server</figcaption>
+</figure>
+<p>开源Nginx 支持四种负载平衡方法，Nginx
+Plus还增加了两种方法。所以在Nginx
+上设置负载平衡时，有五种主要方法。前四个在开源Nginx 和Nginx
+Plus中都可用，而最后一个是Nginx Plus功能。</p>
+<blockquote>
+<p><strong>Nginx Plus 相当于付费版本的
+Nginx</strong>。提供了更多的功能，针对企业需要的一些服务进行了优化。</p>
+<p>有关功能的比较页面，请参考： <a
+target="_blank" rel="noopener" href="https://www.nginx.com/products/nginx/compare-models">Compare
+Models - NGINX</a></p>
+</blockquote>
+<h4 id="round-robin-optionally-weighted">2.1.1 Round Robin, optionally
+weighted</h4>
+<p>默认的load balancing方法。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">upstream</span> myapp &#123;<br>    <span class="hljs-attribute">server</span> webserver1.example.com;<br>    <span class="hljs-attribute">server</span> webserver2.example.com;<br>    <span class="hljs-attribute">server</span> webserver3.example.com;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在请求过来时，按顺序分发请求，第一次来的server1上，第二次打到server2上，第三次打到server3上，第四次又回到server1上，1-2-3，1-2-3,
+... 的这样循环。</p>
+<p>Round Robin也可以加权重，为每一个服务器指定权重。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">upstream</span> myapp &#123;<br>    <span class="hljs-attribute">server</span> webserver1.example.com weight = <span class="hljs-number">2</span>;<br>    <span class="hljs-attribute">server</span> webserver2.example.com weight = <span class="hljs-number">1</span>;<br>    <span class="hljs-attribute">server</span> webserver3.example.com weight = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这样配置后，请求会这样打：1-1-2-3，1-1-2-3, ...</p>
+<blockquote>
+<p>weight越大，负载的权重就越大，默认为1。</p>
+</blockquote>
+<h4 id="least-connected-optionally-weighted">2.1.2 Least Connected,
+optionally weighted</h4>
+<p>这种方法是每次来的请求都会打到当前连接数最少的upstream里的web
+server上，
+比如有3台server，server1，server2都有10个连接，3只有1个连接，如果在接下来的9个请求1和2的10个连接都没有断开，那么这9个请求都会被打到3上。</p>
+<p>例如有三个负载均衡的服务器，第一个进入的请求非常非常短。它的处理速度非常快——也许只需要10毫秒。下一个请求需要很长时间来处理。第三个也很短。第四个，也很短。第五个，很长。不知何故，这种情况一次又一次地发生，服务器2不断受到这些巨大请求的冲击。它们会持续很长时间，而发送到其他服务器的请求非常短。在这种情况下，循环往复是行不通的，因为随着越来越多的连接进入。接近能够处理的最大连接数，服务器处理每个请求的时间会越来越长。</p>
+<h4 id="ip-hash">2.1.3 IP Hash</h4>
+<p>IP
+Hash会将IP地址的前3个8位元相同的请求打到同一台机器上，来简单的保持回话。
+这种方法有个弊端是有些内网统一出口ip都会被打到同一台机器，不能有效的实现load-balancing。</p>
+<h4 id="generic-hash">2.1.4 Generic Hash</h4>
+<p>Generic
+Hash可以自定义请求的分发，可以根据IP地址和查询变量或者URL或者其他参数，
+当这些参数都和上次一样时就会将请求打到上次的那台机器</p>
+<h4 id="least-timenginx-plus-optionally-weighted">2.1.5 Least Time(Nginx
+Plus), optionally weighted</h4>
+<p>Least Time只能在Nginx Plus中用，和Least
+Connected类似，会将请求打到连接数最少并且响应速度最快（响应时间最短）的机器上。
+同时，它也可以像Round Robin一样使用权重。</p>
+<h4 id="如何选择该用哪种load-balancing方法">2.1.6
+如何选择该用哪种load-balancing方法</h4>
+<ul>
+<li><p><strong>Round
+Robin</strong>适用于所有的server配置和位置（同一个机房）都一样，所有的请求都是短暂的请求。</p></li>
+<li><p><strong>Least
+Connected</strong>适用于所有的server配置和位置都一样，请求处理时间长度会变的会话。</p></li>
+<li><p><strong>IP
+Hash</strong>适用于需要简单的会话保持（根据客户IP地址的前3个八位元决定被用的服务器）。</p></li>
+<li><p><strong>Generic
+Hash</strong>适用于需要简单的会话保持（基于参数组合的哈希决定被用的服务器）。</p></li>
+<li><p><strong>Least
+Time</strong>适用于servers在不同的位置且拥有不同的配置，请求会话长度是可变的，可用于健康检查。</p></li>
+</ul>
+<h1 id="代理服务器">3.代理服务器</h1>
+<p>Nginx作为一个反向代理服务器为我们服务，代理分为<strong>正向代理</strong>和<strong>反向代理</strong>。</p>
+<h3 id="正向代理">3.1 正向代理</h3>
+<p>正向代理，意思是一个位于客户端和原始服务器(origin
+server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端才能使用正向代理。</p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124101743281.png" srcset="/img/loading.gif" lazyload /></p>
+<h3 id="反向代理">3.2 反向代理</h3>
+<p>反向<strong>代理服务器位于用户与目标服务器</strong>之间，但是对于用户而言，反向<strong>代理服务器就相当于目标服务器</strong>，即用户直接访问反向代理服务器就可以获得目标服务器的资源。同时，用户不需要知道目标服务器的地址，也无须在用户端作任何设定。反向代理服务器通常可用来作为Web加速，即使用反向代理作为Web服务器的前置机来降低网络和服务器的负载，提高访问效率。</p>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124102228743.png" srcset="/img/loading.gif" lazyload
+alt="image-20221124102228743" />
+<figcaption aria-hidden="true">image-20221124102228743</figcaption>
+</figure>
+<h4 id="为什么使用反向代理">为什么使用反向代理</h4>
+<ul>
+<li>可以起到保护网站安全的作用，因为任何来自Internet的请求都必须先经过代理服务器。</li>
+<li>通过缓存静态资源，加速Web请求。</li>
+<li>实现负载均衡。顺便说下，目前市面上，主流的负载均衡方案，硬件设备有F5，软件方案有四层负载均衡的LVS，七层负载均衡的Nginx、Haproxy等。</li>
+</ul>
+<h1 id="mac安装nginx">4.Mac安装Nginx</h1>
+<p>在安装前，需要以下应用程序作为支持。如果没有安装以下应用程序则需要安装。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Homebrew">home brew</a></li>
+</ul>
+<p>mac可以通过<code>brew</code>来方便的安装nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">brew search nginx --查看nginx版本信息<br>brew install nginx --下载nginx<br></code></pre></td></tr></table></figure>
+<p>然后我们通过命令查看nginx安装信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">brew info nginx ----查看nginx安装信息<br></code></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs stata">wangwang@localhost ~ % brew info nginx<br>nginx: stable 1.21.4 (bottled), HEAD<br>HTTP(S) server and reverse proxy, and IMAP/POP3 proxy server<br>https:<span class="hljs-comment">//nginx.org/</span><br>/usr/<span class="hljs-keyword">local</span>/Cellar/nginx/1.21.4 (26 files, 2.2MB) *<br>  Poured from bottle <span class="hljs-keyword">on</span> 2022-01-26 at 11:12:52<br>From: https:<span class="hljs-comment">//github.com/Homebrew/homebrew-core/blob/HEAD/Formula/nginx.rb</span><br>License: BSD-2-Clause<br>==&gt; Dependencies<br>Required: openssl@1.1 ✔, pcre ✔<br>==&gt; Options<br>--HEAD<br>	Install HEAD <span class="hljs-keyword">version</span><br>==&gt; Caveats<br>Docroot is: /usr/<span class="hljs-keyword">local</span>/<span class="hljs-keyword">var</span>/www<br><br>The default port has been <span class="hljs-keyword">set</span> <span class="hljs-keyword">in</span> /usr/<span class="hljs-keyword">local</span>/etc/nginx/nginx.<span class="hljs-keyword">conf</span> to 8080 <span class="hljs-keyword">so</span> that<br>nginx can <span class="hljs-keyword">run</span> without sudo.<br><br>nginx will load all files <span class="hljs-keyword">in</span> /usr/<span class="hljs-keyword">local</span>/etc/nginx/servers/.<br><br>To restart nginx after <span class="hljs-keyword">an</span> upgrade:<br>  brew services restart nginx<br>Or, <span class="hljs-keyword">if</span> you don&#x27;t want/need a background service you can just <span class="hljs-keyword">run</span>:<br>  /usr/<span class="hljs-keyword">local</span>/opt/nginx/bin/nginx -<span class="hljs-keyword">g</span> daemon off;<br>==&gt; Analytics<br>install: 45,814 (30 days), 114,920 (90 days), 455,820 (365 days)<br>install-<span class="hljs-keyword">on</span>-request: 45,784 (30 days), 114,766 (90 days), 455,039 (365 days)<br>build-<span class="hljs-keyword">error</span>: 1 (30 days)<br></code></pre></td></tr></table></figure>
+<p>我们可以看到默认的配置文件<code>nginx.conf</code>位置信息。通过open命令来打开文件夹。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">open /usr/local/etc/nginx --nginx.conf文件目录<br></code></pre></td></tr></table></figure>
+<p>成功打开nginx目录，也可以看到nginx.conf的配置文件（后面会用到这个配置文件）。但我们并没有找到nginx被安装到了哪里。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">open  /usr/local/Cellar/nginx  --nginx安装目录<br></code></pre></td></tr></table></figure>
+<p>浏览器输入<code>localhost:8080</code>，我们就能看到如下页面，即Nginx安装成功。</p>
+<figure>
+<img src="/Users/wangwang/Desktop/pic/image-20221125095746582.png" srcset="/img/loading.gif" lazyload
+alt="image-20221125095746582" />
+<figcaption aria-hidden="true">image-20221125095746582</figcaption>
+</figure>
+<h1 id="nginx相关命令">5.Nginx相关命令</h1>
+<ul>
+<li>启动命令： nginx</li>
+<li>快速停止命令 nginx -s stop</li>
+<li>平稳退出命令：nginx -s quit</li>
+<li>重新加载配置文件命令：nginx -s reload</li>
+<li>检查配置文件正确性：nginx -t</li>
+<li>查询nginx主进程号：ps -ef | grep nginx</li>
+</ul>
+<h1 id="nginx小试牛刀">6.Nginx小试牛刀</h1>
+<p>通过前面的简介，我们已经对Nginx有了一个初步的认知。现在我们通过Nginx反向代理来访问我们的服务。</p>
+<p>我们新建一个springboot工程，然后引入web依赖，在controller中写一个入口，来测试Nginx代理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/hello&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DemoController</span> &#123;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;/getHello&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getHello</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world!&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>将端口号改为8089：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">server.port</span> = <span class="hljs-string">8089</span><br></code></pre></td></tr></table></figure>
+<p>Nginx的配置都是在<code>nginx.conf</code>里，我们通过配置该文件来配置我们的代理。找到localtion位置。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> / &#123;<br>          <span class="hljs-attribute">proxy_pass</span> http://127.0.0.1:8089;<br>       &#125;<br></code></pre></td></tr></table></figure>
+<p>只需要上面的代码，即可。然后启动Nginx。输入<code>http://localhost:8080/hello/getHello</code>，即可看到如下页面。浏览器不直接访问前台的
+8089(当然，访问nginx前提是你项目能正常访问)，而是访问nignx的8080，效果如下:</p>
+<figure>
+<img src="/Users/wangwang/Desktop/pic/image-20221125111159370.png" srcset="/img/loading.gif" lazyload
+alt="image-20221125111159370" />
+<figcaption aria-hidden="true">image-20221125111159370</figcaption>
+</figure>
+<p>项目配置的是8089，但是通过访问Nginx的8080端口，Nginx通过配置的路由拦截，通过我们配置的参数代理到8089端口，也就是访问了8089端口并返回了数据，用户在整个过程中是无感知的。这也说明了Nginx是通过反向代理来帮助我们去访问资源。</p>
+<blockquote>
+<p>Nginx 只是一个代理，自身并不提供服务。</p>
+</blockquote>
+<h1 id="nginx启动问题记录">7.Nginx启动问题记录</h1>
+<p>在运行Nginx的时候，遇到一个问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nginx启动或者重启失败，报错nginx: [error] open() <span class="hljs-string">&quot;/usr/local/etc/nginx/nginx.pid&quot;</span> failed (2: No such file or directory)<br></code></pre></td></tr></table></figure>
+<p>解决办法：</p>
+<ol type="1">
+<li>通过<code>open /usr/local/etc/nginx</code>打开<code>nginx.conf</code>的位置</li>
+<li>新建一个<code>logs</code>文件夹</li>
+<li>配置<code>nginx.conf</code>，更改pid，如下：</li>
+</ol>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment">#pid        logs/nginx.pid;</span><br><span class="hljs-attribute">pid</span> /usr/local/etc/nginx/logs/nginx.pid;<br></code></pre></td></tr></table></figure>
+<p>启动Nginx的时候，logs文件夹下会生成nginx.pid。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%BF%90%E7%BB%B4/" class="category-chain-item">运维</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Nginx/" class="print-no-link">#Nginx</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nginx介绍，安装</div>
+      <div>https://nanchengjiumeng123.top/2022/11/25/operations/nginx/nginx/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yang Xin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/28/java_se/2022-05-12_path%E4%B8%8Eclasspath/" title="path与classpath">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">path与classpath</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/24/framework/zookeeper/2022-09-24_%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7-ZAB%E5%8D%8F%E8%AE%AE/" title="分布式数据的一致性-ZAB协议">
+                        <span class="hidden-mobile">分布式数据的一致性-ZAB协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>Blog</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>

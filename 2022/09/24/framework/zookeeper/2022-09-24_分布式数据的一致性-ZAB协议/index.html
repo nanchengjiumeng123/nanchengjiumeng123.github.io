@@ -16,24 +16,24 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言 Markdown写文章一定绕不开一个问题：图片，我们插入的Blog的图片都是指向的是本地的路径。如果改变了本地图片存储的位置，MarkDown所引用的图片就无法显示，因此我们需要一个图床来存放我们的图片。 常用的图床有SM.MS、OSS云服务、七牛云、GitHub等等。 1.使用SM.MS、PicGo搭建免费图床 SM.MS个人有免费的5g容量。对于我们写Blog是够用的。 1.注册SM.M">
+    <meta name="description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。 Leader 的协调过程 在分布式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用SM.MS、GitHub、OSS搭建图床">
-<meta property="og:url" content="https://nanchengjiumeng123.top/2022/05/05/2022-05-05_%E4%BD%BF%E7%94%A8SM.MS%E3%80%81GitHub%E3%80%81OSS%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/index.html">
+<meta property="og:title" content="分布式数据的一致性-ZAB协议">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/09/24/framework/zookeeper/2022-09-24_%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7-ZAB%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="前言 Markdown写文章一定绕不开一个问题：图片，我们插入的Blog的图片都是指向的是本地的路径。如果改变了本地图片存储的位置，MarkDown所引用的图片就无法显示，因此我们需要一个图床来存放我们的图片。 常用的图床有SM.MS、OSS云服务、七牛云、GitHub等等。 1.使用SM.MS、PicGo搭建免费图床 SM.MS个人有免费的5g容量。对于我们写Blog是够用的。 1.注册SM.M">
+<meta property="og:description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。 Leader 的协调过程 在分布式">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/pikwizard-architecture-buildings-chicago-city.jpeg">
-<meta property="article:published_time" content="2022-05-05T08:51:33.000Z">
-<meta property="article:modified_time" content="2024-04-21T13:57:17.454Z">
+<meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664532022073.jpg">
+<meta property="article:published_time" content="2022-09-24T02:01:33.000Z">
+<meta property="article:modified_time" content="2024-05-13T05:26:23.655Z">
 <meta property="article:author" content="Yang Xin">
-<meta property="article:tag" content="图床搭建">
+<meta property="article:tag" content="Zookeeper">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/pikwizard-architecture-buildings-chicago-city.jpeg">
+<meta name="twitter:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664532022073.jpg">
   
   
   
-  <title>使用SM.MS、GitHub、OSS搭建图床 - nanchengjiumeng123.top</title>
+  <title>分布式数据的一致性-ZAB协议 - nanchengjiumeng123.top</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,13 +193,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/pikwizard-architecture-buildings-chicago-city.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664532022073.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="使用SM.MS、GitHub、OSS搭建图床"></span>
+            <span id="subtitle" data-typed-text="分布式数据的一致性-ZAB协议"></span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-05 16:51" pubdate>
-          2022年5月5日 下午
+        <time datetime="2022-09-24 10:01" pubdate>
+          2022年9月24日 上午
         </time>
       </span>
     
@@ -223,7 +223,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.6k 字
+          1.7k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
           <!-- compatible with older versions-->
-          14 分钟
+          15 分钟
         
       </span>
     
@@ -272,157 +272,91 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">使用SM.MS、GitHub、OSS搭建图床</h1>
+            <h1 id="seo-header">分布式数据的一致性-ZAB协议</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="前言">前言</h1>
-<p>Markdown写文章一定绕不开一个问题：图片，我们插入的Blog的图片都是指向的是本地的路径。如果改变了本地图片存储的位置，MarkDown所引用的图片就无法显示，因此我们需要一个图床来存放我们的图片。</p>
-<p>常用的图床有<code>SM.MS</code>、<code>OSS云服务</code>、<code>七牛云</code>、<code>GitHub</code>等等。</p>
-<h1 id="使用sm.mspicgo搭建免费图床">1.使用SM.MS、PicGo搭建免费图床</h1>
-<p><code>SM.MS</code>个人有免费的5g容量。对于我们写Blog是够用的。</p>
-<h2 id="注册sm.ms图床">1.注册SM.MS图床</h2>
-<p>我们访问<a
-target="_blank" rel="noopener" href="https://sm.ms/">SM.MS</a>注册自己的账户，就可以使用图床了。整体页面如下：</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-04_18.25.01.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="配置图床">2.配置图床</h2>
-<p>我们希望在写MarkDown的时候，插入图片到MarkDown的时候，就自动将图片上传到图床，不用我们自己手动将图片上传到图床后，再手动插入图片链接。因此我们可以使用<a
-target="_blank" rel="noopener" href="https://github.com/PicGo/Awesome-PicGo">PicGo</a>，一个用于快速上传图片并获取图片
-URL 链接的工具。</p>
-<p><strong>配置API Token</strong></p>
-<p>在<code>SM.MS</code>网址左侧，点击<code>API Token</code>，复制Token到下图位置。PicGo就可以将图片上传到我们的图床上。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-04_18.25.26.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p><strong>MarkDown开启图片自动上传</strong></p>
-<p>此时我们可以将图片拖拽到<code>PicGo</code>图标里获取到<code>SM.MS</code>返回的图片链接，然后再复制到我们的文件里，这是比较麻烦的。因此我们需要在MarkDown编辑工具里开启选项。我使用的<a
-target="_blank" rel="noopener" href="https://www.typora.net/">Typora</a>，因此在设置中找到<code>图像</code>，将规则设置为<code>上传图片</code>，由于我使用的是<code>PicGo</code>，因此上传服务选择的是<code>PicGo.app</code>。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-04_18.25.43.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h1
-id="使用githubjsdelivrpicgo搭建免费图床">2.使用Github、jsdelivr、PicGo搭建免费图床</h1>
-<h2 id="创建图床工程">1.创建图床工程</h2>
-<p>新建一个project，自定义名称即可。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_17.09.29.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="配置personal-access-tokens">2.配置Personal access tokens</h2>
-<p>用户栏目下面的<code>Setting</code>。拉到页面最下方，点击
-<code>&lt;&gt; Developer settings</code> 然后再点击
-<code>Personal access tokes</code>，在<code>Select scopes</code>选项中勾选<strong>repo</strong>，生成access
-token。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_17.09.54.jpg" srcset="/img/loading.gif" lazyload /></p>
-<blockquote>
-<p>注意：这个token只显示一次，所以一定要自己保管好</p>
-</blockquote>
-<h2 id="picgo配置github">3.PicGo配置GitHub</h2>
-<p>由于GitHub在国外，导致网速会比较慢，因此夹在图片这种大文件会比较慢。我们的<a
-target="_blank" rel="noopener" href="https://www.jsdelivr.com/">jsdelivr</a>便出现了，jsDelivr
-是一个免费开源的 CDN 解决方案。包含 JavaScript 库、jQuery 插件、CSS
-框架、字体等等 Web 上常用的静态资源。</p>
-<p>重要的是jsDelivr在中国大陆也拥有超过数百个节点，因为jsDelivr拥有正规的ICP备案，解决了中国大陆的访问速度优化，实现真正的全球极速低延迟体验。</p>
-<p>jsDelivr是免费的、不限制带宽的，可以加速NPM、Github内的文件。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_17.44.57.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>点击GitHub栏，复制第一行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://cdn.jsdelivr.net/gh/user/repo@version/file<br></code></pre></td></tr></table></figure>
-<p>在PicGo中如下配置：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">仓库名：username/project</span><br><span class="hljs-attr">分支名：默认main</span><br><span class="hljs-attr">Token：复制的Personal</span> <span class="hljs-string">access token</span><br><span class="hljs-attr">存储路径：指定文件夹，也可以不指定，就在工程当前目录下</span><br><span class="hljs-attr">自定义域名：https</span>:<span class="hljs-string">//cdn.jsdelivr.net/gh/user/repo@version</span><br><span class="hljs-attr">--user</span>:<span class="hljs-string">username</span><br><span class="hljs-attr">--repo</span>:<span class="hljs-string">your project</span><br><span class="hljs-attr">--version</span>:<span class="hljs-string">main</span><br></code></pre></td></tr></table></figure>
-<p>整体配置界面如下：</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_17.10.31.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="上传图片">4.上传图片</h2>
-<p>开启Markdown自动上传图片功能后，只要往Markdown中复制图片进去，则PicGo会自动把我们的图片上传到GitHub上。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_17.11.09.jpg" srcset="/img/loading.gif" lazyload /></p>
-<blockquote>
-<p>图片的链接地址为：</p>
-<p>https://cdn.jsdelivr.net/gh/username/project@version/路径(可选)/your_photo</p>
-</blockquote>
-<h1 id="使用aliyun-osspicgo搭建图床">3.使用Aliyun
-OSS、PicGo搭建图床</h1>
-<p>由于Github仓库有限制(不能大于1G且单个文件不能大于100M)，如果我们的文件图片过大，则加载图片还是会很慢，如果觉得GitHub速度还是不够快，我们则可以使用服务商的OSS服务。OSS服务商有多个，本文使用的是Aliyun
-OSS。</p>
-<h2 id="购买oss服务">1.购买OSS服务</h2>
-<ul>
-<li><p>开通<a
-target="_blank" rel="noopener" href="https://www.aliyun.com/product/oss/">阿里云OSS服务</a></p></li>
-<li><p>在<a
-target="_blank" rel="noopener" href="https://common-buy.aliyun.com/?spm=5176.8465980.0.0.4e701450E6303q&amp;commodityCode=ossbag&amp;request=%7B%22region%22%3A%22china-common%22%7D#/buy">阿里云OSS</a>选择购买相应的存储OSS服务。</p></li>
-</ul>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_18.09.51.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="创建bucket">2.创建Bucket</h2>
-<p>开通OSS且购买OSS服务之后，我们会有一个OSS的控制台界面，点击<strong>创建Bucket</strong>，出现如下界面：</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_21.57.33.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>关于流量费用的介绍，可以访问官方的帮助页面。通常选择「<strong>按量计费</strong>」。</p>
-<p><strong>流量费用的多少取决于你使用阿里云图床的程度</strong>。一般来说，10元钱能管几个月。</p>
-<p>为了便于理解「存储空间费用」和「流量费用」，可以简单<strong>将它们比作手机套餐的<code>月租</code>和<code>流量</code></strong>。如果你天天刷剧把4G流量用完了，仅仅交月租还不够，超标的流量也要掏钱的。</p>
-<h2 id="添加accesskey">3. 添加AccessKey</h2>
-<p>鼠标悬停头像，出现如下页面。选择<code>AccessKey管理</code>，点击创建，即可创建AccessKey。我选择的是直接使用。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_22.02.06.jpg" srcset="/img/loading.gif" lazyload /></p>
-<blockquote>
-<p>如果选择的是添加子账户，则新建一个子账户后再获取AccessKet，注意到是需要给子账户添加OSS服务权限</p>
-</blockquote>
-<h2 id="配置picgo">4.配置PicGo</h2>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_22.08.42.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>其中：</p>
-<ul>
-<li><code>设定KeyId</code>和<code>设定KeySecret</code>处填写前面记录的<strong>AccessKey
-ID</strong>和<strong>AccessKey Secret</strong>。</li>
-<li><code>设定存储空间名</code>处填写创建的Bucket的名字。</li>
-<li><code>确定存储区域</code>也是在创建Bucket时设定的。如果忘记了，可在阿里云后台的Bucket概览界面查看，比如我的是<strong>oss-cn-beijing</strong>。见下图。</li>
-</ul>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Endpoint（地域节点）</th>
-<th style="text-align: left;">Bucket 域名</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">oss-cn-beijing.aliyuncs.com</td>
-<td style="text-align: left;">~.oss-cn-beijing.aliyuncs.com</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><code>指定存储路径</code>可填写为<strong>img/</strong>。</li>
-</ul>
-<h2 id="上传图片-1">5.上传图片</h2>
-<p>同样，通过typora设置自动上传后，我们就可以直接在Markdown中插入图片。PicGo会自动将图片上传到OSS上，速度极快，所以花钱才是硬道理啊，:joy::joy::joy:。</p>
+                <p>我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower
+服务器以及 Observer 服务器。</p>
+<p>可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper
+主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader
+服务器。今天我们主要先介绍第一个工作，ZooKeeper
+集群中的数据同步问题。</p>
+<h3 id="leader-的协调过程">Leader 的协调过程</h3>
+<p>在分布式系统中有一个著名的 CAP
+定理，是说一个分布式系统不能同时满足一致性、可用性，以及分区容错性。今天我们要讲的就是一致性。其实
+ZooKeeper
+中实现的一致性也不是强一致性，即集群中各个服务器上的数据每时每刻都是保持一致的特性。在
+ZooKeeper
+中，采用的是最终一致的特性，<strong>即经过一段时间后，ZooKeeper
+集群服务器上的数据最终保持一致的特性</strong>。</p>
+<p>在 ZooKeeper 集群中，Leader
+服务器主要负责处理事物性的请求，而在接收到一个客户端的事务性请求操作时，Leader
+服务器会先向集群中的各个机器针对该条会话发起投票询问。</p>
+<p><strong>什么情况下会对 ZooKeeper
+集群服务产生不一致的情况？</strong></p>
 <figure>
 <img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/build_blog/iShot_2022-05-05_22.34.52.jpg" srcset="/img/loading.gif" lazyload
-alt="iShot_2022-05-05_22.34.52" />
-<figcaption aria-hidden="true">iShot_2022-05-05_22.34.52</figcaption>
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230509160259683.png" srcset="/img/loading.gif" lazyload
+alt="image-20230509160259683" />
+<figcaption aria-hidden="true">image-20230509160259683</figcaption>
 </figure>
-<p>阿里云官网: <em>https://www.aliyun.com</em></p>
+<p>在集群初始化启动的时候，首先要同步集群中各个服务器上的数据。而在集群中
+Leader 服务器崩溃时，需要选举出新的 Leader
+而在这一过程中会导致各个服务器上数据的不一致，所以当选举出新的 Leader
+服务器后需要进行数据的同步操作。</p>
+<h1 id="zab协议">1.ZAB协议</h1>
+<p>ZooKeeper
+最核心的作用就是保证分布式系统的数据一致性，而无论是处理来自客户端的会话请求时，还是集群
+Leader
+节点发生重新选举时，都会产生数据不一致的情况。为了解决这个问题，ZooKeeper
+采用了 ZAB 协议算法。</p>
+<p><strong>ZAB 协议算法</strong>（Zookeeper Atomic Broadcast ，Zookeeper
+原子广播协议）是 ZooKeeper
+专门设计用来解决集群最终一致性问题的算法，它的两个核心功能点是<strong>崩溃恢复</strong>和<strong>原子广播协议</strong>。</p>
+<p>在整个 ZAB 协议的底层实现中，ZooKeeper
+集群主要采用<strong>主从模式</strong>的系统架构方式来保证 ZooKeeper
+集群系统的一致性。<strong>实现了一种主备模式的系统架构保持集群中各副本之间数据的一致性，主备模式保证了同一时刻集群汇总只能够有一个主进程来广播服务器的状态变更，因此可以很好的处理客户端大量的并发请求.</strong></p>
 <blockquote>
-<p>由于Gitee现在在慢慢增加防盗链的功能，建立在Gitee上的图床以后就不能再使用了。如果Gitee上的图片还能再外链，需要移动Markdown文件图片到阿里云OSS图床，可以在PicGo中增加插件pic-migrater。如果Gitee上的图片已经不能再外链，则现在没有具体的办法。迁移Gitee图床到OSS的具体操作。网上有很多的文章，此处不再详述，有需要的小伙伴可以去尝试一下。</p>
+<p>ZAB协议的核心是定义了<strong>对于那些会改变Zookeeper服务器数据状态的事务请求的处理方式</strong>。</p>
 </blockquote>
-<h1 id="free-image-resource">4. Free Image Resource</h1>
-<p>:lollipop:: <a target="_blank" rel="noopener" href="https://barnimages.com/">Beautiful Free Photos
-for Everyone | Barnimages</a></p>
-<p>:lollipop:: <a target="_blank" rel="noopener" href="https://unsplash.com/">Beautiful Free Images
-&amp; Pictures | Unsplash</a></p>
-<p>:lollipop:: <a target="_blank" rel="noopener" href="https://pikwizard.com/">Free Commercial Stock
-Photos &amp; Royalty Free Images | PikWizard</a></p>
-<p>:lollipop:: <a target="_blank" rel="noopener" href="https://www.rawpixel.com/">Free Stock Photos,
-PNGs, Templates &amp; Mockups | rawpixel</a></p>
-<p>:lollipop:: <a
-target="_blank" rel="noopener" href="https://www.splitshire.com/best-new-free-stock-photos/">Best new
-free stock photos - SplitShire</a></p>
-<hr />
-<p><strong>博客说明</strong></p>
+<p>整个实现过程如下图所示，当接收到来自客户端的事务性会话请求后，系统集群采用主服务器来处理该条会话请求，经过主服务器处理的结果会通过网络发送给集群中其他从节点服务器进行数据同步操作。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230306175503379.png" srcset="/img/loading.gif" lazyload
+alt="image-20230306175503379" />
+<figcaption aria-hidden="true">image-20230306175503379</figcaption>
+</figure>
+<p>思想如下：</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20220729222815112.png" srcset="/img/loading.gif" lazyload
+alt="image-20220729222815112" />
+<figcaption aria-hidden="true">image-20220729222815112</figcaption>
+</figure>
+<p>以 ZooKeeper 集群为例，这个操作过程可以概括为：当 ZooKeeper
+集群接收到来自客户端的事务性的会话请求后，集群中的其他 Follow
+角色服务器会将该请求转发给 Leader 角色服务器进行处理。当 Leader
+节点服务器在处理完该条会话请求后。</p>
+<p><strong><em>Leader服务器负责将一个客户端事务请求转化成一个事务Proposal
+(提议)
+，并将该Proposal分发给集群中所有的Follower服务器，之后Leader服务器需要等待所有Follower服务器的反馈，一旦超过半数的Follower服务器进行了正确的反馈后，那么Leader就会再次向所有的Follower服务器分发Commit消息，要求其将前一个Proposal进行提交，最终完成整个
+ZooKeeper 集群对客户端会话的处理工作。</em></strong></p>
 <blockquote>
-<p>文章所涉及的资料来自互联网整理和个人总结，意在于个人学习和经验汇总，不用于任何的商业用途。如有侵权，请联系本人删除。谢谢！)</p>
+<p>所有事务请求必须由一个<strong>全局唯一的服务器</strong>来协调处理，这样的服务器被称为<code>Leader服务器</code>，余下的服务器则称为<code>Follower服务器</code>，</p>
 </blockquote>
+<h1 id="zab协议两种基本模式">2.ZAB协议两种基本模式</h1>
+<p>ZAB协议包括两种基本模式：<code>崩溃恢复模式</code>和<code>消息广播模式</code>。</p>
+<h2 id="崩溃恢复模式">2.1 <strong>崩溃恢复模式</strong></h2>
+<p>当整个服务框架启动过程中,或者是Leader服务器出现<strong>网络中断</strong>、<strong>崩溃退出</strong>或<strong>重启</strong>等异常情况时,
+ZAB协议就会进入<code>崩溃恢复模式</code>,同时选举产生新的Leader服务器。当选举产生了新的Leader服务器,同时集群中已经有过半的机器与该Leader服务器完成了状态同步之后,
+ZAB协议就会<code>退出恢复模式</code>,其中,所谓的状态同步就是指数据同步,用来<strong>保证集群中过半的机器能够和Leader服务器的数据状态保持一致。</strong></p>
+<h2 id="消息广播模式">2.2 <strong>消息广播模式</strong></h2>
+<p>当集群中已经有<strong>过半的Follower服务器完成了和Leader服务器的状态同步</strong>,那么整个服务框架就可以进入消息广播模式,当一台同样遵守ZAB协议的服务器启动后加入到集群中,如果此时集群中已经存在一个Leader服务器在负责进行消息广播,那么加入的服务器就会自觉地进入数据恢复模式:找到Leader所在的服务器,并与其进行数据同步,然后一起参与到消息广播流程中去。<code>Zookeeper只允许唯一的一个Leader服务器来进行事务请求的处理</code>,
+Leader服务器在接收到客户端的事务请求后,会生成对应的事务提议并发起一轮广播协议,而如果集群中的其他机器收到客户端的事务请求后,那么这些非Leader服务器会首先将这个事务请求转发给Leader服务器。</p>
+<p>当Leader服务器出现崩溃或者机器重启、集群中已经不存在过半的服务器与Leader服务器保持正常通信时，那么在重新开始新的一轮的原子广播事务操作之前，所有进程首先会使用崩溃恢复协议来使彼此到达一致状态，于是整个ZAB流程就会从<strong>消息广播模式进入到崩溃恢复模式</strong>。</p>
+<p>http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/29%20ZAB%20%E5%8D%8F%E8%AE%AE%E7%AE%97%E6%B3%95%EF%BC%9A%E5%B4%A9%E6%BA%83%E6%81%A2%E5%A4%8D%E5%92%8C%E6%B6%88%E6%81%AF%E5%B9%BF%E6%92%AD.md</p>
 
                 
               </div>
@@ -441,7 +375,7 @@ free stock photos - SplitShire</a></p>
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
+  <a href="/categories/%E6%A1%86%E6%9E%B6/" class="category-chain-item">框架</a>
   
   
 
@@ -456,7 +390,7 @@ free stock photos - SplitShire</a></p>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%9B%BE%E5%BA%8A%E6%90%AD%E5%BB%BA/" class="print-no-link">#图床搭建</a>
+        <a href="/tags/Zookeeper/" class="print-no-link">#Zookeeper</a>
       
     </div>
   
@@ -468,8 +402,8 @@ free stock photos - SplitShire</a></p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>使用SM.MS、GitHub、OSS搭建图床</div>
-      <div>https://nanchengjiumeng123.top/2022/05/05/2022-05-05_使用SM.MS、GitHub、OSS搭建图床/</div>
+      <div>分布式数据的一致性-ZAB协议</div>
+      <div>https://nanchengjiumeng123.top/2022/09/24/framework/zookeeper/2022-09-24_分布式数据的一致性-ZAB协议/</div>
     </div>
     <div class="license-meta">
       
@@ -481,7 +415,7 @@ free stock photos - SplitShire</a></p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年5月5日</div>
+          <div>2022年9月24日</div>
         </div>
       
       
@@ -513,9 +447,9 @@ free stock photos - SplitShire</a></p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/05/10/framework/spring/2022-05-10_Spring%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/" title="Spring框架介绍">
+                      <a href="/2022/11/25/operations/nginx/nginx/" title="Nginx介绍，安装">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Spring框架介绍</span>
+                        <span class="hidden-mobile">Nginx介绍，安装</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -523,8 +457,8 @@ free stock photos - SplitShire</a></p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/05/03/2022-05-03_Mac%E4%BD%BF%E7%94%A8Hexo%E3%80%81GitHub-Pages%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" title="Mac使用Hexo、GitHub Pages搭建博客">
-                        <span class="hidden-mobile">Mac使用Hexo、GitHub Pages搭建博客</span>
+                      <a href="/2022/09/20/framework/zookeeper/2022-09-20_Zookeeper%E6%9C%8D%E5%8A%A1%E6%95%B0%E6%8D%AE%E4%B8%8E%E6%96%87%E4%BB%B6/" title="Zookeeper服务数据与文件">
+                        <span class="hidden-mobile">Zookeeper服务数据与文件</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

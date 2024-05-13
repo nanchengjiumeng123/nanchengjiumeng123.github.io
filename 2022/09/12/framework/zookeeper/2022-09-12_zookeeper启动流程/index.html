@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yang Xin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="服务器初始化到对外提供服务 前面讲解了Zookeeper的基础知识，其实还涉及到Zookeeper-jute序列化，网络通信协议还没有讲。现在来讲讲 ZooKeeper 中的启动与服务的初始化过程，来学习 ZooKeeper 服务端相关的处理知识 2.单机版 我们在启动Zookeeper的时候，都会将zoo_sample.cfg文件复制重新命名为zoo.cfg，如下：   image-202303">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zookeeper启动流程">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/09/12/framework/zookeeper/2022-09-12_zookeeper%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="nanchengjiumeng123.top">
+<meta property="og:description" content="服务器初始化到对外提供服务 前面讲解了Zookeeper的基础知识，其实还涉及到Zookeeper-jute序列化，网络通信协议还没有讲。现在来讲讲 ZooKeeper 中的启动与服务的初始化过程，来学习 ZooKeeper 服务端相关的处理知识 2.单机版 我们在启动Zookeeper的时候，都会将zoo_sample.cfg文件复制重新命名为zoo.cfg，如下：   image-202303">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664531829436.jpg">
+<meta property="article:published_time" content="2022-09-12T14:51:43.000Z">
+<meta property="article:modified_time" content="2024-05-13T05:31:15.821Z">
+<meta property="article:author" content="Yang Xin">
+<meta property="article:tag" content="Zookeeper">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664531829436.jpg">
+  
+  
+  
+  <title>zookeeper启动流程 - nanchengjiumeng123.top</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"nanchengjiumeng123.top","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wangwang&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664531829436.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="zookeeper启动流程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-12 22:51" pubdate>
+          2022年9月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">zookeeper启动流程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="服务器初始化到对外提供服务">服务器初始化到对外提供服务</h1>
+<p>前面讲解了Zookeeper的基础知识，其实还涉及到Zookeeper-jute序列化，网络通信协议还没有讲。现在来讲讲
+ZooKeeper 中的启动与服务的初始化过程，来学习 ZooKeeper
+服务端相关的处理知识</p>
+<h1 id="单机版">2.单机版</h1>
+<p>我们在启动Zookeeper的时候，都会将<code>zoo_sample.cfg</code>文件复制重新命名为<code>zoo.cfg</code>，如下：</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230308140602652.png" srcset="/img/loading.gif" lazyload
+alt="image-20230308140602652" />
+<figcaption aria-hidden="true">image-20230308140602652</figcaption>
+</figure>
+<h2 id="启动准备实现">2.1 启动准备实现</h2>
+<p>ZooKeeper
+服务的初始化之前，首先要对配置文件等信息进行解析和载入。也就是在真正开始服务的初始化之前需要对服务的相关参数进行准备，而
+ZooKeeper
+服务的准备阶段大体上可分为<code>启动程序入口</code>、<code>zoo.cfg 配置文件解析</code>、<code>创建历史文件清理器</code>等，如下图所示：</p>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230308140659021.png" srcset="/img/loading.gif" lazyload alt="image-20230308140659021" style="zoom:67%;" /></p>
+<p><code>QuorumPeerMain</code> 类是 ZooKeeper 服务的启动接口，可以理解为
+Java 中的 main 函数。 通常我们在控制台启动 ZooKeeper 服务的时候，输入
+zkServer.cm 或 zkServer.sh 命令就是用来启动这个 Java
+类的。如下代码所示，QuorumPeerMain 类函数只有一个 initializeAndRun
+方法，是作用为所有 ZooKeeper 服务启动逻辑的入口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * When the main() method of this class is used to start the program, the first</span><br><span class="hljs-comment"> * argument is used as a path to the config file, which will be used to obtain</span><br><span class="hljs-comment"> * configuration information. This file is a Properties file, so keys and</span><br><span class="hljs-comment"> * values are separated by equals (=) and the key/value pairs are separated</span><br><span class="hljs-comment"> * by new lines. The following is a general summary of keys used in the</span><br><span class="hljs-comment"> * configuration file. For full details on this see the documentation in</span><br><span class="hljs-comment"> * docs/index.html</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *当使用该类的main()方法启动程序时，第一个参数将用作配置文件的路径，该配置文件将用于获取配置信息。该文件是一个   Properties文件，因此键和值用等号(=)分隔，键值对用新行分隔。下面是配置文件中使用的密钥的一般摘要。有关这方   面的详细信息，请参阅docsindex.html中的文档</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">QuorumPeerMain</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">LOG</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(QuorumPeerMain.class);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">USAGE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Usage: QuorumPeerMain configfile&quot;</span>;<br><br>    <span class="hljs-keyword">protected</span> QuorumPeer quorumPeer;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * To start the replicated server specify the configuration file name on</span><br><span class="hljs-comment">     * the command line.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args path to the configfile</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">QuorumPeerMain</span> <span class="hljs-variable">main</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">QuorumPeerMain</span>();<br>        ... ...<br>        main.initializeAndRun(args);<br>        ... ... <br>    &#125;<br></code></pre></td></tr></table></figure>
+<h2 id="解析配置文件">2.2 解析配置文件</h2>
+<p>上文写到<code>当使用该类的main()方法启动程序时，第一个参数将用作配置文件的路径，该配置文件将用于获取配置信息</code>，因此在
+ZooKeeper 启动过程中，首先要做的事情就是解析配置文件 zoo.cfg。</p>
+<blockquote>
+<p>zoo.cfg
+是服务端的配置文件，在这个文件中我们可以配置数据目录、端口号等信息。</p>
+</blockquote>
+<h2 id="创建文件清理器">2.3 创建文件清理器</h2>
+<p>文件清理器在我们日常的使用中非常重要，我们都知道面对大流量的网络访问，ZooKeeper
+会因此产生海量的数据，如果磁盘数据过多或者磁盘空间不足，则会导致
+ZooKeeper
+服务器不能正常运行，进而影响整个分布式系统。所以面对这种问题，ZooKeeper
+采用了 <code>DatadirCleanupManager</code>
+类作为历史文件的清理工具类。</p>
+<p>在 3.4.0 版本后的 ZooKeeper
+中更是增加了自动清理历史数据的功能以尽量避免磁盘空间的浪费(我是用的版本为3.9.0-SNAPSHOT)。</p>
+<p>如下代码所示，DatadirCleanupManager 类有 5 个属性，其中 snapDir 和
+dataLogDir
+分别表示数据快照地址以及日志数据的存放地址。而我们在日常工作中可以通过在
+zoo.cfg 文件中配置 autopurge.snapRetainCount 和 autopurge.purgeInterval
+这两个参数实现数据文件的定时清理功能，autopurge.purgeInterval
+这个参数指定了清理频率，以小时为单位，需要填写一个 1
+或更大的整数，默认是
+0，表示不开启自己清理功能。autopurge.snapRetainCount
+这个参数和上面的参数搭配使用，这个参数指定了需要保留的文件数目，默认是保留
+3 个。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DatadirCleanupManager</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Status of the dataDir purge task</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">PurgeTaskStatus</span> &#123;<br>        NOT_STARTED,<br>        STARTED,<br>        COMPLETED<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> File snapDir;<span class="hljs-comment">//数据快照地址</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> File dataLogDir;<span class="hljs-comment">//日志数据的存放地址</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> snapRetainCount;<span class="hljs-comment">//需要保留的文件数目，默认是保留 3 个</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> purgeInterval;<span class="hljs-comment">//清理频率，以小时为单位,需要填写一个 1 或更大的整数，默认是 0</span><br><br>    <span class="hljs-keyword">private</span> Timer timer;<br> &#125;<br></code></pre></td></tr></table></figure>
+<h2 id="服务初始化">2.4 服务初始化</h2>
+<p>经过了上面的配置文件解析等准备阶段后， ZooKeeper
+开始服务的初始化阶段。<strong>初始化阶段可以理解为根据解析准备阶段的配置信息，实例化服务对象。服务初始化阶段的主要工作是创建用于服务统计的工具类</strong>，如下图所示主要有以下几种：</p>
+<ol type="1">
+<li>ServerStats 类，它可以用于服务运行信息统计；</li>
+<li>FileTxnSnapLog 类，可以用于数据管理。</li>
+<li>会话管理类，设置服务器 TickTime
+和会话超时时间、创建启动会话管理器等操作。</li>
+</ol>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230308143210537.png" srcset="/img/loading.gif" lazyload alt="image-20230308143210537" style="zoom:67%;" /></p>
+<h3 id="serverstats">2.4.1 ServerStats</h3>
+<p>ServerStats是一个统计工具类，用于统计 ZooKeeper
+服务运行时的状态信息统计。主要统计的数据有<code>服务端向客户端发送的响应包次数</code>、<code>接收到的客户端发送的请求包次数</code>、<code>服务端处理请求的延迟情况</code>以及<code>处理客户端的请求次数</code>等。在日常运维工作中，监控服务器的性能以及运行状态等参数很多都是这个类负责收集的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServerStats</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">packetsSent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>();<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">packetsReceived</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>();<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AvgMinMaxCounter</span> <span class="hljs-variable">requestLatency</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AvgMinMaxCounter</span>(<span class="hljs-string">&quot;request_latency&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">fsyncThresholdExceedCount</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">BufferStats</span> <span class="hljs-variable">clientResponseStats</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferStats</span>();<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">nonMTLSRemoteConnCntr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">nonMTLSLocalConnCntr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">authFailedCntr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);<br> &#125;<br></code></pre></td></tr></table></figure>
+<h3 id="filetxnsnaplog">2.4.2 FileTxnSnapLog</h3>
+<p>FileTxnSnapLog是一个持久化工具类，用来管理 ZooKeeper
+的数据存储等相关操作，可以看作为 ZooKeeper
+服务层提供底层持久化的接口。在 ZooKeeper 服务启动过程中，它会根据
+zoo.cfg 配置文件中的 dataDir 数据快照目录和 dataLogDir
+事物日志目录来创建 FileTxnSnapLog 类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileTxnSnapLog</span> &#123;<br>    <span class="hljs-comment">//the directory containing the</span><br>    <span class="hljs-comment">//the transaction logs</span><br>    <span class="hljs-keyword">final</span> File dataDir;<br>    <span class="hljs-comment">//the directory containing the</span><br>    <span class="hljs-comment">//the snapshot directory</span><br>    <span class="hljs-keyword">final</span> File snapDir;<br>    TxnLog txnLog;<br>    SnapShot snapLog;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">boolean</span> autoCreateDB;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">boolean</span> trustEmptySnapshot;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">VERSION</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">version</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;version-&quot;</span>;<br>  &#125;  <br></code></pre></td></tr></table></figure>
+<h3 id="servercnxnfactory">2.4.3 ServerCnxnFactory</h3>
+<p>ServerCnxnFactory是一个NIO类，ZooKeeper
+中客户端和服务端通过网络通信，其本质是通过 Java 的 IO
+数据流的方式进行通信，但是传统的 IO 方式具有阻塞等待的问题，而 NIO
+框架作为传统的 Java IO
+框架的替代方案，在性能上大大优于前者。也正因如此，NIO
+框架也被广泛应用于网络传输的解决方案中。而 ZooKeeper
+最早也是使用自己实现的 NIO 框架.</p>
+<blockquote>
+<p>但是从 3.4.0 版本后，引入了第三方 Netty
+等框架来满足不同使用情况的需求，而我们可以通过 ServerCnxnFactory
+类来设置 ZooKeeper 服务器，从而在运行的时候使用我们指定的 NIO 框架。</p>
+</blockquote>
+<p>如代码中 ServerCnxnFactory 类通过setServerCnxnFactory
+函数来创建对应的工厂类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServerCnxnFactory</span> &#123;<br>    <br>  <span class="hljs-comment">// Tells whether SSL is enabled on this ServerCnxnFactory</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> secure;<br>    <br>    <span class="hljs-keyword">protected</span> ZooKeeperServer zkServer;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setZooKeeperServer</span><span class="hljs-params">(ZooKeeperServer zks)</span> &#123;<br>      <span class="hljs-built_in">this</span>.zkServer = zks;<br>      <span class="hljs-keyword">if</span> (zks != <span class="hljs-literal">null</span>) &#123;<br>         <span class="hljs-keyword">if</span> (secure) &#123;<br>             zks.setSecureServerCnxnFactory(<span class="hljs-built_in">this</span>);<br>         &#125; <span class="hljs-keyword">else</span> &#123;<br>             zks.setServerCnxnFactory(<span class="hljs-built_in">this</span>);<br>         &#125;<br>     &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在通过 ServerCnxnFactory 类制定了具体的 NIO 框架类后。ZooKeeper
+首先会创建一个线程 Thread 类作为 ServerCnxnFactory 类的启动主线程。之后
+ZooKeeper 服务再初始化具体的 NIO
+类。这里请你注意的是，虽然初始化完相关的 NIO 类
+，比如已经设置好了服务端的对外端口，客户端也能通过诸如 2181
+端口等访问到服务端，但是此时 ZooKeeper
+服务器还是无法处理客户端的请求操作。<strong>这是因为 ZooKeeper
+启动后，还需要从本地的快照数据文件和事务日志文件中恢复数据</strong>。这之后才真正完成了
+ZooKeeper 服务的启动。</p>
+<h2 id="初始化请求处理链">2.5 初始化请求处理链</h2>
+<p>在完成了 ZooKeeper 服务的启动后，ZooKeeper
+会初始化一个请求处理逻辑上的相关类。这个操作就是初始化请求处理链。所谓的请求处理链是一种责任链模式的实现方式，根据不同的客户端请求，在
+ZooKeeper
+服务器上会采用不同的处理逻辑。而为了更好地实现这种业务场景，ZooKeeper
+中采用多个请求处理器类一次处理客户端请求中的不同逻辑部分。这种处理请求的逻辑方式就是责任链模式。而本课时主要说的是单机版服务器的处理逻辑，主要分为PrepRequestProcessor、SyncRequestProcessor、FinalRequestProcessor
+3 个请求处理器，而在一个请求到达 ZooKeeper
+服务端进行处理的过程，则是严格按照这个顺序分别调用这 3
+个类处理请求中的对应逻辑，如下图所示。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230308151250635.png" srcset="/img/loading.gif" lazyload
+alt="image-20230308151250635" />
+<figcaption aria-hidden="true">image-20230308151250635</figcaption>
+</figure>
+<h1 id="集群版">3.集群版</h1>
+<h2 id="集群模式特点">3.1 集群模式、特点</h2>
+<p>为了解决单机模式下性能的瓶颈问题，以及出于对系统可靠性的高要求，集群模式的系统架构方式被业界普遍采用。那什么是集群模式呢？<code>集群模式可以简单理解为将单机系统复制成几份，部署在不同主机或网络节点上，最终构成了一个由多台计算机组成的系统“集群”。而组成集群中的每个服务器叫作集群中的网络节点。</code></p>
+<p>到现在我们对集群的组织架构形式有了大概的了解，那么你可能会产生一个问题：我们应该如何使用集群？当客户端发送一个请求到集群服务器的时候，究竟是哪个机器为我们提供服务呢？为了解决这个问题，我们先介绍一个概念名词“<code>调度者</code>”。<strong>调度者的工作职责就是在集群收到客户端请求后，根据当前集群中机器的使用情况，决定将此次客户端请求交给哪一台服务器或网络节点进行处理</strong>，例如我们都很熟悉的负载均衡服务器就是一种调度者的实现方式。</p>
+<p><strong>特点：</strong></p>
+<p>在 ZooKeeper 集群模式中，将服务器分成 Leader 、Follow 、Observer
+三种角色服务器，在集群运行期间这三种服务器所负责的工作各不相同：</p>
+<ul>
+<li>Leader
+角色服务器负责管理集群中其他的服务器，是集群中工作的分配和调度者。</li>
+<li>Follow 服务器的主要工作是选举出 Leader 服务器，在发生 Leader
+服务器选举的时候，系统会从 Follow 服务器之间根据多数投票原则，选举出一个
+Follow 服务器作为新的 Leader 服务器。</li>
+<li>Observer 服务器则主要负责处理来自客户端的获取数据等请求，并不参与
+Leader 服务器的选举操作，也不会作为候选者被选举为 Leader 服务器。</li>
+</ul>
+<h2 id="启动准备实现-1">3.2 启动准备实现</h2>
+<p>同单机版启动一样，ZooKeeper 服务启动会调用入口 QuorumPeerMain 类中的
+main 函数。在 main 函数中的 initializeAndRun 方法中根据 zoo.cfg
+配置文件，判断服务启动方式是集群模式还是单机模式。在函数中首先根据 arg
+参数和 config.isDistributed() 来判断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initializeAndRun</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> ConfigException, IOException, AdminServerException &#123;<br>    <span class="hljs-type">QuorumPeerConfig</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">QuorumPeerConfig</span>();<br>    <span class="hljs-keyword">if</span> (args.length == <span class="hljs-number">1</span>) &#123;<br>        config.parse(args[<span class="hljs-number">0</span>]);<br>    &#125;<br>    <span class="hljs-comment">// Start and schedule the the purge task</span><br>    <span class="hljs-type">DatadirCleanupManager</span> <span class="hljs-variable">purgeMgr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DatadirCleanupManager</span>(<br>        config.getDataDir(),<br>        config.getDataLogDir(),<br>        config.getSnapRetainCount(),<br>        config.getPurgeInterval());<br>    purgeMgr.start();<br>    <span class="hljs-keyword">if</span> (args.length == <span class="hljs-number">1</span> &amp;&amp; config.isDistributed()) &#123;<br>        <span class="hljs-comment">//集群模式，完成之后的集群模式的初始化工作</span><br>        runFromConfig(config);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        LOG.warn(<span class="hljs-string">&quot;Either no config or no quorum defined in config, running in standalone mode&quot;</span>); <span class="hljs-comment">//单机模式</span><br>        ZooKeeperServerMain.main(args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="quorumpeer">3.2.1 QuorumPeer</h3>
+<p>在 ZooKeeper 服务的集群模式启动过程中，一个最主要的核心类是
+QuorumPeer 类。</p>
+<blockquote>
+<p>我们可以将每个 QuorumPeer 类的实例看作集群中的一台服务器。</p>
+</blockquote>
+<p>在 ZooKeeper 集群模式的运行中，一个 QuorumPeer 类的实例通常具有 3
+种状态，分别是参与 Leader 节点的选举、作为 Follow 节点同步 Leader
+节点的数据，以及作为 Leader 节点管理集群中的 Follow 节点。</p>
+<p>介绍完 QuorumPeer 类后，下面我们看一下在 ZooKeeper
+服务的启动过程中，针对 QuorumPeer
+类都做了哪些工作。如下面的代码所示，在一个 ZooKeeper
+服务的启动过程中，首先调用 runFromConfig
+函数将服务运行过程中需要的核心工具类注册到 QuorumPeer 实例中去。</p>
+<p>这些核心工具就是我们在上一节课单机版服务的启动中介绍的诸如
+FileTxnSnapLog 数据持久化类、ServerCnxnFactory 类 NIO
+工厂方法等。这之后还需要配置服务器地址列表、Leader
+选举算法、会话超时时间等参数到 QuorumPeer 实例中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">runFromConfig</span><span class="hljs-params">(QuorumPeerConfig config)</span>&#123;<br><br>  <span class="hljs-type">ServerCnxnFactory</span> <span class="hljs-variable">cnxnFactory</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br><br>  <span class="hljs-type">ServerCnxnFactory</span> <span class="hljs-variable">secureCnxnFactory</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br><br>  ...<br><br>  quorumPeer = getQuorumPeer()<br><br>  quorumPeer.setElectionType(config.getElectionAlg());<br><br>  quorumPeer.setCnxnFactory(cnxnFactory);<br><br>  ...<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>ZooKeeper 将集群中的机器分为 Leader 、 Follow 、Obervser
+三种角色，每种角色服务器在集群中起到的作用都各不相同。在 ZooKeeper
+中的这三种角色服务器，在服务启动过程中也有各自的不同，下面我们就以
+Leader 角色服务器的启动和 Follow
+服务器服务的启动过程来看一下各自的底层实现原理。</p>
+<h3 id="leader-服务器启动过程">3.2.2 Leader 服务器启动过程</h3>
+<p>在 ZooKeeper 集群中，Leader
+服务器负责管理集群中其他角色服务器，以及处理客户端的数据变更请求。因此，在整个
+ZooKeeper 服务器中，Leader 服务器非常重要。所以在整个 ZooKeeper
+集群启动过程中，首先要先选举出集群中的 Leader 服务器。</p>
+<p>在 ZooKeeper 集群选举 Leader
+节点的过程中，首先会根据服务器自身的服务器 ID（SID）、最新的
+ZXID、和当前的服务器 epoch
+（currentEpoch）这三个参数来生成一个选举标准。之后，ZooKeeper 服务会根据
+zoo.cfg 配置文件中的参数，选择参数文件中规定的 Leader 选举算法，进行
+Leader 头节点的选举操作。而在 ZooKeeper 中提供了三种 Leader
+选举算法，分别是 LeaderElection
+、AuthFastLeaderElection、FastLeaderElection。在我们日常开发过程中，可以通过在
+zoo.cfg 配置文件中使用 electionAlg
+参数属性来制定具体要使用的算法类型。具体的 Leader
+选举算法我们会在之后的章节中展开讲解。</p>
+<p>这里我们只需要知道，在 ZooKeeper
+集群模式下服务启动后。首先会创建用来选举 Leader 节点的工具类
+QuorumCnxManager 。下面这段代码给出了 QuorumCnxManager
+在创建实例的时候首先要实例化 Listener 对象用于监听 Leader 选举端口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> org.apache.zookeeper.server.quorum;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">QuorumCnxManager</span> &#123;<br><br>...<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">QuorumCnxManager</span><span class="hljs-params">(QuorumPeer self)</span> &#123;<br><br>    <span class="hljs-type">String</span> <span class="hljs-variable">cnxToValue</span> <span class="hljs-operator">=</span> System.getProperty(<span class="hljs-string">&quot;zookeeper.cnxTimeout&quot;</span>)<br><br>    listener = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Listener</span>();<br><br>    listener.setName(<span class="hljs-string">&quot;QuorumPeerListener&quot;</span>);<br><br>  &#125;<br><br> ...<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>而在 ZooKeeper 中，Leader
+选举的大概过程，总体说来就是在集群中的所有机器中直接进行一次选举投票，选举出一个最适合的机器作为
+Leader 节点。而具体的评价标准就是我们上面提到的三种选举算法。而从 3.4.0
+版本开始，ZooKeeper 只支持 FastLeaderElection
+这一种选举算法。同时没有被选举为 Leader 节点的机器则作为 Follow 或
+Observer 节点机器存在。</p>
+<h3 id="follow-服务器启动过程">3.2.3 Follow 服务器启动过程</h3>
+<p>在服务器的启动过程中，Follow 机器的主要工作就是和 Leader
+节点进行数据同步和交互。当 Leader 机器启动成功后，Follow
+节点的机器会收到来自 Leader 节点的启动通知。而该通知则是通过
+LearnerCnxAcceptor
+类来实现的。该类就相当于一个接收器。专门用来接收来自集群中 Leader
+节点的通知信息。下面这段代码中 LearnerCnxAcceptor 类首先初始化要监听的
+Leader 服务器地址和设置收到监听的处理执行方法等操作 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LearnerCnxAcceptor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ZooKeeperCriticalThread</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">stop</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">LearnerCnxAcceptor</span><span class="hljs-params">()</span> &#123;<br><br>        <span class="hljs-built_in">super</span>(<span class="hljs-string">&quot;LearnerCnxAcceptor-&quot;</span> + ss.getLocalSocketAddress(), zk<br><br>                .getZooKeeperServerListener());<br><br>    &#125;<br><br> &#125;   <br></code></pre></td></tr></table></figure>
+<p>在接收到来自 Leader 服务器的通知后，Follow 服务器会创建一个
+LearnerHandler 类的实例，用来处理与 Leader 服务器的数据同步等操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> org.apache.zookeeper.server.quorum;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LearnerHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ZooKeeperThread</span> &#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">final</span> Socket sock;<br><br>  <span class="hljs-keyword">final</span> Leader leader;<br><br>  ...<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在完成数据同步后，一个 ZooKeeper
+服务的集群模式下启动的关键步骤就完成了，整个服务就处于运行状态，可以对外提供服务了。</p>
+<h1 id="section">4.🍪</h1>
+<p>在我们日常使用 ZooKeeper
+集群服务器的时候，集群中的机器个数应该如何选择？</p>
+<blockquote>
+<p>最好使用奇数原则，最小的集群配置应该是三个服务器或者节点。而如果采用偶数，在
+Leader
+节点选举投票的过程中就不满足大多数原则，这时就产生“脑裂”这个问题。</p>
+</blockquote>
+<h1 id="read-more">5.Read more</h1>
+<p>:lollipop::<a
+target="_blank" rel="noopener" href="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/08%20%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A6%82%E4%BD%95%E4%BB%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%B0%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E6%9C%8D%E5%8A%A1%EF%BC%9F.md">服务启动过程</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A1%86%E6%9E%B6/" class="category-chain-item">框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Zookeeper/" class="print-no-link">#Zookeeper</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>zookeeper启动流程</div>
+      <div>https://nanchengjiumeng123.top/2022/09/12/framework/zookeeper/2022-09-12_zookeeper启动流程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yang Xin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/14/framework/zookeeper/2022-09-14_ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" title="ACL权限控制">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ACL权限控制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/11/framework/zookeeper/2022-09-11_zookeeper%E7%AE%80%E4%BB%8B/" title="zookeeper简介">
+                        <span class="hidden-mobile">zookeeper简介</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>Blog</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>

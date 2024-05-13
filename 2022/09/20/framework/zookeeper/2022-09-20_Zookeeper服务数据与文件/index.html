@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yang Xin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Zookeeper服务数据与文件 ZooKeeper 框架能够实现的功能，而无论是什么程序，其本质就是对数据的操作。比如 MySQl 数据库操作的是数据表，Redis 数据库操作的是存储在内存中的 Key-Value 值。不同的数据格式和存储方式对系统运行的效率和处理能力都有很大影响。本课时就来学习，在 ZooKeeper 程序运行期间，都会处理哪些数据，以及他们的存储格式和存储位置。 ZooKe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zookeeper服务数据与文件">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/09/20/framework/zookeeper/2022-09-20_Zookeeper%E6%9C%8D%E5%8A%A1%E6%95%B0%E6%8D%AE%E4%B8%8E%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="nanchengjiumeng123.top">
+<meta property="og:description" content="Zookeeper服务数据与文件 ZooKeeper 框架能够实现的功能，而无论是什么程序，其本质就是对数据的操作。比如 MySQl 数据库操作的是数据表，Redis 数据库操作的是存储在内存中的 Key-Value 值。不同的数据格式和存储方式对系统运行的效率和处理能力都有很大影响。本课时就来学习，在 ZooKeeper 程序运行期间，都会处理哪些数据，以及他们的存储格式和存储位置。 ZooKe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664523182983.jpg">
+<meta property="article:published_time" content="2022-09-20T08:22:13.000Z">
+<meta property="article:modified_time" content="2024-05-13T05:27:15.105Z">
+<meta property="article:author" content="Yang Xin">
+<meta property="article:tag" content="Zookeeper">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664523182983.jpg">
+  
+  
+  
+  <title>Zookeeper服务数据与文件 - nanchengjiumeng123.top</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"nanchengjiumeng123.top","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wangwang&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664523182983.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Zookeeper服务数据与文件"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-20 16:22" pubdate>
+          2022年9月20日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Zookeeper服务数据与文件</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="zookeeper服务数据与文件">Zookeeper服务数据与文件</h1>
+<p>ZooKeeper
+框架能够实现的功能，而无论是什么程序，其本质就是对数据的操作。比如 MySQl
+数据库操作的是数据表，Redis 数据库操作的是存储在内存中的 Key-Value
+值。不同的数据格式和存储方式对系统运行的效率和处理能力都有很大影响。本课时就来学习，在
+ZooKeeper
+程序运行期间，都会处理哪些数据，以及他们的存储格式和存储位置。</p>
+<p>ZooKeeper 服务提供了创建节点、添加 Watcher
+监控机制、集群服务等丰富的功能。这些功能服务的实现，离不开底层数据的支持。从数据存储地点角度讲，ZooKeeper
+服务产生的数据可以分为内存数据和磁盘数据。而从数据的种类和作用上来说，又可以分为事务日志数据和数据快照数据。</p>
+<h1 id="内存数据">1.内存数据</h1>
+<p>数据节点实际上就是 ZooKeeper 在服务运行过程中所操作的数据。ZooKeeper
+的数据模型可以看作一棵<strong>树形结构</strong>，而数据节点就是这棵树上的叶子节点。从数据存储的角度看，ZooKeeper
+的数据模型是存储在内存中的。我们可以把 ZooKeeper
+的数据模型看作是存储在内存中的数据库，而这个数据库不但存储数据的节点信息，还存储每个数据节点的
+ACL 权限信息以及 stat 状态信息等。</p>
+<p>而在底层实现中，ZooKeeper 数据模型是通过 DataTree
+类来定义的。如下面的代码所示，DataTree 类定义了一个 ZooKeeper
+数据的内存结构。DataTree 的内部定义类 nodes 节点类型、root
+根节点信息、子节点的 WatchManager
+监控信息等数据模型中的相关信息。可以说，一个 DataTree 类定义了 ZooKeeper
+内存数据的逻辑结构。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataTree</span> &#123;<br><br>  <span class="hljs-keyword">private</span> DataNode root<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WatchManager dataWatches<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WatchManager childWatches<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">rootZookeeper</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/&quot;</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="事务日志">2.事务日志</h1>
+<p>为了整个 ZooKeeper 集群中数据的一致性，Leader 服务器会向 ZooKeeper
+集群中的其他角色服务发送数据同步信息，在接收到数据同步信息后， ZooKeeper
+集群中的 Follow 和 Observer
+服务器就会进行数据同步。而这两种角色服务器所接收到的信息就是 Leader
+服务器的事务日志。在接收到事务日志后，并在本地服务器上执行。这种数据同步的方式，避免了直接使用实际的业务数据，减少了网络传输的开销，提升了整个
+ZooKeeper 集群的执行性能。</p>
+<p>在我们启动一个 ZooKeeper 服务器之前，首先要创建一个 zoo.cfg
+文件并进行相关配置，其中有一项配置就是 <code>dataLogDir</code>
+。在这项配置中，我们会指定该台 ZooKeeper 服务器事务日志的存放位置</p>
+<p>在 ZooKeeper 服务的底层实现中，是通过 FileTxnLog
+类来实现事务日志的底层操作的。如下图代码所示，在 FileTxnLog
+类中定义了一些属性字段，分别是：</p>
+<ul>
+<li><p>preAllocSize：可存储的日志文件大小。如用户不进行特殊设置，默认的大小为
+65536*1024 字节。</p></li>
+<li><p>TXNLOG_MAGIC：设置日志文件的魔数信息为ZKLG。</p></li>
+<li><p>VERSION：设置日志文件的版本信息。</p></li>
+<li><p>lastZxidSeen：最后一次更新日志得到的 ZXID。</p></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileTxnLog</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">TxnLog</span>, Closeable &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger LOG;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">TXNLOG_MAGIC</span> <span class="hljs-operator">=</span> ByteBuffer.wrap(<span class="hljs-string">&quot;ZKLG&quot;</span>.getBytes()).getInt();<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">VERSION</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br>    <br>      <span class="hljs-comment">/** Maximum time we allow for elapsed fsync before WARNing */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> fsyncWarningThresholdMS;<br> &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FilePadding</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger LOG;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-type">long</span> <span class="hljs-variable">preAllocSize</span> <span class="hljs-operator">=</span> <span class="hljs-number">65536</span> * <span class="hljs-number">1024</span>;<br>    ... ...<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>定义了事务日志操作的相关指标参数后，在 FileTxnLog 类中调用 static
+静态代码块，来将这些配置参数进行初始化。比如读取 preAllocSize
+参数分配给日志文件的空间大小等操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> &#123;<br>    LOG = LoggerFactory.getLogger(FileTxnLog.class);<br><br>    <span class="hljs-comment">/** Local variable to read fsync.warningthresholdms into */</span><br>    Long fsyncWarningThreshold;<br>    <span class="hljs-keyword">if</span> ((fsyncWarningThreshold = Long.getLong(ZOOKEEPER_FSYNC_WARNING_THRESHOLD_MS_PROPERTY)) == <span class="hljs-literal">null</span>) &#123;<br>        fsyncWarningThreshold = Long.getLong(FSYNC_WARNING_THRESHOLD_MS_PROPERTY, <span class="hljs-number">1000</span>);<br>    &#125;<br>    fsyncWarningThresholdMS = fsyncWarningThreshold;<br><br>    <span class="hljs-type">Long</span> <span class="hljs-variable">logSize</span> <span class="hljs-operator">=</span> Long.getLong(txnLogSizeLimitSetting, -<span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (logSize &gt; <span class="hljs-number">0</span>) &#123;<br>        LOG.info(<span class="hljs-string">&quot;&#123;&#125; = &#123;&#125;&quot;</span>, txnLogSizeLimitSetting, logSize);<br><br>        <span class="hljs-comment">// Convert to bytes</span><br>        logSize = logSize * <span class="hljs-number">1024</span>;<br>        txnLogSizeLimit = logSize;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>经过参数定义和日志文件的初始化创建后，在 ZooKeeper 服务器的 dataDir
+路径下就生成了一个用于存储事务性操作的日志文件。我们知道在 ZooKeeper
+服务运行过程中，会不断地接收和处理来自客户端的事务性会话请求，这就要求每次在处理事务性请求的时候，都要记录这些信息到事务日志中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * append an entry to the transaction log</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> hdr the header of the transaction</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> txn the transaction part of the entry</span><br><span class="hljs-comment">     * returns true iff something appended, otw false</span><br><span class="hljs-comment">     * 向事务日志追加一个条目</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">append</span><span class="hljs-params">(TxnHeader hdr, Record txn)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>              <span class="hljs-keyword">return</span> append(hdr, txn, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">append</span><span class="hljs-params">(TxnHeader hdr, Record txn, TxnDigest digest)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-keyword">if</span> (hdr == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (hdr.getZxid() &lt;= lastZxidSeen) &#123;<br>            LOG.warn(<br>                <span class="hljs-string">&quot;Current zxid &#123;&#125; is &lt;= &#123;&#125; for &#123;&#125;&quot;</span>,<br>                hdr.getZxid(),<br>                lastZxidSeen,<br>                Request.op2String(hdr.getType()));<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            lastZxidSeen = hdr.getZxid();<br>        &#125;<br>        <span class="hljs-keyword">if</span> (logStream == <span class="hljs-literal">null</span>) &#123;<br>            LOG.info(<span class="hljs-string">&quot;Creating new log file: &#123;&#125;&quot;</span>, Util.makeLogName(hdr.getZxid()));<br><br>            logFileWrite = <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(logDir, Util.makeLogName(hdr.getZxid()));<br>            fos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileOutputStream</span>(logFileWrite);<br>            logStream = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedOutputStream</span>(fos);<br>            oa = BinaryOutputArchive.getArchive(logStream);<br>            <span class="hljs-type">FileHeader</span> <span class="hljs-variable">fhdr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileHeader</span>(TXNLOG_MAGIC, VERSION, dbId);<br>            fhdr.serialize(oa, <span class="hljs-string">&quot;fileheader&quot;</span>);<br>            <span class="hljs-comment">// Make sure that the magic number is written before padding.</span><br>            logStream.flush();<br>            filePadding.setCurrentSize(fos.getChannel().position());<br>            streamsToFlush.add(fos);<br>        &#125;<br>        filePadding.padFile(fos.getChannel());<br>        <span class="hljs-type">byte</span>[] buf = Util.marshallTxnEntry(hdr, txn, digest);<br>        <span class="hljs-keyword">if</span> (buf == <span class="hljs-literal">null</span> || buf.length == <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IOException</span>(<span class="hljs-string">&quot;Faulty serialization for header &quot;</span> + <span class="hljs-string">&quot;and txn&quot;</span>);<br>        &#125;<br>        <span class="hljs-type">Checksum</span> <span class="hljs-variable">crc</span> <span class="hljs-operator">=</span> makeChecksumAlgorithm();<br>        crc.update(buf, <span class="hljs-number">0</span>, buf.length);<br>        oa.writeLong(crc.getValue(), <span class="hljs-string">&quot;txnEntryCRC&quot;</span>);<br>        Util.writeTxnBytes(oa, buf);<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>从对事务日志的底底层代码分析中可以看出，在 datadir
+配置参数路径下存放着 ZooKeeper
+服务器所有的事务日志，所有事务日志的命名方法都是“log.+ 该条事务会话的
+zxid”。</p>
+</blockquote>
+<h1 id="数据快照">3.数据快照</h1>
+<p>说到快照，可能很多技术人员都不陌生。一个快照可以看作是当前系统或软件服务运行状态和数据的副本。在
+ZooKeeper
+中，数据快照的作用是将内存数据结构存储到本地磁盘中。因此，从设计的角度说，数据快照与内存数据的逻辑结构一样，都使用
+DataTree 结构。在 ZooKeeper
+服务运行的过程中，数据快照每间隔一段时间，就会把 ZooKeeper
+内存中的数据存储到磁盘中，快照文件是间隔一段时间后对内存数据的备份。</p>
+<p>因此，与内存数据相比，快照文件的数据具有滞后性。而与上面介绍的事务日志文件一样，在创建数据快照文件时，也是使用
+zxid 作为文件名称。</p>
+<p>在代码层面，ZooKeeper 通过 FileTxnSnapLog
+类来实现数据快照的相关功能。如下图所示，在FileTxnSnapLog
+类的内部，最核心的方法是 save 方法，在 save
+方法的内部，首先会创建数据快照文件，之后调用 FileSnap
+类对<code>内存数据进行序列化，并写入到快照文件中</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(DataTree dataTree,</span><br><span class="hljs-params"></span><br><span class="hljs-params">                 ConcurrentHashMap&lt;Long, Integer&gt; sessionsWithTimeouts,</span><br><span class="hljs-params"></span><br><span class="hljs-params">                 <span class="hljs-type">boolean</span> syncSnap)</span><br><br>    <span class="hljs-keyword">throws</span> IOException &#123;<br><br>    <span class="hljs-type">long</span> <span class="hljs-variable">lastZxid</span> <span class="hljs-operator">=</span> dataTree.lastProcessedZxid;<br><br>    <span class="hljs-type">File</span> <span class="hljs-variable">snapshotFile</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(snapDir, Util.makeSnapshotName(lastZxid));<br><br>    LOG.info(<span class="hljs-string">&quot;Snapshotting: 0x&#123;&#125; to &#123;&#125;&quot;</span>, Long.toHexString(lastZxid),<br><br>            snapshotFile);<br><br>    snapLog.serialize(dataTree, sessionsWithTimeouts, snapshotFile, syncSnap);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="总结">4.总结</h1>
+<p>我们知道在 ZooKeeper
+服务的运行过程中，<strong>会涉及内存数据</strong>、<strong>事务日志</strong>、<strong>数据快照这三种数据文件</strong>。从存储位置上来说，事务日志和数据快照一样，都存储在本地磁盘上；而从业务角度来讲，内存数据就是我们创建数据节点、添加监控等请求时直接操作的数据。事务日志数据主要用于记录本地事务性会话操作，用于
+ZooKeeper
+集群服务器之间的数据同步。事务快照则是将内存数据持久化到本地磁盘。</p>
+<p>这里要注意的一点是，<strong>数据快照是每间隔一段时间才把内存数据存储到本地磁盘，因此数据并不会一直与内存数据保持一致</strong>。在单台
+ZooKeeper
+服务器运行过程中因为异常而关闭时，可能会出现数据丢失等情况。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A1%86%E6%9E%B6/" class="category-chain-item">框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Zookeeper/" class="print-no-link">#Zookeeper</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Zookeeper服务数据与文件</div>
+      <div>https://nanchengjiumeng123.top/2022/09/20/framework/zookeeper/2022-09-20_Zookeeper服务数据与文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yang Xin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/24/framework/zookeeper/2022-09-24_%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7-ZAB%E5%8D%8F%E8%AE%AE/" title="分布式数据的一致性-ZAB协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">分布式数据的一致性-ZAB协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/19/framework/zookeeper/2022-09-19_Zookeeper-Watch%20%E6%9C%BA%E5%88%B6/" title="Zookeeper-Watch 机制">
+                        <span class="hidden-mobile">Zookeeper-Watch 机制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>Blog</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>
