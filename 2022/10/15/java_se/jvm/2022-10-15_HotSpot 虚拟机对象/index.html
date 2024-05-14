@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yang Xin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HotSpot 虚拟机对象 Java是一门面向对象的编程语言，Java程序运行过程中无时无刻都有对象被创建出来。在语言层面上，创建对象通常（例外：复制、反序列化）仅仅是一个new关键字而已，而在虚拟机中，对象（文中讨论的对象限于普通Java对象，不包括数组和Class对象等）的创建又是怎样一个过程呢？ 1.对象的内存布局 HotSpot虚拟机中，对象在内存中存储的布局可以分为三块区域：  对象头（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HotSpot虚拟机对象">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/10/15/java_se/jvm/2022-10-15_HotSpot%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="nanchengjiumeng123.top">
+<meta property="og:description" content="HotSpot 虚拟机对象 Java是一门面向对象的编程语言，Java程序运行过程中无时无刻都有对象被创建出来。在语言层面上，创建对象通常（例外：复制、反序列化）仅仅是一个new关键字而已，而在虚拟机中，对象（文中讨论的对象限于普通Java对象，不包括数组和Class对象等）的创建又是怎样一个过程呢？ 1.对象的内存布局 HotSpot虚拟机中，对象在内存中存储的布局可以分为三块区域：  对象头（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/mmexport1650522727672.jpg">
+<meta property="article:published_time" content="2022-10-15T02:15:33.000Z">
+<meta property="article:modified_time" content="2024-05-14T04:43:31.291Z">
+<meta property="article:author" content="Yang Xin">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/mmexport1650522727672.jpg">
+  
+  
+  
+  <title>HotSpot虚拟机对象 - nanchengjiumeng123.top</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"nanchengjiumeng123.top","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wangwang&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/mmexport1650522727672.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HotSpot虚拟机对象"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-15 10:15" pubdate>
+          2022年10月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">HotSpot虚拟机对象</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="hotspot-虚拟机对象">HotSpot 虚拟机对象</h1>
+<p>Java是一门面向对象的编程语言，Java程序运行过程中无时无刻都有对象被创建出来。在语言层面上，创建对象通常（例外：复制、反序列化）仅仅是一个new关键字而已，而在虚拟机中，对象（文中讨论的对象限于普通Java对象，不包括数组和Class对象等）的创建又是怎样一个过程呢？</p>
+<h1 id="对象的内存布局">1.对象的内存布局</h1>
+<p>HotSpot虚拟机中，对象在内存中存储的布局可以分为三块区域：</p>
+<ul>
+<li><p>对象头（Header）</p></li>
+<li><p>实例数据（Instance Data）</p></li>
+<li><p>对齐填充（Padding）</p></li>
+</ul>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/20200327202511486.png" srcset="/img/loading.gif" lazyload
+alt="20200327202511486" />
+<figcaption aria-hidden="true">20200327202511486</figcaption>
+</figure>
+<h1 id="jvm64位对象头内部组成">2.JVM（64位）对象头内部组成</h1>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/20220714100718.png" srcset="/img/loading.gif" lazyload
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>下图可以更清晰的看到对象头的内部组成：</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230514230417171.png" srcset="/img/loading.gif" lazyload
+alt="image-20230514230417171" />
+<figcaption aria-hidden="true">image-20230514230417171</figcaption>
+</figure>
+<p>2.偏向锁、轻量级锁和重量级锁在对象头中的标识：</p>
+<ul>
+<li><p>2bit的锁标志位表示锁的状态</p></li>
+<li><p>1bit的偏向锁标志位表示是否偏向</p></li>
+</ul>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230514230620592.png" srcset="/img/loading.gif" lazyload
+alt="image-20230514230620592" />
+<figcaption aria-hidden="true">image-20230514230620592</figcaption>
+</figure>
+<p>1.无锁状态</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230514230622428.png" srcset="/img/loading.gif" lazyload
+alt="image-20230514230622428" />
+<figcaption aria-hidden="true">image-20230514230622428</figcaption>
+</figure>
+<p>2.偏向锁状态</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230514230623956.png" srcset="/img/loading.gif" lazyload
+alt="image-20230514230623956" />
+<figcaption aria-hidden="true">image-20230514230623956</figcaption>
+</figure>
+<h1 id="对象的创建过程">3.对象的创建过程</h1>
+<h2 id="类加载检查">3.1 类加载检查</h2>
+<p>虚拟机在解析<code>.class</code>文件时，若遇到一条 new
+指令，首先它会去检查常量池中是否有这个类的符号引用，并且检查这个符号引用所代表的类是否已被加载、解析和初始化过。如果没有，那么必须先执行相应的类加载过程。</p>
+<h2 id="为新生对象分配内存">3.2 为新生对象分配内存</h2>
+<p>对象所需内存的大小在类加载完成后便可完全确定，接下来从堆中划分一块对应大小的内存空间给新的对象。分配堆中内存有两种方式：</p>
+<ul>
+<li><strong>指针碰撞</strong> 如果 Java
+<strong>堆中内存绝对规整</strong>（说明采用的是“<strong>复制算法</strong>”或“<strong>标记整理法</strong>”），空闲内存和已使用内存中间放着一个指针作为分界点指示器，那么分配内存时只需要把指针向空闲内存挪动一段与对象大小一样的距离，这种分配方式称为“<strong>指针碰撞</strong>”。</li>
+<li><strong>空闲列表</strong> 如果 Java
+<strong>堆中内存并不规整</strong>，已使用的内存和空闲内存交错（说明采用的是<strong>标记-清除法</strong>，有碎片），此时没法简单进行指针碰撞，
+VM
+必须维护一个列表，记录其中哪些内存块空闲可用。分配之时从空闲列表中找到一块足够大的内存空间划分给对象实例。这种方式称为“<strong>空闲列表</strong>”。</li>
+</ul>
+<h2 id="初始化">3.3 初始化</h2>
+<p>分配完内存后，为对象中的成员变量赋上初始值，设置对象头信息，调用对象的构造函数方法进行初始化。</p>
+<h1 id="对象的访问方式">4.对象的访问方式</h1>
+<p>所有对象的存储空间都是在堆中分配的，但是这个对象的引用却是在堆栈中分配的。也就是说在建立一个对象时两个地方都分配内存，在堆中分配的内存实际建立这个对象，而在堆栈中分配的内存只是一个指向这个堆对象的指针（引用）而已。
+那么根据引用存放的地址类型的不同，对象有不同的访问方式。</p>
+<h2 id="句柄访问方式">4.1 句柄访问方式</h2>
+<p>堆中需要有一块叫做“句柄池”的内存空间，句柄中包含了对象实例数据与类型数据各自的具体地址信息。</p>
+<p>引用类型的变量存放的是该对象的句柄地址（reference）。访问对象时，首先需要通过引用类型的变量找到该对象的句柄，然后根据句柄中对象的地址找到对象。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/handle-access.jpg" srcset="/img/loading.gif" lazyload
+alt="handle-access" />
+<figcaption aria-hidden="true">handle-access</figcaption>
+</figure>
+<h2 id="直接指针访问方式">4.2 直接指针访问方式</h2>
+<p>引用类型的变量直接存放对象的地址，从而不需要句柄池，通过引用能够直接访问对象。但对象所在的内存空间需要额外的策略存储对象所属的类信息的地址。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/direct-pointer.jpg" srcset="/img/loading.gif" lazyload
+alt="direct-pointer" />
+<figcaption aria-hidden="true">direct-pointer</figcaption>
+</figure>
+<p>需要说明的是，HotSpot
+采用第二种方式，即直接指针方式来访问对象，只需要一次寻址操作，所以在性能上比句柄访问方式快一倍。但像上面所说，它需要<strong>额外的策略</strong>来存储对象在方法区中类信息的地址。</p>
+<h1 id="classlayoudemo">5.ClassLayouDemo</h1>
+<h2 id="maven引入依赖">5.1 maven引入依赖</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--classLayout:帮助打印对象的布局--&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.openjdk.jol<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jol-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.9<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="classlayoudemo.class">5.2 ClassLayouDemo.class</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassLayoutDemo</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">//构建了一个对象实例</span><br>        <span class="hljs-type">ClassLayoutDemo</span> <span class="hljs-variable">classLayoutDemo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassLayoutDemo</span>();<br>        System.out.println(ClassLayout.parseInstance(classLayoutDemo).toPrintable());<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h2 id="out">5.3 out</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">com.xxx.xxx.example.ClassLayoutDemo object internals:<br> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE<br>      //Mark Word<br>      0     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)<br>      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)<br>      //Klass Pointer<br>      8     4        (object header)                           05 c1 00 f8 (00000101 11000001 00000000 11111000) (-134168315)<br>     12     4        (loss due to the next object alignment)<br>Instance size: 16 bytes<br>Space losses: 0 bytes internal + 4 bytes external = 4 bytes total<br></code></pre></td></tr></table></figure>
+<p>一共是16个字节，其中对象头是12个字节，还有4个对齐字节（因为64位虚拟机规定：对象的大小必须是8的倍数），由于这个对象里没有任何属性和方法，所以对象的实例数据为0个字节,如果添加一个boolean字段.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">com.xxx.xxx.example.ClassLayoutDemo object internals:<br> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE<br>      //Mark Word<br>      0     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)<br>      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)<br>      //Klass Pointer<br>      8     4        (object header)                           05 c1 00 f8 (00000101 11000001 00000000 11111000) (-134168315)<br>     12     1 boolean ClassLayoutDemo.happy<br>     13     3        (loss due to the next object alignment)<br>Instance size: 16 bytes<br>Space losses: 0 bytes internal + 4 bytes external = 4 bytes total<br></code></pre></td></tr></table></figure>
+<p>从上面的输出来看，我们很容易发现，整个对象的大小没有改变，依然是16个字节，其中对象头12个字节，boolean字段
+happy
+占1个字节，剩下的3个Byte是对齐字节。由此我们可以发现一个对象的布局可以粗略的分为3个部分：对象头（Object
+Header），对象的实例数据（Instance Data）和
+对齐字节（Padding）,也叫对齐填充。</p>
+<h2 id="指针压缩">5.4 指针压缩</h2>
+<p>JVM最初是32位的，随着64位系统的兴起，JVM也迎来了从32位到64位的转换，32位的JVM对比64位的内存容量比较有限。但是使用64位虚拟机的同时，带来一个问题，64位下的JVM中的对象指针占用内存会比32位的多1.5倍（<strong>这是因为对象指针在64位架构下，长度会翻倍（更宽的寻址），对于那些将要从32位平台移植到64位的应用来说，平白无辜多了1/2的内存占用</strong>），这是我们不希望看到的。于是在JDK1.6时，引入了指针压缩。</p>
+<p>jvm参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">-XX:+UseCompressedClassPointers     参数：**启用类指针(类元数据的指针)压缩。<br>-XX:+UseCompressedOops             参数：**启用普通对象指针压缩。Oops缩写于：ordinary object pointers<br></code></pre></td></tr></table></figure>
+<p>在Jdk1.8中默认开启，可用命令进行检测：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-XX:+PrintCommandLineFlags -version        <br></code></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">wangwang@localhost ~ % java -XX:+PrintCommandLineFlags -version<br>-XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC <br>java version <span class="hljs-string">&quot;1.8.0_261&quot;</span><br>Java(TM) SE Runtime Environment (build 1.8.0_261-b12)<br>Java HotSpot(TM) 64-Bit Server VM (build 25.261-b12, mixed mode)<br>wangwang@localhost ~ % <br><br>参数中的+号代表开启参数，-号代表关闭参数。<br></code></pre></td></tr></table></figure>
+<h3 id="测试">5.4.1 测试</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassLayoutDemo</span> &#123;<br><span class="hljs-comment">//    -XX:-UseCompressedClassPointers -XX:-UseCompressedOops -XX:+PrintCommandLineFlags</span><br>    <span class="hljs-type">char</span> <span class="hljs-variable">ch</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;c&#x27;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">//构建了一个对象实例</span><br>        <span class="hljs-type">ClassLayoutDemo</span> <span class="hljs-variable">classLayoutDemo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassLayoutDemo</span>();<br>        System.out.println(<span class="hljs-string">&quot;-----------------&quot;</span>);<br>        System.out.println(ClassLayout.parseInstance(classLayoutDemo).toPrintable());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>开启指针压缩（默认）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">om.gupao.gupaoedu.example.ClassLayoutDemo object internals:<br> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE<br>      0     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)<br>      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)<br>      8     4        (object header)                           05 c1 00 f8 (00000101 11000001 00000000 11111000) (-134168315)<br>     12     2   char ClassLayoutDemo.ch                        c<br>     14     2        (loss due to the next object alignment)<br>Instance size: 16 bytes<br>Space losses: 0 bytes internal + 2 bytes external = 2 bytes total<br></code></pre></td></tr></table></figure>
+<p>​</p>
+<p><strong>未开启指针压缩</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">com.gupao.gupaoedu.example.ClassLayoutDemo object internals:<br> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE<br>      0     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)<br>      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)<br>      8     4        (object header)                           80 c0 35 10 (10000000 11000000 00110101 00010000) (271958144)<br>     12     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)<br>     16     2   char ClassLayoutDemo.ch                        c<br>     18     6        (loss due to the next object alignment)<br>Instance size: 24 bytes<br>Space losses: 0 bytes internal + 6 bytes external = 6 bytes total<br></code></pre></td></tr></table></figure>
+<h1 id="总结">总结</h1>
+<p>当Java虚拟机遇到一条字节码new指令时，首先将去检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如果没有，那必须先执行相应的类加载过程。</p>
+<p>在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需内存的大小在类加载完成后便可完全确定<strong>（如何确定将在2.3.2节中介绍）</strong>，为对象分配空间的任务实际上便等同于把一块确定大小的内存块从Java堆中划分出来。假设Java堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞”（Bump
+The
+Pointer）。但如果Java堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为“空闲列表”（Free
+List）。选择哪种分配方式由Java堆是否规整决定，而Java堆是否规整又由所采用的垃圾收集器是否带有空间压缩整理（Compact）的能力决定。因此，当使用Serial、ParNew等带压缩整理过程的收集器时，系统采用的分配算法是指针碰撞，既简单又高效；而当使用CMS这种基于清除（Sweep）算法的收集器时，理论上[1]就只能采用较为复杂的空闲列表来分配内存。</p>
+<p>对象创建在虚拟机中是非常频繁的行为，即使仅仅修改一个指针所指向的位置，在并发情况下也并不是线程安全的，可能出现正在给对象A分配内存，指针还没来得及修改，对象B又同时使用了原来的指针来分配内存的情况。解决这个问题有两种可选方案：一种是对分配内存空间的动作进行同步处理——实际上虚拟机是采用CAS配上失败重试的方式保证更新操作的原子性；另外一种是把内存分配的动作按照线程划分在不同的空间之中进行，即每个线程在Java堆中预先分配一小块内存，称为本地线程分配缓冲（Thread
+Local
+AllocationBuffer，TLAB），哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定。虚拟机是否使用TLAB，可以通过-XX：+/-UseTLAB参数来设定。</p>
+<hr />
+<p><strong>博客说明</strong></p>
+<blockquote>
+<p>文章所涉及的资料来自互联网整理和个人总结，意在于个人学习和经验汇总，不用于任何的商业用途。如有侵权，请联系本人删除。谢谢！</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java-SE/" class="category-chain-item">Java-SE</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JVM/" class="print-no-link">#JVM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HotSpot虚拟机对象</div>
+      <div>https://nanchengjiumeng123.top/2022/10/15/java_se/jvm/2022-10-15_HotSpot 虚拟机对象/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yang Xin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/15/java_se/jvm/2022-10-10_JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F/" title="JVM运行时数据区域">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM运行时数据区域</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/14/java_se/jvm/2022-10-14_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" title="类加载机制">
+                        <span class="hidden-mobile">类加载机制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>Blog</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>
