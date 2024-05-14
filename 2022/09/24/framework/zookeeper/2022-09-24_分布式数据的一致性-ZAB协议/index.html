@@ -16,12 +16,12 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。 Leader 的协调过程 在分布式">
+    <meta name="description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。  Leader 的协调过程 在分布">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式数据的一致性-ZAB协议">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/09/24/framework/zookeeper/2022-09-24_%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7-ZAB%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。 Leader 的协调过程 在分布式">
+<meta property="og:description" content="我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。 可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。  Leader 的协调过程 在分布">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1664532022073.jpg">
 <meta property="article:published_time" content="2022-09-24T02:01:33.000Z">
@@ -223,7 +223,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.7k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -277,86 +277,38 @@
             
               <div class="markdown-body">
                 
-                <p>我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower
-服务器以及 Observer 服务器。</p>
-<p>可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper
-主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader
-服务器。今天我们主要先介绍第一个工作，ZooKeeper
-集群中的数据同步问题。</p>
-<h3 id="leader-的协调过程">Leader 的协调过程</h3>
-<p>在分布式系统中有一个著名的 CAP
-定理，是说一个分布式系统不能同时满足一致性、可用性，以及分区容错性。今天我们要讲的就是一致性。其实
-ZooKeeper
-中实现的一致性也不是强一致性，即集群中各个服务器上的数据每时每刻都是保持一致的特性。在
-ZooKeeper
-中，采用的是最终一致的特性，<strong>即经过一段时间后，ZooKeeper
-集群服务器上的数据最终保持一致的特性</strong>。</p>
-<p>在 ZooKeeper 集群中，Leader
-服务器主要负责处理事物性的请求，而在接收到一个客户端的事务性请求操作时，Leader
-服务器会先向集群中的各个机器针对该条会话发起投票询问。</p>
-<p><strong>什么情况下会对 ZooKeeper
-集群服务产生不一致的情况？</strong></p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230509160259683.png" srcset="/img/loading.gif" lazyload
-alt="image-20230509160259683" />
-<figcaption aria-hidden="true">image-20230509160259683</figcaption>
-</figure>
-<p>在集群初始化启动的时候，首先要同步集群中各个服务器上的数据。而在集群中
-Leader 服务器崩溃时，需要选举出新的 Leader
-而在这一过程中会导致各个服务器上数据的不一致，所以当选举出新的 Leader
-服务器后需要进行数据的同步操作。</p>
-<h1 id="zab协议">1.ZAB协议</h1>
-<p>ZooKeeper
-最核心的作用就是保证分布式系统的数据一致性，而无论是处理来自客户端的会话请求时，还是集群
-Leader
-节点发生重新选举时，都会产生数据不一致的情况。为了解决这个问题，ZooKeeper
-采用了 ZAB 协议算法。</p>
-<p><strong>ZAB 协议算法</strong>（Zookeeper Atomic Broadcast ，Zookeeper
-原子广播协议）是 ZooKeeper
-专门设计用来解决集群最终一致性问题的算法，它的两个核心功能点是<strong>崩溃恢复</strong>和<strong>原子广播协议</strong>。</p>
-<p>在整个 ZAB 协议的底层实现中，ZooKeeper
-集群主要采用<strong>主从模式</strong>的系统架构方式来保证 ZooKeeper
-集群系统的一致性。<strong>实现了一种主备模式的系统架构保持集群中各副本之间数据的一致性，主备模式保证了同一时刻集群汇总只能够有一个主进程来广播服务器的状态变更，因此可以很好的处理客户端大量的并发请求.</strong></p>
+                <p>我们知道在 ZooKeeper 集群中，服务器分为 Leader 服务器、 Follower 服务器以及 Observer 服务器。</p>
+<p>可以这样认为，Leader 选举是一个过程，在这个过程中 ZooKeeper 主要做了两个重要工作，一个是数据同步，另一个是选举出新的 Leader 服务器。今天我们主要先介绍第一个工作，ZooKeeper 集群中的数据同步问题。</p>
+<h3 id="leader-的协调过程"><a class="markdownIt-Anchor" href="#leader-的协调过程"></a> Leader 的协调过程</h3>
+<p>在分布式系统中有一个著名的 CAP 定理，是说一个分布式系统不能同时满足一致性、可用性，以及分区容错性。今天我们要讲的就是一致性。其实 ZooKeeper 中实现的一致性也不是强一致性，即集群中各个服务器上的数据每时每刻都是保持一致的特性。在 ZooKeeper 中，采用的是最终一致的特性，<strong>即经过一段时间后，ZooKeeper 集群服务器上的数据最终保持一致的特性</strong>。</p>
+<p>在 ZooKeeper 集群中，Leader 服务器主要负责处理事物性的请求，而在接收到一个客户端的事务性请求操作时，Leader 服务器会先向集群中的各个机器针对该条会话发起投票询问。</p>
+<p><strong>什么情况下会对 ZooKeeper 集群服务产生不一致的情况？</strong></p>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230509160259683.png" srcset="/img/loading.gif" lazyload alt="image-20230509160259683" /></p>
+<p>在集群初始化启动的时候，首先要同步集群中各个服务器上的数据。而在集群中 Leader 服务器崩溃时，需要选举出新的 Leader 而在这一过程中会导致各个服务器上数据的不一致，所以当选举出新的 Leader 服务器后需要进行数据的同步操作。</p>
+<h1 id="1zab协议"><a class="markdownIt-Anchor" href="#1zab协议"></a> 1.ZAB协议</h1>
+<p>ZooKeeper 最核心的作用就是保证分布式系统的数据一致性，而无论是处理来自客户端的会话请求时，还是集群 Leader 节点发生重新选举时，都会产生数据不一致的情况。为了解决这个问题，ZooKeeper 采用了 ZAB 协议算法。</p>
+<p><strong>ZAB 协议算法</strong>（Zookeeper Atomic Broadcast ，Zookeeper 原子广播协议）是 ZooKeeper 专门设计用来解决集群最终一致性问题的算法，它的两个核心功能点是<strong>崩溃恢复</strong>和<strong>原子广播协议</strong>。</p>
+<p>在整个 ZAB 协议的底层实现中，ZooKeeper 集群主要采用<strong>主从模式</strong>的系统架构方式来保证 ZooKeeper 集群系统的一致性。<strong>实现了一种主备模式的系统架构保持集群中各副本之间数据的一致性，主备模式保证了同一时刻集群汇总只能够有一个主进程来广播服务器的状态变更，因此可以很好的处理客户端大量的并发请求.</strong></p>
 <blockquote>
 <p>ZAB协议的核心是定义了<strong>对于那些会改变Zookeeper服务器数据状态的事务请求的处理方式</strong>。</p>
 </blockquote>
 <p>整个实现过程如下图所示，当接收到来自客户端的事务性会话请求后，系统集群采用主服务器来处理该条会话请求，经过主服务器处理的结果会通过网络发送给集群中其他从节点服务器进行数据同步操作。</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230306175503379.png" srcset="/img/loading.gif" lazyload
-alt="image-20230306175503379" />
-<figcaption aria-hidden="true">image-20230306175503379</figcaption>
-</figure>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20230306175503379.png" srcset="/img/loading.gif" lazyload alt="image-20230306175503379" /></p>
 <p>思想如下：</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20220729222815112.png" srcset="/img/loading.gif" lazyload
-alt="image-20220729222815112" />
-<figcaption aria-hidden="true">image-20220729222815112</figcaption>
-</figure>
-<p>以 ZooKeeper 集群为例，这个操作过程可以概括为：当 ZooKeeper
-集群接收到来自客户端的事务性的会话请求后，集群中的其他 Follow
-角色服务器会将该请求转发给 Leader 角色服务器进行处理。当 Leader
-节点服务器在处理完该条会话请求后。</p>
-<p><strong><em>Leader服务器负责将一个客户端事务请求转化成一个事务Proposal
-(提议)
-，并将该Proposal分发给集群中所有的Follower服务器，之后Leader服务器需要等待所有Follower服务器的反馈，一旦超过半数的Follower服务器进行了正确的反馈后，那么Leader就会再次向所有的Follower服务器分发Commit消息，要求其将前一个Proposal进行提交，最终完成整个
-ZooKeeper 集群对客户端会话的处理工作。</em></strong></p>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/image-20220729222815112.png" srcset="/img/loading.gif" lazyload alt="image-20220729222815112" /></p>
+<p>以 ZooKeeper 集群为例，这个操作过程可以概括为：当 ZooKeeper 集群接收到来自客户端的事务性的会话请求后，集群中的其他 Follow 角色服务器会将该请求转发给 Leader 角色服务器进行处理。当 Leader 节点服务器在处理完该条会话请求后。</p>
+<p><em><strong>Leader服务器负责将一个客户端事务请求转化成一个事务Proposal (提议) ，并将该Proposal分发给集群中所有的Follower服务器，之后Leader服务器需要等待所有Follower服务器的反馈，一旦超过半数的Follower服务器进行了正确的反馈后，那么Leader就会再次向所有的Follower服务器分发Commit消息，要求其将前一个Proposal进行提交，最终完成整个 ZooKeeper 集群对客户端会话的处理工作。</strong></em></p>
 <blockquote>
 <p>所有事务请求必须由一个<strong>全局唯一的服务器</strong>来协调处理，这样的服务器被称为<code>Leader服务器</code>，余下的服务器则称为<code>Follower服务器</code>，</p>
 </blockquote>
-<h1 id="zab协议两种基本模式">2.ZAB协议两种基本模式</h1>
+<h1 id="2zab协议两种基本模式"><a class="markdownIt-Anchor" href="#2zab协议两种基本模式"></a> 2.ZAB协议两种基本模式</h1>
 <p>ZAB协议包括两种基本模式：<code>崩溃恢复模式</code>和<code>消息广播模式</code>。</p>
-<h2 id="崩溃恢复模式">2.1 <strong>崩溃恢复模式</strong></h2>
-<p>当整个服务框架启动过程中,或者是Leader服务器出现<strong>网络中断</strong>、<strong>崩溃退出</strong>或<strong>重启</strong>等异常情况时,
-ZAB协议就会进入<code>崩溃恢复模式</code>,同时选举产生新的Leader服务器。当选举产生了新的Leader服务器,同时集群中已经有过半的机器与该Leader服务器完成了状态同步之后,
-ZAB协议就会<code>退出恢复模式</code>,其中,所谓的状态同步就是指数据同步,用来<strong>保证集群中过半的机器能够和Leader服务器的数据状态保持一致。</strong></p>
-<h2 id="消息广播模式">2.2 <strong>消息广播模式</strong></h2>
-<p>当集群中已经有<strong>过半的Follower服务器完成了和Leader服务器的状态同步</strong>,那么整个服务框架就可以进入消息广播模式,当一台同样遵守ZAB协议的服务器启动后加入到集群中,如果此时集群中已经存在一个Leader服务器在负责进行消息广播,那么加入的服务器就会自觉地进入数据恢复模式:找到Leader所在的服务器,并与其进行数据同步,然后一起参与到消息广播流程中去。<code>Zookeeper只允许唯一的一个Leader服务器来进行事务请求的处理</code>,
-Leader服务器在接收到客户端的事务请求后,会生成对应的事务提议并发起一轮广播协议,而如果集群中的其他机器收到客户端的事务请求后,那么这些非Leader服务器会首先将这个事务请求转发给Leader服务器。</p>
+<h2 id="21-崩溃恢复模式"><a class="markdownIt-Anchor" href="#21-崩溃恢复模式"></a> 2.1 <strong>崩溃恢复模式</strong></h2>
+<p>当整个服务框架启动过程中,或者是Leader服务器出现<strong>网络中断</strong>、<strong>崩溃退出</strong>或<strong>重启</strong>等异常情况时, ZAB协议就会进入<code>崩溃恢复模式</code>,同时选举产生新的Leader服务器。当选举产生了新的Leader服务器,同时集群中已经有过半的机器与该Leader服务器完成了状态同步之后, ZAB协议就会<code>退出恢复模式</code>,其中,所谓的状态同步就是指数据同步,用来<strong>保证集群中过半的机器能够和Leader服务器的数据状态保持一致。</strong></p>
+<h2 id="22-消息广播模式"><a class="markdownIt-Anchor" href="#22-消息广播模式"></a> 2.2 <strong>消息广播模式</strong></h2>
+<p>当集群中已经有<strong>过半的Follower服务器完成了和Leader服务器的状态同步</strong>,那么整个服务框架就可以进入消息广播模式,当一台同样遵守ZAB协议的服务器启动后加入到集群中,如果此时集群中已经存在一个Leader服务器在负责进行消息广播,那么加入的服务器就会自觉地进入数据恢复模式:找到Leader所在的服务器,并与其进行数据同步,然后一起参与到消息广播流程中去。<code>Zookeeper只允许唯一的一个Leader服务器来进行事务请求的处理</code>, Leader服务器在接收到客户端的事务请求后,会生成对应的事务提议并发起一轮广播协议,而如果集群中的其他机器收到客户端的事务请求后,那么这些非Leader服务器会首先将这个事务请求转发给Leader服务器。</p>
 <p>当Leader服务器出现崩溃或者机器重启、集群中已经不存在过半的服务器与Leader服务器保持正常通信时，那么在重新开始新的一轮的原子广播事务操作之前，所有进程首先会使用崩溃恢复协议来使彼此到达一致状态，于是整个ZAB流程就会从<strong>消息广播模式进入到崩溃恢复模式</strong>。</p>
-<p>http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/29%20ZAB%20%E5%8D%8F%E8%AE%AE%E7%AE%97%E6%B3%95%EF%BC%9A%E5%B4%A9%E6%BA%83%E6%81%A2%E5%A4%8D%E5%92%8C%E6%B6%88%E6%81%AF%E5%B9%BF%E6%92%AD.md</p>
+<p><a target="_blank" rel="noopener" href="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/29%20ZAB%20%E5%8D%8F%E8%AE%AE%E7%AE%97%E6%B3%95%EF%BC%9A%E5%B4%A9%E6%BA%83%E6%81%A2%E5%A4%8D%E5%92%8C%E6%B6%88%E6%81%AF%E5%B9%BF%E6%92%AD.md">http://learn.lianglianglee.com/专栏/ZooKeeper源码分析与实战-完/29 ZAB 协议算法：崩溃恢复和消息广播.md</a></p>
 <hr />
 <p><strong>博客说明</strong></p>
 <blockquote>

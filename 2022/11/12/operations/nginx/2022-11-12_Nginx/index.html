@@ -16,12 +16,12 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.基本介绍  Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。 Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。 Nginx 特点是占有内存少，并发能力强。  事实上 nginx 的并发能力确实在同类型的网页服务器中表现较">
+    <meta name="description" content="1.基本介绍   Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。   Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。   Nginx 特点是占有内存少，并发能力强。   事实上 nginx 的并发能力确实在同类型的网页">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx介绍，安装">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/11/12/operations/nginx/2022-11-12_Nginx/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="1.基本介绍  Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。 Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。 Nginx 特点是占有内存少，并发能力强。  事实上 nginx 的并发能力确实在同类型的网页服务器中表现较">
+<meta property="og:description" content="1.基本介绍   Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务。   Nginx 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。   Nginx 特点是占有内存少，并发能力强。   事实上 nginx 的并发能力确实在同类型的网页">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/mmexport1664532469195.jpg">
 <meta property="article:published_time" content="2022-11-12T02:51:33.000Z">
@@ -223,7 +223,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.8k 字
+          2.7k 字
         
       </span>
     
@@ -277,133 +277,88 @@
             
               <div class="markdown-body">
                 
-                <h2 id="基本介绍">1.基本介绍</h2>
+                <h2 id="1基本介绍"><a class="markdownIt-Anchor" href="#1基本介绍"></a> 1.基本介绍</h2>
 <ul>
-<li><p><code>Nginx</code> 是一个高性能的 <code>HTTP</code> 和反向代理
-<code>web</code> 服务器，同时也提供了 <code>IMAP/POP3/SMTP</code>
-服务。</p></li>
-<li><p><code>Nginx</code> 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的
-<code>Rambler.ru</code> 站点开发的，第一个公开版本 <code>0.1.0</code>
-发布于 <code>2004</code> 年 <code>10</code> 月 <code>4</code>
-日。</p></li>
-<li><p><code>Nginx</code> 特点是占有内存少，并发能力强。</p></li>
+<li>
+<p><code>Nginx</code> 是一个高性能的 <code>HTTP</code> 和反向代理 <code>web</code> 服务器，同时也提供了 <code>IMAP/POP3/SMTP</code> 服务。</p>
+</li>
+<li>
+<p><code>Nginx</code> 是由伊戈尔·赛索耶夫为俄罗斯访问量第二的 <code>Rambler.ru</code> 站点开发的，第一个公开版本 <code>0.1.0</code> 发布于 <code>2004</code> 年 <code>10</code> 月 <code>4</code> 日。</p>
+</li>
+<li>
+<p><code>Nginx</code> 特点是占有内存少，并发能力强。</p>
+</li>
 </ul>
-<p>事实上 <code>nginx</code>
-的并发能力确实在同类型的网页服务器中表现较好，一般来说，如果我们在项目中引入了
-<code>Nginx</code> ，我们的项目架构可能是这样：</p>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/15-1.png" srcset="/img/loading.gif" lazyload
-alt="15-1" />
-<figcaption aria-hidden="true">15-1</figcaption>
-</figure>
-<p>在这样的架构中 ， <code>Nginx</code>
-所代表的角色叫做负载均衡服务器或者反向代理服务器，所有请求首先到达
-<code>Nginx</code> 上，再由 <code>Nginx</code>
-根据提前配置好的转发规则，将客户端发来的请求转发到某一个
-<code>Tomcat</code> 上去。</p>
+<p>事实上 <code>nginx</code> 的并发能力确实在同类型的网页服务器中表现较好，一般来说，如果我们在项目中引入了 <code>Nginx</code> ，我们的项目架构可能是这样：</p>
+<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/15-1.png" srcset="/img/loading.gif" lazyload alt="15-1" /></p>
+<p>在这样的架构中 ， <code>Nginx</code> 所代表的角色叫做负载均衡服务器或者反向代理服务器，所有请求首先到达 <code>Nginx</code> 上，再由 <code>Nginx</code> 根据提前配置好的转发规则，将客户端发来的请求转发到某一个 <code>Tomcat</code> 上去。</p>
 <blockquote>
-<p>Nginx 是一款轻量级的 HTTP
-服务器，采用事件驱动的异步非阻塞处理方式框架，这让其具有极好的 IO
-性能，时常用于服务端的<strong>反向代理</strong>和<strong>负载均衡</strong>。</p>
+<p>Nginx 是一款轻量级的 HTTP 服务器，采用事件驱动的异步非阻塞处理方式框架，这让其具有极好的 IO 性能，时常用于服务端的<strong>反向代理</strong>和<strong>负载均衡</strong>。</p>
 </blockquote>
 <p>那么这里涉及到两个概念：负载均衡服务器、反向代理服务器。</p>
-<h2 id="负载均衡服务器">2.负载均衡服务器</h2>
-<p>负载均衡（Load
-Balance）建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、加强网络数据处理能力、提高网络的灵活性和可用性。</p>
+<h2 id="2负载均衡服务器"><a class="markdownIt-Anchor" href="#2负载均衡服务器"></a> 2.负载均衡服务器</h2>
+<p>负载均衡（Load Balance）建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、加强网络数据处理能力、提高网络的灵活性和可用性。</p>
 <p>我们可以建立很多很多服务器，组成一个服务器集群，当用户访问网站时，先访问一个<strong>中间服务器</strong>，再让这个中间服务器在服务器集群中通过负载均衡算法选择一个服务器，然后将该访问请求引入该服务器。如此以来，用户的每次访问，都会保证服务器集群中的每个服务器压力趋于平衡，分担了服务器压力，避免了服务器崩溃的情况。</p>
-<p>负载均衡策略很多，也有很多层，对于一些大型网站基本上从
-<code>DNS</code>
-就开始负载均衡，负载均衡有硬件和软件之分，各自代表分别是 <code>F5</code>
-和 <code>Nginx</code> （目前 <code>Nginx</code> 已经被 <code>F5</code>
-收购），早些年，也可以使用 <code>Apache</code>
-来做负载均衡，但是效率不如 <code>Nginx</code> ，所以现在主流方案是
-<code>Nginx</code> 。</p>
-<h3 id="load-balancing-methods">2.1 Load Balancing Methods</h3>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/nginx-server.png" srcset="/img/loading.gif" lazyload
-alt="nginx-server" />
-<figcaption aria-hidden="true">nginx-server</figcaption>
-</figure>
-<p>开源Nginx 支持四种负载平衡方法，Nginx
-Plus还增加了两种方法。所以在Nginx
-上设置负载平衡时，有五种主要方法。前四个在开源Nginx 和Nginx
-Plus中都可用，而最后一个是Nginx Plus功能。</p>
+<p>负载均衡策略很多，也有很多层，对于一些大型网站基本上从 <code>DNS</code> 就开始负载均衡，负载均衡有硬件和软件之分，各自代表分别是 <code>F5</code> 和 <code>Nginx</code> （目前 <code>Nginx</code> 已经被 <code>F5</code> 收购），早些年，也可以使用 <code>Apache</code> 来做负载均衡，但是效率不如 <code>Nginx</code> ，所以现在主流方案是 <code>Nginx</code> 。</p>
+<h3 id="21-load-balancing-methods"><a class="markdownIt-Anchor" href="#21-load-balancing-methods"></a> 2.1 Load Balancing Methods</h3>
+<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/nginx-server.png" srcset="/img/loading.gif" lazyload alt="nginx-server" /></p>
+<p>开源Nginx 支持四种负载平衡方法，Nginx Plus还增加了两种方法。所以在Nginx 上设置负载平衡时，有五种主要方法。前四个在开源Nginx 和Nginx Plus中都可用，而最后一个是Nginx Plus功能。</p>
 <blockquote>
-<p><strong>Nginx Plus 相当于付费版本的
-Nginx</strong>。提供了更多的功能，针对企业需要的一些服务进行了优化。</p>
-<p>有关功能的比较页面，请参考： <a
-target="_blank" rel="noopener" href="https://www.nginx.com/products/nginx/compare-models">Compare
-Models - NGINX</a></p>
+<p><strong>Nginx Plus 相当于付费版本的 Nginx</strong>。提供了更多的功能，针对企业需要的一些服务进行了优化。</p>
+<p>有关功能的比较页面，请参考： <a target="_blank" rel="noopener" href="https://www.nginx.com/products/nginx/compare-models">Compare Models - NGINX</a></p>
 </blockquote>
-<h4 id="round-robin-optionally-weighted">2.1.1 Round Robin, optionally
-weighted</h4>
+<h4 id="211-round-robin-optionally-weighted"><a class="markdownIt-Anchor" href="#211-round-robin-optionally-weighted"></a> 2.1.1 Round Robin, optionally weighted</h4>
 <p>默认的load balancing方法。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">upstream</span> myapp &#123;<br>    <span class="hljs-attribute">server</span> webserver1.example.com;<br>    <span class="hljs-attribute">server</span> webserver2.example.com;<br>    <span class="hljs-attribute">server</span> webserver3.example.com;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>在请求过来时，按顺序分发请求，第一次来的server1上，第二次打到server2上，第三次打到server3上，第四次又回到server1上，1-2-3，1-2-3,
-... 的这样循环。</p>
+<p>在请求过来时，按顺序分发请求，第一次来的server1上，第二次打到server2上，第三次打到server3上，第四次又回到server1上，1-2-3，1-2-3, … 的这样循环。</p>
 <p>Round Robin也可以加权重，为每一个服务器指定权重。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">upstream</span> myapp &#123;<br>    <span class="hljs-attribute">server</span> webserver1.example.com weight = <span class="hljs-number">2</span>;<br>    <span class="hljs-attribute">server</span> webserver2.example.com weight = <span class="hljs-number">1</span>;<br>    <span class="hljs-attribute">server</span> webserver3.example.com weight = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这样配置后，请求会这样打：1-1-2-3，1-1-2-3, ...</p>
+<p>这样配置后，请求会这样打：1-1-2-3，1-1-2-3, …</p>
 <blockquote>
 <p>weight越大，负载的权重就越大，默认为1。</p>
 </blockquote>
-<h4 id="least-connected-optionally-weighted">2.1.2 Least Connected,
-optionally weighted</h4>
-<p>这种方法是每次来的请求都会打到当前连接数最少的upstream里的web
-server上，
-比如有3台server，server1，server2都有10个连接，3只有1个连接，如果在接下来的9个请求1和2的10个连接都没有断开，那么这9个请求都会被打到3上。</p>
+<h4 id="212-least-connected-optionally-weighted"><a class="markdownIt-Anchor" href="#212-least-connected-optionally-weighted"></a> 2.1.2 Least Connected, optionally weighted</h4>
+<p>这种方法是每次来的请求都会打到当前连接数最少的upstream里的web server上， 比如有3台server，server1，server2都有10个连接，3只有1个连接，如果在接下来的9个请求1和2的10个连接都没有断开，那么这9个请求都会被打到3上。</p>
 <p>例如有三个负载均衡的服务器，第一个进入的请求非常非常短。它的处理速度非常快——也许只需要10毫秒。下一个请求需要很长时间来处理。第三个也很短。第四个，也很短。第五个，很长。不知何故，这种情况一次又一次地发生，服务器2不断受到这些巨大请求的冲击。它们会持续很长时间，而发送到其他服务器的请求非常短。在这种情况下，循环往复是行不通的，因为随着越来越多的连接进入。接近能够处理的最大连接数，服务器处理每个请求的时间会越来越长。</p>
-<h4 id="ip-hash">2.1.3 IP Hash</h4>
-<p>IP
-Hash会将IP地址的前3个8位元相同的请求打到同一台机器上，来简单的保持回话。
-这种方法有个弊端是有些内网统一出口ip都会被打到同一台机器，不能有效的实现load-balancing。</p>
-<h4 id="generic-hash">2.1.4 Generic Hash</h4>
-<p>Generic
-Hash可以自定义请求的分发，可以根据IP地址和查询变量或者URL或者其他参数，
-当这些参数都和上次一样时就会将请求打到上次的那台机器</p>
-<h4 id="least-timenginx-plus-optionally-weighted">2.1.5 Least Time(Nginx
-Plus), optionally weighted</h4>
-<p>Least Time只能在Nginx Plus中用，和Least
-Connected类似，会将请求打到连接数最少并且响应速度最快（响应时间最短）的机器上。
-同时，它也可以像Round Robin一样使用权重。</p>
-<h4 id="如何选择该用哪种load-balancing方法">2.1.6
-如何选择该用哪种load-balancing方法</h4>
+<h4 id="213-ip-hash"><a class="markdownIt-Anchor" href="#213-ip-hash"></a> 2.1.3 IP Hash</h4>
+<p>IP Hash会将IP地址的前3个8位元相同的请求打到同一台机器上，来简单的保持回话。 这种方法有个弊端是有些内网统一出口ip都会被打到同一台机器，不能有效的实现load-balancing。</p>
+<h4 id="214-generic-hash"><a class="markdownIt-Anchor" href="#214-generic-hash"></a> 2.1.4 Generic Hash</h4>
+<p>Generic Hash可以自定义请求的分发，可以根据IP地址和查询变量或者URL或者其他参数， 当这些参数都和上次一样时就会将请求打到上次的那台机器</p>
+<h4 id="215-least-timenginx-plus-optionally-weighted"><a class="markdownIt-Anchor" href="#215-least-timenginx-plus-optionally-weighted"></a> 2.1.5 Least Time(Nginx Plus), optionally weighted</h4>
+<p>Least Time只能在Nginx Plus中用，和Least Connected类似，会将请求打到连接数最少并且响应速度最快（响应时间最短）的机器上。 同时，它也可以像Round Robin一样使用权重。</p>
+<h4 id="216-如何选择该用哪种load-balancing方法"><a class="markdownIt-Anchor" href="#216-如何选择该用哪种load-balancing方法"></a> 2.1.6 如何选择该用哪种load-balancing方法</h4>
 <ul>
-<li><p><strong>Round
-Robin</strong>适用于所有的server配置和位置（同一个机房）都一样，所有的请求都是短暂的请求。</p></li>
-<li><p><strong>Least
-Connected</strong>适用于所有的server配置和位置都一样，请求处理时间长度会变的会话。</p></li>
-<li><p><strong>IP
-Hash</strong>适用于需要简单的会话保持（根据客户IP地址的前3个八位元决定被用的服务器）。</p></li>
-<li><p><strong>Generic
-Hash</strong>适用于需要简单的会话保持（基于参数组合的哈希决定被用的服务器）。</p></li>
-<li><p><strong>Least
-Time</strong>适用于servers在不同的位置且拥有不同的配置，请求会话长度是可变的，可用于健康检查。</p></li>
+<li>
+<p><strong>Round Robin</strong>适用于所有的server配置和位置（同一个机房）都一样，所有的请求都是短暂的请求。</p>
+</li>
+<li>
+<p><strong>Least Connected</strong>适用于所有的server配置和位置都一样，请求处理时间长度会变的会话。</p>
+</li>
+<li>
+<p><strong>IP Hash</strong>适用于需要简单的会话保持（根据客户IP地址的前3个八位元决定被用的服务器）。</p>
+</li>
+<li>
+<p><strong>Generic Hash</strong>适用于需要简单的会话保持（基于参数组合的哈希决定被用的服务器）。</p>
+</li>
+<li>
+<p><strong>Least Time</strong>适用于servers在不同的位置且拥有不同的配置，请求会话长度是可变的，可用于健康检查。</p>
+</li>
 </ul>
-<h1 id="代理服务器">3.代理服务器</h1>
+<h1 id="3代理服务器"><a class="markdownIt-Anchor" href="#3代理服务器"></a> 3.代理服务器</h1>
 <p>Nginx作为一个反向代理服务器为我们服务，代理分为<strong>正向代理</strong>和<strong>反向代理</strong>。</p>
-<h3 id="正向代理">3.1 正向代理</h3>
-<p>正向代理，意思是一个位于客户端和原始服务器(origin
-server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端才能使用正向代理。</p>
-<p><img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124101743281.png" srcset="/img/loading.gif" lazyload /></p>
-<h3 id="反向代理">3.2 反向代理</h3>
+<h3 id="31-正向代理"><a class="markdownIt-Anchor" href="#31-正向代理"></a> 3.1 正向代理</h3>
+<p>正向代理，意思是一个位于客户端和原始服务器(origin server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端才能使用正向代理。</p>
+<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124101743281.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<h3 id="32-反向代理"><a class="markdownIt-Anchor" href="#32-反向代理"></a> 3.2 反向代理</h3>
 <p>反向<strong>代理服务器位于用户与目标服务器</strong>之间，但是对于用户而言，反向<strong>代理服务器就相当于目标服务器</strong>，即用户直接访问反向代理服务器就可以获得目标服务器的资源。同时，用户不需要知道目标服务器的地址，也无须在用户端作任何设定。反向代理服务器通常可用来作为Web加速，即使用反向代理作为Web服务器的前置机来降低网络和服务器的负载，提高访问效率。</p>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124102228743.png" srcset="/img/loading.gif" lazyload
-alt="image-20221124102228743" />
-<figcaption aria-hidden="true">image-20221124102228743</figcaption>
-</figure>
-<h4 id="为什么使用反向代理">为什么使用反向代理</h4>
+<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/operations/nginx/image-20221124102228743.png" srcset="/img/loading.gif" lazyload alt="image-20221124102228743" /></p>
+<h4 id="为什么使用反向代理"><a class="markdownIt-Anchor" href="#为什么使用反向代理"></a> 为什么使用反向代理</h4>
 <ul>
 <li>可以起到保护网站安全的作用，因为任何来自Internet的请求都必须先经过代理服务器。</li>
 <li>通过缓存静态资源，加速Web请求。</li>
 <li>实现负载均衡。顺便说下，目前市面上，主流的负载均衡方案，硬件设备有F5，软件方案有四层负载均衡的LVS，七层负载均衡的Nginx、Haproxy等。</li>
 </ul>
-<h1 id="mac安装nginx">4.Mac安装Nginx</h1>
+<h1 id="4mac安装nginx"><a class="markdownIt-Anchor" href="#4mac安装nginx"></a> 4.Mac安装Nginx</h1>
 <p>在安装前，需要以下应用程序作为支持。如果没有安装以下应用程序则需要安装。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/Homebrew">home brew</a></li>
@@ -418,12 +373,8 @@ alt="image-20221124102228743" />
 <p>成功打开nginx目录，也可以看到nginx.conf的配置文件（后面会用到这个配置文件）。但我们并没有找到nginx被安装到了哪里。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">open  /usr/local/Cellar/nginx  --nginx安装目录<br></code></pre></td></tr></table></figure>
 <p>浏览器输入<code>localhost:8080</code>，我们就能看到如下页面，即Nginx安装成功。</p>
-<figure>
-<img src="/Users/wangwang/Desktop/pic/image-20221125095746582.png" srcset="/img/loading.gif" lazyload
-alt="image-20221125095746582" />
-<figcaption aria-hidden="true">image-20221125095746582</figcaption>
-</figure>
-<h1 id="nginx相关命令">5.Nginx相关命令</h1>
+<p><img src="/Users/wangwang/Desktop/pic/image-20221125095746582.png" srcset="/img/loading.gif" lazyload alt="image-20221125095746582" /></p>
+<h1 id="5nginx相关命令"><a class="markdownIt-Anchor" href="#5nginx相关命令"></a> 5.Nginx相关命令</h1>
 <ul>
 <li>启动命令： nginx</li>
 <li>快速停止命令 nginx -s stop</li>
@@ -432,7 +383,7 @@ alt="image-20221125095746582" />
 <li>检查配置文件正确性：nginx -t</li>
 <li>查询nginx主进程号：ps -ef | grep nginx</li>
 </ul>
-<h1 id="nginx小试牛刀">6.Nginx小试牛刀</h1>
+<h1 id="6nginx小试牛刀"><a class="markdownIt-Anchor" href="#6nginx小试牛刀"></a> 6.Nginx小试牛刀</h1>
 <p>通过前面的简介，我们已经对Nginx有了一个初步的认知。现在我们通过Nginx反向代理来访问我们的服务。</p>
 <p>我们新建一个springboot工程，然后引入web依赖，在controller中写一个入口，来测试Nginx代理。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/hello&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DemoController</span> &#123;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;/getHello&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getHello</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world!&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -440,22 +391,17 @@ alt="image-20221125095746582" />
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">server.port</span> = <span class="hljs-string">8089</span><br></code></pre></td></tr></table></figure>
 <p>Nginx的配置都是在<code>nginx.conf</code>里，我们通过配置该文件来配置我们的代理。找到localtion位置。</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> / &#123;<br>          <span class="hljs-attribute">proxy_pass</span> http://127.0.0.1:8089;<br>       &#125;<br></code></pre></td></tr></table></figure>
-<p>只需要上面的代码，即可。然后启动Nginx。输入<code>http://localhost:8080/hello/getHello</code>，即可看到如下页面。浏览器不直接访问前台的
-8089(当然，访问nginx前提是你项目能正常访问)，而是访问nignx的8080，效果如下:</p>
-<figure>
-<img src="/Users/wangwang/Desktop/pic/image-20221125111159370.png" srcset="/img/loading.gif" lazyload
-alt="image-20221125111159370" />
-<figcaption aria-hidden="true">image-20221125111159370</figcaption>
-</figure>
+<p>只需要上面的代码，即可。然后启动Nginx。输入<code>http://localhost:8080/hello/getHello</code>，即可看到如下页面。浏览器不直接访问前台的 8089(当然，访问nginx前提是你项目能正常访问)，而是访问nignx的8080，效果如下:</p>
+<p><img src="/Users/wangwang/Desktop/pic/image-20221125111159370.png" srcset="/img/loading.gif" lazyload alt="image-20221125111159370" /></p>
 <p>项目配置的是8089，但是通过访问Nginx的8080端口，Nginx通过配置的路由拦截，通过我们配置的参数代理到8089端口，也就是访问了8089端口并返回了数据，用户在整个过程中是无感知的。这也说明了Nginx是通过反向代理来帮助我们去访问资源。</p>
 <blockquote>
 <p>Nginx 只是一个代理，自身并不提供服务。</p>
 </blockquote>
-<h1 id="nginx启动问题记录">7.Nginx启动问题记录</h1>
+<h1 id="7nginx启动问题记录"><a class="markdownIt-Anchor" href="#7nginx启动问题记录"></a> 7.Nginx启动问题记录</h1>
 <p>在运行Nginx的时候，遇到一个问题：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nginx启动或者重启失败，报错nginx: [error] open() <span class="hljs-string">&quot;/usr/local/etc/nginx/nginx.pid&quot;</span> failed (2: No such file or directory)<br></code></pre></td></tr></table></figure>
 <p>解决办法：</p>
-<ol type="1">
+<ol>
 <li>通过<code>open /usr/local/etc/nginx</code>打开<code>nginx.conf</code>的位置</li>
 <li>新建一个<code>logs</code>文件夹</li>
 <li>配置<code>nginx.conf</code>，更改pid，如下：</li>

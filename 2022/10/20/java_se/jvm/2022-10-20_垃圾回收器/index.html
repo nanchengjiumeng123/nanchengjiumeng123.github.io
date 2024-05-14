@@ -16,16 +16,16 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言 如果说收集算法是内存回收的方法论，那垃圾收集器就是内存回收的实践者。《Java虚拟机规范》中对垃圾收集器应该如何实现并没有做出任何规定，因此不同的厂商、不同版本的虚拟机所包含的垃圾收集器都可能会有很大差别，不同的虚拟机一般也都会提供各种参数供用户根据自己的应用特点和要求组合出各个内存分代所使用的收集器。各款经典收集器之间的关系如下图所示：   image-20230530225915334">
+    <meta name="description" content="前言 如果说收集算法是内存回收的方法论，那垃圾收集器就是内存回收的实践者。《Java虚拟机规范》中对垃圾收集器应该如何实现并没有做出任何规定，因此不同的厂商、不同版本的虚拟机所包含的垃圾收集器都可能会有很大差别，不同的虚拟机一般也都会提供各种参数供用户根据自己的应用特点和要求组合出各个内存分代所使用的收集器。各款经典收集器之间的关系如下图所示：   虽然垃圾收集器的技术在不断进步，但直到现在还没">
 <meta property="og:type" content="article">
 <meta property="og:title" content="垃圾回收器">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/10/20/java_se/jvm/2022-10-20_%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="前言 如果说收集算法是内存回收的方法论，那垃圾收集器就是内存回收的实践者。《Java虚拟机规范》中对垃圾收集器应该如何实现并没有做出任何规定，因此不同的厂商、不同版本的虚拟机所包含的垃圾收集器都可能会有很大差别，不同的虚拟机一般也都会提供各种参数供用户根据自己的应用特点和要求组合出各个内存分代所使用的收集器。各款经典收集器之间的关系如下图所示：   image-20230530225915334">
+<meta property="og:description" content="前言 如果说收集算法是内存回收的方法论，那垃圾收集器就是内存回收的实践者。《Java虚拟机规范》中对垃圾收集器应该如何实现并没有做出任何规定，因此不同的厂商、不同版本的虚拟机所包含的垃圾收集器都可能会有很大差别，不同的虚拟机一般也都会提供各种参数供用户根据自己的应用特点和要求组合出各个内存分代所使用的收集器。各款经典收集器之间的关系如下图所示：   虽然垃圾收集器的技术在不断进步，但直到现在还没">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/mmexport1650523350719.jpg">
 <meta property="article:published_time" content="2022-10-20T14:12:45.000Z">
-<meta property="article:modified_time" content="2024-05-14T04:55:19.327Z">
+<meta property="article:modified_time" content="2024-05-14T05:01:40.064Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary_large_image">
@@ -277,81 +277,53 @@
             
               <div class="markdown-body">
                 
-                <h1 id="前言">前言</h1>
+                <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
 <p>如果说收集算法是内存回收的方法论，那垃圾收集器就是内存回收的实践者。《Java虚拟机规范》中对垃圾收集器应该如何实现并没有做出任何规定，因此不同的厂商、不同版本的虚拟机所包含的垃圾收集器都可能会有很大差别，不同的虚拟机一般也都会提供各种参数供用户根据自己的应用特点和要求组合出各个内存分代所使用的收集器。各款经典收集器之间的关系如下图所示：</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530225915334.png" srcset="/img/loading.gif" lazyload
-alt="image-20230530225915334" />
-<figcaption aria-hidden="true">image-20230530225915334</figcaption>
-</figure>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530225915334.png" srcset="/img/loading.gif" lazyload alt="" /></p>
 <blockquote>
 <p>虽然垃圾收集器的技术在不断进步，但直到现在还没有最好的收集器出现，更加不存在“万能”的收集器，所以我们选择的只是对具体应用最合适的收集器。如果有一种放之四海皆准、任何场景下都适用的完美收集器存在，HotSpot虚拟机完全没必要实现那么多种不同的收集器了。</p>
 </blockquote>
-<h1 id="新生代收集器">1.新生代收集器</h1>
-<h2 id="serial-垃圾收集器单线程">1.1 Serial 垃圾收集器（单线程）</h2>
-<p>Serial
-垃圾收集器是<strong>1.3以前的</strong>采用<code>复制算法</code>的单线程新生代收集器。</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530230238225.png" srcset="/img/loading.gif" lazyload
-alt="image-20230530230238225" />
-<figcaption aria-hidden="true">image-20230530230238225</figcaption>
-</figure>
-<h3 id="特性">1.1.1 <strong>特性</strong></h3>
+<h1 id="1新生代收集器"><a class="markdownIt-Anchor" href="#1新生代收集器"></a> 1.新生代收集器</h1>
+<h2 id="11-serial-垃圾收集器单线程"><a class="markdownIt-Anchor" href="#11-serial-垃圾收集器单线程"></a> 1.1 Serial 垃圾收集器（单线程）</h2>
+<p>Serial 垃圾收集器是<strong>1.3以前的</strong>采用<code>复制算法</code>的单线程新生代收集器。</p>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530230238225.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<h3 id="111-特性"><a class="markdownIt-Anchor" href="#111-特性"></a> 1.1.1 <strong>特性</strong></h3>
 <ul>
-<li><p>它仅仅使用单线程进行垃圾回收；</p></li>
-<li><p>它独占式的垃圾回收：它进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。Stop
-The World.</p></li>
+<li>
+<p>它仅仅使用单线程进行垃圾回收；</p>
+</li>
+<li>
+<p>它独占式的垃圾回收：它进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。Stop The World.</p>
+</li>
 </ul>
 <blockquote>
-<p>“Stop The
-World”这个词语也许听起来很酷，但这项工作是由虚拟机在后台自动发起和自动完成的，在用户不可知、不可控的情况下把用户的正常工作的线程全部停掉，这对很多应用来说都是不能接受的。</p>
+<p>“Stop The World”这个词语也许听起来很酷，但这项工作是由虚拟机在后台自动发起和自动完成的，在用户不可知、不可控的情况下把用户的正常工作的线程全部停掉，这对很多应用来说都是不能接受的。</p>
 </blockquote>
-<h3 id="应用场景">1.1.2 应用场景</h3>
-<p>把Serial收集器是最早出现的收集器，但是不代表它是一个的“鸡肋”的垃圾收集器，事实上Serial
-/ˈsɪəriəl/
-收集器是仍然是虚拟机运行在Client模式下的默认新生代收集器。<strong>简单而高效（与其他收集器的单线程比）</strong>。</p>
-<p>对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程收集效率。对于服务器端来说，因为一般是多个
-CPU 内核，并不推荐使用，除非确实需要限制 JVM
-所使用的资源。大多数服务器端应用部署在多核平台上，选择 串行 GC
-就意味着人为地限制了系统资源的使用，会导致资源闲置，多余的 CPU
-资源也不能用增加业务处理的吞吐量。</p>
+<h3 id="112-应用场景"><a class="markdownIt-Anchor" href="#112-应用场景"></a> 1.1.2 应用场景</h3>
+<p>把Serial收集器是最早出现的收集器，但是不代表它是一个的“鸡肋”的垃圾收集器，事实上Serial /ˈsɪəriəl/ 收集器是仍然是虚拟机运行在Client模式下的默认新生代收集器。<strong>简单而高效（与其他收集器的单线程比）</strong>。</p>
+<p>对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程收集效率。对于服务器端来说，因为一般是多个 CPU 内核，并不推荐使用，除非确实需要限制 JVM 所使用的资源。大多数服务器端应用部署在多核平台上，选择 串行 GC 就意味着人为地限制了系统资源的使用，会导致资源闲置，多余的 CPU 资源也不能用增加业务处理的吞吐量。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-XX:+UseSerialGC<br></code></pre></td></tr></table></figure>
-<h2 id="parnew收集器serial多线程">1.2
-<strong>ParNew收集器(Serial+多线程)</strong></h2>
+<h2 id="12-parnew收集器serial多线程"><a class="markdownIt-Anchor" href="#12-parnew收集器serial多线程"></a> 1.2 <strong>ParNew收集器(Serial+多线程)</strong></h2>
 <p>ParNew收集器其实就是Serial+多线程版本。</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530230826176.png" srcset="/img/loading.gif" lazyload
-alt="image-20230530230826176" />
-<figcaption aria-hidden="true">image-20230530230826176</figcaption>
-</figure>
-<h3 id="特性-1">1.2.1 <strong>特性</strong></h3>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230530230826176.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<h3 id="121-特性"><a class="markdownIt-Anchor" href="#121-特性"></a> 1.2.1 <strong>特性</strong></h3>
 <p>ParNew收集器实质上是Serial收集器的多线程并行版本，它也是采用<code>复制算法</code>的多线程新生代收集器，除了同时使用多条线程进行垃圾收集之外，其余的行为包括Serial收集器可用的所有控制参数（例如：-XX：SurvivorRatio、-XX：PretenureSizeThreshold、</p>
-<p>-XX：HandlePromotionFailure等）、收集算法、Stop The
-World、对象分配规则、回收策略等都与Serial收集器完全一致，在实现上这两种收集器也共用了相当多的代码。</p>
-<h3 id="应用场景-1">1.2.2 <strong>应用场景</strong></h3>
-<p>ParNew收集器是许多运行在<strong>Server模式下的虚拟机中首选的新生代收集器。</strong>很重要的原因是：<strong>除了Serial收集器外，目前只有它能与CMS收集器配合工作。</strong>在JDK
-1.5时期，HotSpot推出了一款在强交互应用中几乎可认为有划时代意义的垃圾收集器——CMS收集器，这款收集器是HotSpot虚拟机中第一款真正意义上的并发收集器，它第一次实现了让垃圾收集线程与用户线程同时工作。不幸的是，CMS作为老年代的收集器，却无法与JDK
-1.4.0中已经存在的新生代收集器Parallel Scavenge配合工作，所以在JDK
-1.5中使用CMS来收集老年代的时候，新生代只能选择ParNew或者Serial收集器中的一个。</p>
+<p>-XX：HandlePromotionFailure等）、收集算法、Stop The World、对象分配规则、回收策略等都与Serial收集器完全一致，在实现上这两种收集器也共用了相当多的代码。</p>
+<h3 id="122-应用场景"><a class="markdownIt-Anchor" href="#122-应用场景"></a> 1.2.2 <strong>应用场景</strong></h3>
+<p>ParNew收集器是许多运行在**Server模式下的虚拟机中首选的新生代收集器。**很重要的原因是：**除了Serial收集器外，目前只有它能与CMS收集器配合工作。**在JDK 1.5时期，HotSpot推出了一款在强交互应用中几乎可认为有划时代意义的垃圾收集器——CMS收集器，这款收集器是HotSpot虚拟机中第一款真正意义上的并发收集器，它第一次实现了让垃圾收集线程与用户线程同时工作。不幸的是，CMS作为老年代的收集器，却无法与JDK 1.4.0中已经存在的新生代收集器Parallel Scavenge配合工作，所以在JDK 1.5中使用CMS来收集老年代的时候，新生代只能选择ParNew或者Serial收集器中的一个。</p>
 <blockquote>
 <p>ParNew收集器是激活CMS后（使用-XX：+UseConcMarkSweepGC选项）的默认新生代收集器，也可以使用-XX：+/-UseParNewGC选项来强制指定或者禁用它。</p>
 </blockquote>
-<h3 id="parnew-vs-serial">1.2.3 ParNew VS Serial</h3>
+<h3 id="123-parnew-vs-serial"><a class="markdownIt-Anchor" href="#123-parnew-vs-serial"></a> 1.2.3 ParNew VS Serial</h3>
 <p>ParNew收集器在单核心处理器的环境中绝对不会有比Serial收集器更好的效果，甚至由于存在线程交互的开销，该收集器在通过超线程（Hyper-Threading）技术实现的伪双核处理器环境中都不能百分之百保证超越Serial收集器。当然，随着可以被使用的处理器核心数量的增加，ParNew对于垃圾收集时系统资源的高效利用还是很有好处的。它默认开启的收集线程数与处理器核心数量相同，在处理器核心非常多（譬如32个，现在CPU都是多核加超线程设计，服务器达到或超过32个逻辑核心的情况非常普遍）的环境中，可以使用-XX：ParallelGCThreads参数来限制垃圾收集的线程数。</p>
-<p>通过命令行参数 -XX:ParallelGCThreads=NNN 来指定 GC 线程数，其默认值为
-CPU 核心数。可以通过下面的任意一组命令行参数来指定并行 GC：</p>
+<p>通过命令行参数 -XX:ParallelGCThreads=NNN 来指定 GC 线程数，其默认值为 CPU 核心数。可以通过下面的任意一组命令行参数来指定并行 GC：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">-XX:+UseParallelGC <br>-XX:+UseParallelOldGC     <br></code></pre></td></tr></table></figure>
-<h1 id="总结">2.总结</h1>
+<h1 id="2总结"><a class="markdownIt-Anchor" href="#2总结"></a> 2.总结</h1>
 <p>可以说直到CMS的出现才巩固了ParNew的地位，但成也萧何败也萧何，随着垃圾收集器技术的不</p>
 <p>断改进，更先进的G1收集器带着CMS继承者和替代者的光环登场。G1是一个面向全堆的收集器，不</p>
-<p>再需要其他新生代收集器的配合工作。所以自JDK
-9开始，ParNew加CMS收集器的组合就不再是官方</p>
+<p>再需要其他新生代收集器的配合工作。所以自JDK 9开始，ParNew加CMS收集器的组合就不再是官方</p>
 <p>推荐的服务端模式下的收集器解决方案了。官方希望它能完全被G1所取代，甚至还取消了ParNew加</p>
-<p>Serial
-Old以及Serial加CMS这两组收集器组合的支持（其实原本也很少人这样使用），并直接取消了-</p>
+<p>Serial Old以及Serial加CMS这两组收集器组合的支持（其实原本也很少人这样使用），并直接取消了-</p>
 <p>XX：+UseParNewGC参数，这意味着ParNew和CMS从此只能互相搭配使用，再也没有其他收集器能</p>
 <p>够和它们配合了。读者也可以理解为从此以后，ParNew合并入CMS，成为它专门处理新生代的组成部</p>
 <p>分。ParNew可以说是HotSpot虚拟机中第一款退出历史舞台的垃圾收集器。</p>

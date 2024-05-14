@@ -16,16 +16,16 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.jvm参数分类 根据jvm参数开头可以区分参数类型，共三类： 1.1 标准参数（-） 所有的JVM实现都必须实现这些参数的功能，而且向后兼容； 1例子：-verbose:class，-verbose:gc，-verbose:jni……            1.2 非标准参数（-X） 默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容； 1例子：-Xms20m，-">
+    <meta name="description" content="1.jvm参数分类 根据jvm参数开头可以区分参数类型，共三类：  1.1 标准参数（-） 所有的JVM实现都必须实现这些参数的功能，而且向后兼容； 1例子：-verbose:class，-verbose:gc，-verbose:jni……             1.2 非标准参数（-X） 默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容； 1例子：-Xms20">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM常见启动参数">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/10/29/java_se/jvm/2022-10-29_JVM%E5%B8%B8%E8%A7%81%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="1.jvm参数分类 根据jvm参数开头可以区分参数类型，共三类： 1.1 标准参数（-） 所有的JVM实现都必须实现这些参数的功能，而且向后兼容； 1例子：-verbose:class，-verbose:gc，-verbose:jni……            1.2 非标准参数（-X） 默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容； 1例子：-Xms20m，-">
+<meta property="og:description" content="1.jvm参数分类 根据jvm参数开头可以区分参数类型，共三类：  1.1 标准参数（-） 所有的JVM实现都必须实现这些参数的功能，而且向后兼容； 1例子：-verbose:class，-verbose:gc，-verbose:jni……             1.2 非标准参数（-X） 默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容； 1例子：-Xms20">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/mmexport1664530637863.jpg">
 <meta property="article:published_time" content="2022-10-29T14:29:29.000Z">
-<meta property="article:modified_time" content="2024-05-14T04:55:19.328Z">
+<meta property="article:modified_time" content="2024-05-14T04:58:20.279Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary_large_image">
@@ -277,66 +277,66 @@
             
               <div class="markdown-body">
                 
-                <h1 id="jvm参数分类"><strong>1.jvm参数分类</strong></h1>
+                <h1 id="1jvm参数分类"><a class="markdownIt-Anchor" href="#1jvm参数分类"></a> <strong>1.jvm参数分类</strong></h1>
 <p>根据jvm参数开头可以区分参数类型，共三类：</p>
-<h2 id="标准参数-"><strong>1.1 标准参数（-）</strong></h2>
+<h2 id="11-标准参数-"><a class="markdownIt-Anchor" href="#11-标准参数-"></a> <strong>1.1 标准参数（-）</strong></h2>
 <p>所有的JVM实现都必须实现这些参数的功能，而且向后兼容；</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">例子：-verbose:class，-verbose:gc，-verbose:jni……           <br></code></pre></td></tr></table></figure>
-<h2 id="非标准参数-x"><strong>1.2 非标准参数（-X）</strong></h2>
+<h2 id="12-非标准参数-x"><a class="markdownIt-Anchor" href="#12-非标准参数-x"></a> <strong>1.2 非标准参数（-X）</strong></h2>
 <p>默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容；</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">例子：-Xms20m，-Xmx20m，-Xmn20m，-Xss128k……    <br></code></pre></td></tr></table></figure>
-<h2 id="非stable稳定参数-xx"><strong>1.3
-非Stable(稳定)参数（-XX）</strong></h2>
+<h2 id="13-非stable稳定参数-xx"><a class="markdownIt-Anchor" href="#13-非stable稳定参数-xx"></a> <strong>1.3 非Stable(稳定)参数（-XX）</strong></h2>
 <p>此类参数各个jvm实现会有所不同，将来可能会随时取消，需要慎重使用；</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">例子:-XX:+PrintGCDetails，-XX:-UseParallelGC，-XX:+PrintGCTimeStamps……    <br></code></pre></td></tr></table></figure>
-<h2 id="参数形式"><strong>1.4 参数形式</strong></h2>
+<h2 id="14-参数形式"><a class="markdownIt-Anchor" href="#14-参数形式"></a> <strong>1.4 参数形式</strong></h2>
 <ul>
-<li><p>布尔类型：+ 或者 -</p></li>
-<li><p>键值类型：name = value</p></li>
+<li>
+<p>布尔类型：+ 或者 -</p>
+</li>
+<li>
+<p>键值类型：name = value</p>
+</li>
 </ul>
-<h1 id="jvm常见配置参数"><strong>2.jvm常见配置参数</strong></h1>
-<h2 id="设置系统属性"><strong>2.1 设置系统属性</strong></h2>
+<h1 id="2jvm常见配置参数"><a class="markdownIt-Anchor" href="#2jvm常见配置参数"></a> <strong>2.jvm常见配置参数</strong></h1>
+<h2 id="21-设置系统属性"><a class="markdownIt-Anchor" href="#21-设置系统属性"></a> <strong>2.1 设置系统属性</strong></h2>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-Dkey</span>=<span class="hljs-string">value:系统属性，有时候也叫环境变量，例如直接给 JVM 传递指定的系统属性参数，需要使用这种形式</span><br><span class="hljs-attr">此时如果系统的环境变量里不管有没有指定这个参数，都会以这里的为准。</span><br><span class="hljs-attr"> </span><br><span class="hljs-attr">命令行参数，直接通过命令后面添加的参数，比如运行</span> <span class="hljs-string">Hello 类，同时传递 2 个参数 kimm、king：</span><br><span class="hljs-attr">java</span> <span class="hljs-string">Hello kimm king</span><br><span class="hljs-attr">，然后在Hello类的</span> <span class="hljs-string">main 方法的参数里可以拿到一个字符串的参数数组，有两个字符串，kimm 和 king。</span><br><br><span class="hljs-attr">-Dkey</span>=<span class="hljs-string">value：如果系统的环境变量里不管有没有指定这个参数，都会以这里的为准</span><br><span class="hljs-attr">-Duser.timezone</span>=<span class="hljs-string">GMT+08  // 设置用户的时区为东八区</span><br><span class="hljs-attr">-Dfile.encoding</span>=<span class="hljs-string">UTF-8      // 设置默认的文件编码为UTF-8</span><br></code></pre></td></tr></table></figure>
-<h2 id="设置堆内存"><strong>2.2 设置堆内存</strong></h2>
+<h2 id="22-设置堆内存"><a class="markdownIt-Anchor" href="#22-设置堆内存"></a> <strong>2.2 设置堆内存</strong></h2>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-Xmx等价于</span> <span class="hljs-string">-XX:MaxHeapSize, 指定最大堆内存。 如 -Xmx4g. 这只是限制了 Heap 部分的最大值为 4g。这个内存不包括栈内存，也不包括堆外使用的内存。</span><br><span class="hljs-attr">-Xms等价于</span> <span class="hljs-string">-XX:initialHeapSize, 指定堆内存空间的初始大小。 如 -Xms4g。 默认K为单位，而且指定的内存大小，并不是操作系统实际分配的初始值，而是 GC 先规划好，用到才分配。 专用服务器上需要保持 -Xms和-Xmx一致，否则应用刚启动可能就有好几个 FullGC。当两者配置不一致时，堆内存扩容可能会导致性能抖动。</span><br><span class="hljs-attr">-Xmn,</span> <span class="hljs-string">等价于 -XX:NewSize，使用 G1 垃圾收集器 不应该 设置该选项，在其他的某些业务场景下可以设置。官方建议设置为 -Xmx 的 1/2 ~ 1/4。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，官方推荐配置为整个堆的3/8。（注意：从Java 8开始，HotSpot虚拟机中删除了“持久代”）</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">MaxPermSize=size, 这是 JDK1.7 之前使用的。Java8 默认允许的 Meta 空间无限大，此参数无效。</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">MaxMetaspaceSize=size, Java8 默认不限制 Meta 空间, 一般不允许设置该选项。</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">MaxDirectMemorySize=size，系统可以使用的最大堆外内存，这个参数跟-Dsun.nio.MaxDirectMemorySize效果相同。</span><br><span class="hljs-attr">-Xss等价于-XX</span>:<span class="hljs-string">ThreadStackSize, 设置每个线程栈的字节数。 例如 -Xss1m 指定线程栈为 1MB</span><br><br><span class="hljs-attr">例如：</span><br><span class="hljs-attr">JAVA_OPTS</span>=<span class="hljs-string">&quot;-Xms1g -Xmx1g&quot;</span><br></code></pre></td></tr></table></figure>
 <p>​</p>
-<h2 id="gc日志相关参数"><strong>2.3 GC日志相关参数</strong></h2>
-<p>在生产环境或性能压测环境里，我们用来分析和判断问题的重要数据来源之一就是
-GC 日志，JVM 启动参数为我们提供了一些用于控制 GC 日志输出的选项。</p>
+<h2 id="23-gc日志相关参数"><a class="markdownIt-Anchor" href="#23-gc日志相关参数"></a> <strong>2.3 GC日志相关参数</strong></h2>
+<p>在生产环境或性能压测环境里，我们用来分析和判断问题的重要数据来源之一就是 GC 日志，JVM 启动参数为我们提供了一些用于控制 GC 日志输出的选项。</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-verbose</span>:<span class="hljs-string">gc ：和其他 GC 参数组合使用, 在 GC 日志中输出详细的GC信息。 包括每次 GC 前后各个内存池的大小，堆内存的大小，</span><br><span class="hljs-attr">提升到老年代的大小，以及消耗的时间。此参数支持在运行过程中动态开关。比如使用</span> <span class="hljs-string">jcmd, jinfo， 以及使用 JMX 技术的其他客户端。</span><br><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+PrintGCDetails 和 -XX:+PrintGCTimeStamps：打印 GC 细节与发生时间。</span><br><span class="hljs-attr">-Xloggc</span>:<span class="hljs-string">file：与-verbose:gc功能类似，只是将每次 GC 事件的相关情况记录到一个文件中，文件的位置最好在本地，以避免网络的潜在问题。若与 verbose:gc 命令同时出现在命令行中，则以 -Xloggc 为准。</span><br><br><span class="hljs-attr">示例</span>:<span class="hljs-string"></span><br><span class="hljs-attr">export</span> <span class="hljs-string">JAVA_OPTS=&quot;-Xms28g -Xmx28g -Xss1m \</span><br><span class="hljs-string">-verbosegc -XX:+UseG1GC -XX:MaxGCPauseMillis=200 \</span><br><span class="hljs-string">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/&quot;</span><br></code></pre></td></tr></table></figure>
 <p>​</p>
-<h2 id="指定垃圾回收器"><strong>2.4 指定垃圾回收器</strong></h2>
-<p>垃圾回收器是 JVM 性能分析和调优的核心内容之一，也是近几个 JDK
-版本大力发展和改进的地方。通过不同的 GC
-算法和参数组合，配合其他调优手段，我们可以把系统精确校验到性能最佳状态。</p>
+<h2 id="24-指定垃圾回收器"><a class="markdownIt-Anchor" href="#24-指定垃圾回收器"></a> <strong>2.4 指定垃圾回收器</strong></h2>
+<p>垃圾回收器是 JVM 性能分析和调优的核心内容之一，也是近几个 JDK 版本大力发展和改进的地方。通过不同的 GC 算法和参数组合，配合其他调优手段，我们可以把系统精确校验到性能最佳状态。</p>
 <p>以下参数指定具体的垃圾收集器：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-XX</span>:<span class="hljs-string">+UseG1GC：使用 G1 垃圾回收器</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+UseConcMarkSweepGC：使用 CMS 垃圾回收器</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+UseSerialGC：使用串行垃圾回收器</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+UseParallelGC：使用并行垃圾回收器</span><br></code></pre></td></tr></table></figure>
 <p>​</p>
-<h2 id="特殊情况执行脚本的参数"><strong>2.5
-特殊情况执行脚本的参数</strong></h2>
-<p>除了上面介绍的一些 JVM
-参数，还有一些用于出现问题时提供诊断信息之类的参数。</p>
+<h2 id="25-特殊情况执行脚本的参数"><a class="markdownIt-Anchor" href="#25-特殊情况执行脚本的参数"></a> <strong>2.5 特殊情况执行脚本的参数</strong></h2>
+<p>除了上面介绍的一些 JVM 参数，还有一些用于出现问题时提供诊断信息之类的参数。</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-XX</span>:<span class="hljs-string">+-HeapDumpOnOutOfMemoryError 选项, 当 OutOfMemoryError 产生，即内存溢出(堆内存或持久代)时，自动 Dump 堆内存。 </span><br><span class="hljs-attr">因为在运行时并没有什么开销,</span> <span class="hljs-string">所以在生产机器上是可以使用的。 示例用法: java -XX:+HeapDumpOnOutOfMemoryError -Xmx256m ConsumeHeap</span><br><span class="hljs-attr">java.lang.OutOfMemoryError</span>: <span class="hljs-string">Java heap space</span><br><span class="hljs-attr">Dumping</span> <span class="hljs-string">heap to java_pid2262.hprof ...</span><br><span class="hljs-attr">......</span><br><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">HeapDumpPath 选项, 与HeapDumpOnOutOfMemoryError搭配使用, 指定内存溢出时 Dump 文件的目录。 如果没有指定则默认为启动 Java 程序的工作目录。 示例用法: java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/ ConsumeHeap 自动 Dump 的 hprof 文件会存储到 /usr/local/ 目录下。</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">OnError 选项, 发生致命错误时(fatal error)执行的脚本。 例如, 写一个脚本来记录出错时间, 执行一些命令, 或者 curl 一下某个在线报警的url. 示例用法: java -XX:OnError=&quot;gdb - %p&quot; MyApp 可以发现有一个 %p 的格式化字符串，表示进程 PID。</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">OnOutOfMemoryError 选项, 抛出 OutOfMemoryError 错误时执行的脚本。</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">ErrorFile=filename 选项, 致命错误的日志文件名，绝对路径或者相对路径。</span><br></code></pre></td></tr></table></figure>
 <p>​</p>
 <p><strong>2.6 其他参数</strong></p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-XX</span>:<span class="hljs-string">-DisableExplicitGC — 让System.gc()不产生任何作用</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+PrintGCDetails — 打印GC的细节</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+PrintGCDateStamps — 打印GC操作的时间戳</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">NewSize / XX:MaxNewSize — 设置新生代大小/新生代最大大小</span><br>       <br><span class="hljs-attr">-XX</span>:<span class="hljs-string">NewRatio — 可以设置老生代和新生代的比例，新生代（Eden + 2S）和老年代（不含永久区）的比值，-XX:NewRatio=4表示新生代：老年代=1;4,即年轻代占堆的1/5</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">PermSize - 设置持久代初始值，默认是物理内存的六十四分之一</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">MaxPermSize - 设置持久代最大值，默认是物理内存的四分之一，一般来说，MaxPermSize设为64MB可以满足绝大多数的应用了。若依然出现方法区溢出，则可以设为128MB。若128MB还不能满足需求，那么就应该考虑程序优化了，减少动态类的产生。</span><br>       <br><span class="hljs-attr">-XX</span>:<span class="hljs-string">SurvivorRatio:设置新生代中eden和S0/S1空间的比例.默认-XX:SurvivorRatio=8,Eden:S0:S1=8:1:1,Edec:2S=8:2,即一个s占1/10。假如-XX:SurvivorRatio=4,则Eden:S0:S1=4:1:1,即一个s占1/6</span><br>       <br><span class="hljs-attr">-XX</span>:<span class="hljs-string">PrintTenuringDistribution — 设置每次新生代GC后输出幸存者乐园中对象年龄的分布</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">InitialTenuringThreshold / -XX:MaxTenuringThreshold：设置老年代阀值的初始值和最大值</span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">TargetSurvivorRatio：设置幸存区的目标使用率</span><br>       <br><span class="hljs-attr">-XX</span>:<span class="hljs-string">MaxTenuringThreshold - 新生代中对象存活次数，默认15。(若对象在eden区，经历一次MinorGC后还活着，则被移动到Survior区，年龄加1。以后，对象每次经历MinorGC，年龄都加1。达到阀值，则移入老年代) </span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+UseFastAccessorMethods - 原始类型快速优化 </span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">+AggressiveOpts - 编译速度加快 </span><br><span class="hljs-attr">-XX</span>:<span class="hljs-string">PretenureSizeThreshold - 对象超过多大值时直接在老年代中分配</span><br></code></pre></td></tr></table></figure>
-<p>最全的官方JVM参数清单：https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</p>
-<h1 id="调优典型设置"><strong>3.调优典型设置</strong></h1>
-<h2 id="相关配置"><strong>3.1 相关配置</strong></h2>
-<p>系统有大量的地方使用堆外内存，远比我们常说的 xmx 和 xms
-包括的范围要广。所以我们需要在设置内存的时候留有余地。</p>
-<p>实际上，我个人比较推荐配置系统或容器里可用内存的 70-80%
-最好。比如说系统有 8G 物理内存，系统自己可能会用掉一点，大概还有 7.5G
-可以用，那么建议配置：</p>
+<p>最全的官方JVM参数清单：<a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></p>
+<h1 id="3调优典型设置"><a class="markdownIt-Anchor" href="#3调优典型设置"></a> <strong>3.调优典型设置</strong></h1>
+<h2 id="31-相关配置"><a class="markdownIt-Anchor" href="#31-相关配置"></a> <strong>3.1 相关配置</strong></h2>
+<p>系统有大量的地方使用堆外内存，远比我们常说的 xmx 和 xms 包括的范围要广。所以我们需要在设置内存的时候留有余地。</p>
+<p>实际上，我个人比较推荐配置系统或容器里可用内存的 70-80% 最好。比如说系统有 8G 物理内存，系统自己可能会用掉一点，大概还有 7.5G 可以用，那么建议配置：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">-Xmx3550m <br>-Xms3550m <br>-Xmn2g <br>-Xss128k<br></code></pre></td></tr></table></figure>
 <ul>
-<li><p><strong>-Xmx3550m</strong>：设置JVM最大可用内存为3550M。</p></li>
-<li><p><strong>-Xms3550m</strong>：设置JVM促使内存为3550m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。</p></li>
-<li><p><strong>-Xmn2g</strong>：设置年轻代大小为2G。<strong>整个JVM内存大小=年轻代大小
-+ 年老代大小</strong>
-。所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。（注意：从Java
-8开始，HotSpot虚拟机中删除了“持久代”）</p></li>
-<li><p><strong>-Xss128k</strong>：设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为<strong>1M</strong>，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。</p></li>
+<li>
+<p><strong>-Xmx3550m</strong>：设置JVM最大可用内存为3550M。</p>
+</li>
+<li>
+<p><strong>-Xms3550m</strong>：设置JVM促使内存为3550m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。</p>
+</li>
+<li>
+<p><strong>-Xmn2g</strong>：设置年轻代大小为2G。<strong>整个JVM内存大小=年轻代大小 + 年老代大小</strong> 。所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。（注意：从Java 8开始，HotSpot虚拟机中删除了“持久代”）</p>
+</li>
+<li>
+<p><strong>-Xss128k</strong>：设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为<strong>1M</strong>，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。</p>
+</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">-Xmx3550m <br>-Xms3550m <br>-Xss128k <br>-XX:NewRatio=4 <br>-XX:SurvivorRatio=4 <br>-XX:MaxPermSize=16m <br>-XX:MaxTenuringThreshold=0<br></code></pre></td></tr></table></figure>
 <p><strong>-XX:NewRatio=4</strong>:设置年轻代（包括Eden和两个Survivor区）与年老代的比值（除去持久代）。设置为4，则年轻代与年老代所占比值为1：4，年轻代占整个堆栈的1/5</p>
@@ -349,122 +349,145 @@ GC 日志，JVM 启动参数为我们提供了一些用于控制 GC 日志输出
 <p>此外，还有一些常用的属性配置：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 指定默认的连接超时时间</span><br>-Dsun.net.client.defaultConnectTimeout=2000<br>-Dsun.net.client.defaultReadTimeout=2000<br><br><span class="hljs-comment"># 指定时区</span><br>-Duser.timezone=GMT+08 <br><br><span class="hljs-comment"># 设置默认的文件编码为 UTF-8</span><br>-Dfile.encoding=UTF-8 <br><br><span class="hljs-comment"># 指定随机数熵源（Entropy Source）</span><br>-Djava.security.egd=file:/dev/./urandom <br></code></pre></td></tr></table></figure>
 <p>​</p>
-<h1 id="回收器选择"><strong>4.回收器选择</strong></h1>
+<h1 id="4回收器选择"><a class="markdownIt-Anchor" href="#4回收器选择"></a> <strong>4.回收器选择</strong></h1>
 <p>JVM给了三种选择：<strong>串行收集器、并行收集器、并发收集器</strong>，但是串行收集器只适用于小数据量的情况，所以这里的选择主要针对并行收集器和并发收集器。默认情况下，JDK5.0以前都是使用串行收集器，如果想使用其他收集器需要在启动时加入相应参数。JDK5.0以后，JVM会根据当前系统配置进行判断。</p>
 <ul>
 <li><strong>吞吐量优先</strong>的并行收集器</li>
 </ul>
 <p>如上文所述，并行收集器主要以到达一定的吞吐量为目标，适用于科学技术和后台处理等。</p>
-<h2 id="典型配置"><strong>4.1 典型配置</strong></h2>
-<h3 id="配置一">4.1.1 配置一</h3>
+<h2 id="41-典型配置"><a class="markdownIt-Anchor" href="#41-典型配置"></a> <strong>4.1 典型配置</strong></h2>
+<h3 id="411-配置一"><a class="markdownIt-Anchor" href="#411-配置一"></a> 4.1.1 配置一</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3800m -Xms3800m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>-XX:+UseParallelGC</strong>：选择垃圾收集器为并行收集器。<strong>此配置仅对年轻代有效。即上述配置下，年轻代使用并发收集，而年老代仍旧使用串行收集。</strong></li>
 <li><strong>-XX:ParallelGCThreads=20</strong>：配置并行收集器的线程数，即：同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。</li>
 </ul>
-<h3 id="配置二">4.1.2 配置二</h3>
+<h3 id="412-配置二"><a class="markdownIt-Anchor" href="#412-配置二"></a> 4.1.2 配置二</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:+UseParallelOldGC<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>XX:+UseParallelOldGC</strong>：配置年老代垃圾收集方式为并行收集。JDK6.0支持对年老代并行收集</li>
 </ul>
-<h3 id="配置三">4.1.3 配置三</h3>
+<h3 id="413-配置三"><a class="markdownIt-Anchor" href="#413-配置三"></a> 4.1.3 配置三</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong>-XX:MaxGCPauseMillis=100:</strong>设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。</li>
+<li>**-XX:MaxGCPauseMillis=100:**设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。</li>
 </ul>
-<h3 id="配置四">4.1.4 配置四</h3>
+<h3 id="414-配置四"><a class="markdownIt-Anchor" href="#414-配置四"></a> 4.1.4 配置四</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>-XX:+UseAdaptiveSizePolicy</strong>：设置此选项后，并行收集器会自动选择年轻代区大小和相应的Survivor区比例，以达到目标系统规定的最低相应时间或者收集频率等，此值建议使用并行收集器时，一直打开。</li>
 </ul>
-<h3 id="配置五">4.1.5 配置五</h3>
+<h3 id="415-配置五"><a class="markdownIt-Anchor" href="#415-配置五"></a> 4.1.5 配置五</h3>
 <ul>
 <li><strong>响应时间优先</strong>的并发收集器</li>
 </ul>
 <p>如上文所述，并发收集器主要是保证系统的响应时间，减少垃圾收集时的停顿时间。适用于应用服务器、电信领域等。</p>
 <p><strong>典型配置</strong>：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">java -<span class="hljs-title class_">Xmx3550m</span> -<span class="hljs-title class_">Xms3550m</span> -<span class="hljs-title class_">Xmn2g</span> -<span class="hljs-title class_">Xss128k</span> -<span class="hljs-variable constant_">XX</span><span class="hljs-symbol">:ParallelGCThreads=</span><span class="hljs-number">20</span> -<span class="hljs-variable constant_">XX</span><span class="hljs-symbol">:+UseConcMarkSweepGC</span> -<span class="hljs-variable constant_">XX</span><span class="hljs-symbol">:+UseParNewGC</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>-XX:+UseConcMarkSweepGC</strong>：设置年老代为并发收集。测试中配置这个以后，-XX:NewRatio=4的配置失效了，原因不明。所以，此时年轻代大小最好用-Xmn设置。</li>
 <li><strong>-XX:+UseParNewGC</strong>:设置年轻代为并行收集。可与CMS收集同时使用。JDK5.0以上，JVM会根据系统配置自行设置，所以无需再设置此值。</li>
 </ul>
-<h3 id="配置六">4.1.6 配置六</h3>
+<h3 id="416-配置六"><a class="markdownIt-Anchor" href="#416-配置六"></a> 4.1.6 配置六</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=5 -XX:+UseCMSCompactAtFullCollection<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>-XX:CMSFullGCsBeforeCompaction</strong>：由于并发收集器不对内存空间进行压缩、整理，所以运行一段时间以后会产生“碎片”，使得运行效率降低。此值设置运行多少次GC以后对内存空间进行压缩、整理。</li>
 <li><strong>-XX:+UseCMSCompactAtFullCollection</strong>：打开对年老代的压缩。可能会影响性能，但是可以消除碎片</li>
 </ul>
-<h2 id="辅助信息"><strong>4.2辅助信息</strong></h2>
+<h2 id="42辅助信息"><a class="markdownIt-Anchor" href="#42辅助信息"></a> <strong>4.2辅助信息</strong></h2>
 <p>JVM提供了大量命令行参数，打印信息，供调试使用。主要有以下一些：</p>
-<p>JVM提供了大量命令行参数，打印信息，供调试使用。主要有以下一些：</p>
 <ul>
-<li><p><strong>-XX:+PrintGC</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：[GC 118250K-&gt;113543K(130112K), 0.0094143 secs]<br>       [Full GC 121376K-&gt;10414K(130112K), 0.0650971 secs]<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>-XX:+PrintGC</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：[GC 118250K-&gt;113543K(130112K), 0.0094143 secs]<br>       [Full GC 121376K-&gt;10414K(130112K), 0.0650971 secs]<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>​</p>
 <ul>
-<li><p><strong>-XX:+PrintGCDetails</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：[GC [DefNew: 8614K-&gt;781K(9088K), 0.0123035 secs] 118250K-&gt;113543K(130112K), 0.0124633 secs]<br>        [GC [DefNew: 8614K-&gt;8614K(9088K), 0.0000665 secs][Tenured: 112761K-&gt;10414K(121024K), 0.0433488 secs] 121376K-&gt;10414K(130112K), 0.0436268 secs]<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>-XX:+PrintGCDetails</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：[GC [DefNew: 8614K-&gt;781K(9088K), 0.0123035 secs] 118250K-&gt;113543K(130112K), 0.0124633 secs]<br>        [GC [DefNew: 8614K-&gt;8614K(9088K), 0.0000665 secs][Tenured: 112761K-&gt;10414K(121024K), 0.0433488 secs] 121376K-&gt;10414K(130112K), 0.0436268 secs]<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>​</p>
 <ul>
-<li><p><strong>-XX:+PrintGCTimeStamps</strong>
--XX:+PrintGC：PrintGCTimeStamps可与上面两个混合使用</p>
-<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：11.851: [GC 98328K-&gt;93620K(130112K), 0.0082960 secs]       <br></code></pre></td></tr></table></figure></p></li>
+<li>
+<p><strong>-XX:+PrintGCTimeStamps</strong> -XX:+PrintGC：PrintGCTimeStamps可与上面两个混合使用</p>
+   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：11.851: [GC 98328K-&gt;93620K(130112K), 0.0082960 secs]       <br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>​</p>
 <ul>
-<li><p><strong>-XX:+PrintGCApplicationConcurrentTime:</strong>打印每次垃圾回收前，程序未中断的执行时间。可与上面混合使用</p>
-<pre><code class="hljs">     <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：Application time: 0.5291524 seconds   <br></code></pre></td></tr></table></figure></code></pre></li>
+<li>
+<p>**-XX:+PrintGCApplicationConcurrentTime:**打印每次垃圾回收前，程序未中断的执行时间。可与上面混合使用</p>
+<pre><code class="hljs"> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：Application time: 0.5291524 seconds   <br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
 </ul>
 <p>​</p>
 <ul>
-<li><p><strong>-XX:+PrintGCApplicationStoppedTime</strong>：打印垃圾回收期间程序暂停的时间。可与上面混合使用</p>
-<pre><code class="hljs"> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：Total time <span class="hljs-keyword">for</span> <span class="hljs-built_in">which</span> application threads were stopped: 0.0468229 seconds <br></code></pre></td></tr></table></figure></code></pre></li>
+<li>
+<p><strong>-XX:+PrintGCApplicationStoppedTime</strong>：打印垃圾回收期间程序暂停的时间。可与上面混合使用</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：Total time <span class="hljs-keyword">for</span> <span class="hljs-built_in">which</span> application threads were stopped: 0.0468229 seconds <br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>​</p>
 <ul>
-<li><p><strong>-XX:PrintHeapAtGC</strong>:打印GC前后的详细堆栈信息</p>
-<pre><code class="hljs">   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：<br>34.702: [GC &#123;Heap before gc invocations=7:<br> def new generation   total 55296K, used 52568K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>eden space 49152K,  99% used [0x1ebd0000, 0x21bce430, 0x21bd0000)<br>from space 6144K,  55% used [0x221d0000, 0x22527e10, 0x227d0000)<br>  to   space 6144K,   0% used [0x21bd0000, 0x21bd0000, 0x221d0000)<br> tenured generation   total 69632K, used 2696K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>the space 69632K,   3% used [0x227d0000, 0x22a720f8, 0x22a72200, 0x26bd0000)<br> compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>34.735: [DefNew: 52568K-&gt;3433K(55296K), 0.0072126 secs] 55264K-&gt;6615K(124928K)Heap after gc invocations=8:<br> def new generation   total 55296K, used 3433K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>eden space 49152K,   0% used [0x1ebd0000, 0x1ebd0000, 0x21bd0000)<br>  from space 6144K,  55% used [0x21bd0000, 0x21f2a5e8, 0x221d0000)<br>  to   space 6144K,   0% used [0x221d0000, 0x221d0000, 0x227d0000)<br> tenured generation   total 69632K, used 3182K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>the space 69632K,   4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)<br> compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>&#125;<br>, 0.0757599 secs]<br></code></pre></td></tr></table></figure></code></pre></li>
-<li><p><strong>-Xloggc:filename</strong>:与上面几个配合使用，把相关日志信息记录到文件以便分析。</p></li>
+<li>
+<p><strong>-XX:PrintHeapAtGC</strong>:打印GC前后的详细堆栈信息</p>
+   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash">输出形式：<br>34.702: [GC &#123;Heap before gc invocations=7:<br> def new generation   total 55296K, used 52568K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>eden space 49152K,  99% used [0x1ebd0000, 0x21bce430, 0x21bd0000)<br>from space 6144K,  55% used [0x221d0000, 0x22527e10, 0x227d0000)<br>  to   space 6144K,   0% used [0x21bd0000, 0x21bd0000, 0x221d0000)<br> tenured generation   total 69632K, used 2696K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>the space 69632K,   3% used [0x227d0000, 0x22a720f8, 0x22a72200, 0x26bd0000)<br> compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>34.735: [DefNew: 52568K-&gt;3433K(55296K), 0.0072126 secs] 55264K-&gt;6615K(124928K)Heap after gc invocations=8:<br> def new generation   total 55296K, used 3433K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>eden space 49152K,   0% used [0x1ebd0000, 0x1ebd0000, 0x21bd0000)<br>  from space 6144K,  55% used [0x21bd0000, 0x21f2a5e8, 0x221d0000)<br>  to   space 6144K,   0% used [0x221d0000, 0x221d0000, 0x227d0000)<br> tenured generation   total 69632K, used 3182K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>the space 69632K,   4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)<br> compacting perm gen  total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>   the space 8192K,  35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>    ro space 8192K,  66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>    rw space 12288K,  46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>&#125;<br>, 0.0757599 secs]<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>-Xloggc:filename</strong>:与上面几个配合使用，把相关日志信息记录到文件以便分析。</p>
+</li>
 </ul>
-<h1 id="调优总结"><strong>5.调优总结</strong></h1>
-<h2 id="年轻代大小选择">5.1 <strong>年轻代大小选择</strong></h2>
+<h1 id="5调优总结"><a class="markdownIt-Anchor" href="#5调优总结"></a> <strong>5.调优总结</strong></h1>
+<h2 id="51-年轻代大小选择"><a class="markdownIt-Anchor" href="#51-年轻代大小选择"></a> 5.1 <strong>年轻代大小选择</strong></h2>
 <ul>
-<li><ul>
+<li>
+<ul>
 <li><strong>响应时间优先的应用</strong>：<strong>尽可能设大，直到接近系统的最低响应时间限制</strong>（根据实际情况选择）。在此种情况下，年轻代收集发生的频率也是最小的。同时，减少到达年老代的对象。</li>
 <li><strong>吞吐量优先的应用</strong>：尽可能的设置大，可能到达Gbit的程度。因为对响应时间没有要求，垃圾收集可以并行进行，一般适合8CPU以上的应用。</li>
-</ul></li>
 </ul>
-<h2 id="年老代大小选择">5.2 <strong>年老代大小选择</strong></h2>
+</li>
+</ul>
+<h2 id="52-年老代大小选择"><a class="markdownIt-Anchor" href="#52-年老代大小选择"></a> 5.2 <strong>年老代大小选择</strong></h2>
 <ul>
-<li><ul>
+<li>
+<ul>
 <li><strong>响应时间优先的应用</strong>：年老代使用并发收集器，所以其大小需要小心设置，一般要考虑<strong>并发会话率</strong>和<strong>会话持续时间</strong>等一些参数。如果堆设置小了，可以会造成内存碎片、高回收频率以及应用暂停而使用传统的标记清除方式；如果堆大了，则需要较长的收集时间。最优化的方案，一般需要参考以下数据获得：</li>
-</ul></li>
-<li><ul>
-<li><ul>
+</ul>
+</li>
+<li>
+<ul>
+<li>
+<ul>
 <li>并发垃圾收集信息</li>
 <li>持久代并发收集次数</li>
 <li>传统GC信息</li>
 <li>花在年轻代和年老代回收上的时间比例</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p>减少年轻代和年老代花费的时间，一般会提高应用的效率</p>
 <ul>
-<li><ul>
+<li>
+<ul>
 <li><strong>吞吐量优先的应用</strong>：一般吞吐量优先的应用都有一个很大的年轻代和一个较小的年老代。原因是，这样可以尽可能回收掉大部分短期对象，减少中期的对象，而年老代尽存放长期存活对象。</li>
-</ul></li>
 </ul>
-<h2 id="较小堆引起的碎片问题">5.3
-<strong>较小堆引起的碎片问题</strong></h2>
+</li>
+</ul>
+<h2 id="53-较小堆引起的碎片问题"><a class="markdownIt-Anchor" href="#53-较小堆引起的碎片问题"></a> 5.3 <strong>较小堆引起的碎片问题</strong></h2>
 <p>因为年老代的并发收集器使用标记、清除算法，所以不会对堆进行压缩。当收集器回收时，他会把相邻的空间进行合并，这样可以分配给较大的对象。但是，当堆空间较小时，运行一段时间以后，就会出现“碎片”，如果并发收集器找不到足够的空间，那么并发收集器将会停止，然后使用传统的标记、清除方式进行回收。如果出现“碎片”，可能需要进行如下配置：</p>
 <ul>
-<li><ul>
+<li>
+<ul>
 <li><strong>-XX:+UseCMSCompactAtFullCollection</strong>：使用并发收集器时，开启对年老代的压缩。</li>
-<li><strong>-XX:CMSFullGCsBeforeCompaction=0</strong>：上面配置开启的情况下，这里设置多少次Full
-GC后，对年老代进行压缩</li>
-</ul></li>
+<li><strong>-XX:CMSFullGCsBeforeCompaction=0</strong>：上面配置开启的情况下，这里设置多少次Full GC后，对年老代进行压缩</li>
+</ul>
+</li>
 </ul>
 <hr />
 <p><strong>博客说明</strong></p>

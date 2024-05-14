@@ -16,16 +16,16 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="类加载 1.概述 Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的类加载机制。 按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用 “类加载(Class Loading)” 来表示: 将 class&#x2F;interface 名称映射为 Class 对象的一整个过程。 这个过程还可">
+    <meta name="description" content="类加载  1.概述 Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的类加载机制。 按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用 “类加载(Class Loading)” 来表示: 将 class&#x2F;interface 名称映射为 Class 对象的一整个过程。 这个过程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="类加载机制">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/10/14/java_se/jvm/2022-10-14_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="类加载 1.概述 Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的类加载机制。 按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用 “类加载(Class Loading)” 来表示: 将 class&#x2F;interface 名称映射为 Class 对象的一整个过程。 这个过程还可">
+<meta property="og:description" content="类加载  1.概述 Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的类加载机制。 按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用 “类加载(Class Loading)” 来表示: 将 class&#x2F;interface 名称映射为 Class 对象的一整个过程。 这个过程">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/banner/IMG_5269(20220808-123604).jpg">
 <meta property="article:published_time" content="2022-10-13T16:51:11.000Z">
-<meta property="article:modified_time" content="2024-05-14T04:55:19.326Z">
+<meta property="article:modified_time" content="2024-05-14T05:02:54.709Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          8.5k 字
+          8.4k 字
         
       </span>
     
@@ -277,60 +277,60 @@
             
               <div class="markdown-body">
                 
-                <h1 id="类加载">类加载</h1>
-<h1 id="概述">1.概述</h1>
+                <h1 id="类加载"><a class="markdownIt-Anchor" href="#类加载"></a> 类加载</h1>
+<h1 id="1概述"><a class="markdownIt-Anchor" href="#1概述"></a> 1.概述</h1>
 <p>Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的类加载机制。</p>
-<p>按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用
-“<code>类加载</code>(Class Loading)” 来表示: 将 class/interface
-名称映射为 Class 对象的一整个过程。
-这个过程还可以划分为更具体的阶段。</p>
-<h1 id="类的生命周期">2.类的生命周期</h1>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/6zd6i.png" srcset="/img/loading.gif" lazyload
-alt="3de64ff2-77de-4468-af3a-c61bbb8cd944.png" />
-<figcaption
-aria-hidden="true">3de64ff2-77de-4468-af3a-c61bbb8cd944.png</figcaption>
-</figure>
+<p>按照 Java 语言规范和 Java 虚拟机规范的定义, 我们用 “<code>类加载</code>(Class Loading)” 来表示: 将 class/interface 名称映射为 Class 对象的一整个过程。 这个过程还可以划分为更具体的阶段。</p>
+<h1 id="2类的生命周期"><a class="markdownIt-Anchor" href="#2类的生命周期"></a> 2.类的生命周期</h1>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/6zd6i.png" srcset="/img/loading.gif" lazyload alt="" /></p>
 <p>一个类在 JVM 里的生命周期有 7 个阶段，分别是</p>
 <ul>
-<li><p>加载（Loading）</p></li>
-<li><p>验证（Verification）</p></li>
-<li><p>准备（Preparation）</p></li>
-<li><p>解析（Resolution）</p></li>
-<li><p>初始化（Initialization）</p></li>
-<li><p>使用（Using）</p></li>
-<li><p>卸载（Unloading)。</p></li>
+<li>
+<p>加载（Loading）</p>
+</li>
+<li>
+<p>验证（Verification）</p>
+</li>
+<li>
+<p>准备（Preparation）</p>
+</li>
+<li>
+<p>解析（Resolution）</p>
+</li>
+<li>
+<p>初始化（Initialization）</p>
+</li>
+<li>
+<p>使用（Using）</p>
+</li>
+<li>
+<p>卸载（Unloading)。</p>
+</li>
 </ul>
 <p>其中前五个部分（加载，验证，准备，解析，初始化）统称为<strong>类加载</strong>。</p>
-<h1 id="类加载过程">3.类加载过程</h1>
-<h2 id="加载">3.1 加载</h2>
-<p>根据一个类的全限定名(如cn.edu.hdu.test.HelloWorld.class)来读取此类的二进制字节流到JVM内部。如果找不到二进制表示形式，则会抛出
-<code>NoClassDefFound</code> 错误。</p>
-<p>加载”是“类加载”过程的一个阶段，不能混淆这两个名词。在加载阶段，虚拟机需要完成
-3 件事：</p>
+<h1 id="3类加载过程"><a class="markdownIt-Anchor" href="#3类加载过程"></a> 3.类加载过程</h1>
+<h2 id="31-加载"><a class="markdownIt-Anchor" href="#31-加载"></a> 3.1 加载</h2>
+<p>根据一个类的全限定名(如cn.edu.hdu.test.HelloWorld.class)来读取此类的二进制字节流到JVM内部。如果找不到二进制表示形式，则会抛出 <code>NoClassDefFound</code> 错误。</p>
+<p>加载”是“类加载”过程的一个阶段，不能混淆这两个名词。在加载阶段，虚拟机需要完成 3 件事：</p>
 <ul>
 <li>通过类的全限定名获取该类的二进制字节流。</li>
 <li>将二进制字节流所代表的静态结构转化为方法区的运行时数据结构。</li>
-<li>在内存中创建一个代表该类的 java.lang.Class
-对象，作为方法区这个类的各种数据的访问入口。</li>
+<li>在内存中创建一个代表该类的 java.lang.Class 对象，作为方法区这个类的各种数据的访问入口。</li>
 </ul>
-<h3 id="加载.class文件的方式">3.1.1 加载.class文件的方式</h3>
-<ol type="1">
+<h3 id="311-加载class文件的方式"><a class="markdownIt-Anchor" href="#311-加载class文件的方式"></a> 3.1.1 加载.class文件的方式</h3>
+<ol>
 <li>从 zip 包中读取，如 jar、war 等；</li>
 <li>从网络中获取，如 Applet；</li>
 <li>通过动态代理技术生成代理类的二进制字节流；</li>
 <li>由 JSP 文件生成对应的 Class 类；</li>
-<li>从数据库中读取，如
-有些中间件服务器可以选择把程序安装到数据库中来完成程序代码在集群间的分发。</li>
+<li>从数据库中读取，如 有些中间件服务器可以选择把程序安装到数据库中来完成程序代码在集群间的分发。</li>
 </ol>
-<h2 id="验证">3.2 验证</h2>
-<p>验证阶段确保 Class
-文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。主要包括四个检验过程。</p>
-<h3 id="验证的过程">3.2.1 验证的过程</h3>
+<h2 id="32-验证"><a class="markdownIt-Anchor" href="#32-验证"></a> 3.2 验证</h2>
+<p>验证阶段确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。主要包括四个检验过程。</p>
+<h3 id="321-验证的过程"><a class="markdownIt-Anchor" href="#321-验证的过程"></a> 3.2.1 验证的过程</h3>
 <ul>
-<li><p>文件格式验证：验证字节流是否符合 Class
-文件格式的规范，并且能被当前版本的虚拟机处理，验证点如下：</p>
+<li>
+<p>文件格式验证：验证字节流是否符合 Class 文件格式的规范，并且能被当前版本的虚拟机处理，验证点如下：</p>
 <ul>
 <li>是否以魔数 0XCAFEBABE 开头。</li>
 <li>主次版本号是否在当前虚拟机处理范围内。</li>
@@ -338,25 +338,41 @@ aria-hidden="true">3de64ff2-77de-4468-af3a-c61bbb8cd944.png</figcaption>
 <li>指向常量的索引值是否指向了不存在的常量。</li>
 <li>CONSTANT_Utf8_info 型的常量是否有不符合 UTF8 编码的数据。</li>
 <li>Class文件中各个部分及文件本身是否有被删除的或附加的其他信息。</li>
-<li>......</li>
-</ul></li>
-<li><p>元数据验证：对字节码描述信息进行语义分析，确保其符合 Java
-语法规范。</p>
+<li>…</li>
+</ul>
+</li>
+<li>
+<p>元数据验证：对字节码描述信息进行语义分析，确保其符合 Java 语法规范。</p>
 <ul>
-<li><p>这个类是否有父类（除了java.lang.Object之外，所有的类都应当有父类）。</p></li>
-<li><p>这个类的父类是否继承了不允许被继承的类（被final修饰的类）。</p></li>
-<li><p>如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有方法</p></li>
-<li><p>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现不符合规则的方</p>
-<p>法重载，例如方法参数都一致，但返回值类型却不同等）.</p></li>
-<li><p>......</p></li>
-</ul></li>
-<li><p>字节码验证：本阶段是验证过程中最复杂的一个阶段，是对方法体进行语义分析，保证方法在运行时不会出现危害虚拟机的事件。</p></li>
-<li><p>符号引用验证 本阶段发生在解析阶段，确保解析正常执行。</p>
+<li>
+<p>这个类是否有父类（除了java.lang.Object之外，所有的类都应当有父类）。</p>
+</li>
+<li>
+<p>这个类的父类是否继承了不允许被继承的类（被final修饰的类）。</p>
+</li>
+<li>
+<p>如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有方法</p>
+</li>
+<li>
+<p>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现不符合规则的方</p>
+<p>法重载，例如方法参数都一致，但返回值类型却不同等）.</p>
+</li>
+<li>
+<p>…</p>
+</li>
+</ul>
+</li>
+<li>
+<p>字节码验证：本阶段是验证过程中最复杂的一个阶段，是对方法体进行语义分析，保证方法在运行时不会出现危害虚拟机的事件。</p>
+</li>
+<li>
+<p>符号引用验证 本阶段发生在解析阶段，确保解析正常执行。</p>
 <ul>
 <li>符号引用中通过字符串描述的全限定名是否能找到对应的类。</li>
 <li>在指定类中是否存在符合方法的字段描述符及简单名称所描述的方法和字段。</li>
 <li>符号引用中的类、字段、方法的可访问性（private、protected、public、<package>）是否可被当前类访问。</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <blockquote>
 <p>符号引用验证的主要目的是确保解析行为能正常执行，如果无法通过符号引用验证，Java虚拟机</p>
@@ -370,66 +386,52 @@ aria-hidden="true">3de64ff2-77de-4468-af3a-c61bbb8cd944.png</figcaption>
 <p>已经被反复使用和验证过，在生产环境的实施阶段就可以考虑使用-Xverify：none参数来关闭大部分的</p>
 <p>类验证措施，以缩短虚拟机类加载的时间。</p>
 </blockquote>
-<h2 id="准备">3.3 准备</h2>
+<h2 id="33-准备"><a class="markdownIt-Anchor" href="#33-准备"></a> 3.3 准备</h2>
 <p>准备阶段是正式为类变量（或称“静态成员变量”）分配内存并设置初始值的阶段。这些变量（不包括实例变量）所使用的内存都在方法区中进行分配。</p>
 <p>关于准备阶段，还有两个容易产生混淆的概念笔者需要着重强调，首先是这时候进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在Java堆中。其次是这里所说的初始值“通常情况”下是数据类型的零值，假设一个类变量的定义为</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">123</span>;<br></code></pre></td></tr></table></figure>
 <p>那变量value在准备阶段过后的初始值为0而不是123，因为这时尚未开始执行任何Java方法，</p>
-<p>存在“特殊情况”：如果类字段的字段属性表中存在 ConstantValue
-属性，那么在准备阶段 value 就会被初始化为 ConstantValue
-属性所指定的值，假设上面类变量 value 的定义变为：</p>
+<p>存在“特殊情况”：如果类字段的字段属性表中存在 ConstantValue 属性，那么在准备阶段 value 就会被初始化为 ConstantValue 属性所指定的值，假设上面类变量 value 的定义变为：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">123</span>;<br></code></pre></td></tr></table></figure>
-<p>那么在准备阶段虚拟机会根据 ConstantValue 的设置将 value 赋值为
-123。</p>
-<h2 id="解析">3.4 解析</h2>
-<p>解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程，解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符这7
-类符号引用进行。前四种与我们最熟悉：类或接口的解析、字段解析、类方法解析、接口方法解析。</p>
+<p>那么在准备阶段虚拟机会根据 ConstantValue 的设置将 value 赋值为 123。</p>
+<h2 id="34-解析"><a class="markdownIt-Anchor" href="#34-解析"></a> 3.4 解析</h2>
+<p>解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程，解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符这7 类符号引用进行。前四种与我们最熟悉：类或接口的解析、字段解析、类方法解析、接口方法解析。</p>
 <ul>
-<li><p>符号引用（SymbolicReferences）</p>
-<p>符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。符号引用与虚拟机实现的内存布局无关，引用的目标并不一定是已经加载到虚拟机内存当中的内容。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须都是一致的，因为符号引用的字面量形式明确定义在《范》的Class文件格式中。</p></li>
-<li><p>直接引用（DirectReferences）</p>
-<p>直接引用是可以直接指向目标的指针、相对偏移量或者是一个能间接定位到目标的句柄。直接引用是和虚拟机实现的内存布局直接相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那引用的目标必定已经在虚拟机的内存中存在。</p></li>
+<li>
+<p>符号引用（SymbolicReferences）</p>
+<p>符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。符号引用与虚拟机实现的内存布局无关，引用的目标并不一定是已经加载到虚拟机内存当中的内容。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须都是一致的，因为符号引用的字面量形式明确定义在《范》的Class文件格式中。</p>
+</li>
+<li>
+<p>直接引用（DirectReferences）</p>
+<p>直接引用是可以直接指向目标的指针、相对偏移量或者是一个能间接定位到目标的句柄。直接引用是和虚拟机实现的内存布局直接相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那引用的目标必定已经在虚拟机的内存中存在。</p>
+</li>
 </ul>
 <blockquote>
-<p>简单的来说就是我们编写的代码中，当一个变量引用某个对象的时候，这个引用在
-<code>.class</code>
-文件中是以符号引用来存储的（相当于做了一个索引记录）。</p>
+<p>简单的来说就是我们编写的代码中，当一个变量引用某个对象的时候，这个引用在 <code>.class</code> 文件中是以符号引用来存储的（相当于做了一个索引记录）。</p>
 <p>在解析阶段就需要将其解析并链接为直接引用（相当于指向实际对象）。如果有了直接引用，那引用的目标必定在堆中存在。</p>
 <p>加载一个 class 时, 需要加载所有的 super 类和 super 接口。</p>
 </blockquote>
-<h2 id="初始化">3.5 初始化</h2>
-<p>类初始化阶段是类加载过程的最后一步，是执行类构造器
-<code>&lt;clinit&gt;()</code> 方法的过程。</p>
+<h2 id="35-初始化"><a class="markdownIt-Anchor" href="#35-初始化"></a> 3.5 初始化</h2>
+<p>类初始化阶段是类加载过程的最后一步，是执行类构造器 <code>&lt;clinit&gt;()</code> 方法的过程。</p>
 <blockquote>
-<p><code>&lt;clinit&gt;()</code>
-方法是由编译器自动收集类中的所有类变量的赋值动作和静态语句块（static {}
-块）中的语句合并产生的，编译器收集的顺序是由语句在源文件中出现的顺序所决定的。</p>
+<p><code>&lt;clinit&gt;()</code> 方法是由编译器自动收集类中的所有类变量的赋值动作和静态语句块（static {} 块）中的语句合并产生的，编译器收集的顺序是由语句在源文件中出现的顺序所决定的。</p>
 <p>静态语句块中只能访问定义在静态语句块之前的变量，定义在它之后的变量，在前面的静态语句块中可以赋值，但不能访问。</p>
 </blockquote>
 <p>如下方代码所示：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> &#123;<br>    <span class="hljs-keyword">static</span> &#123;<br>        i = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 给变量赋值可以正常编译通过</span><br>        System.out.println(i);  <span class="hljs-comment">// 这句编译器会提示“非法向前引用”</span><br>    &#125;<br>    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><p><code>&lt;clinit&gt;()</code>
-方法不需要显式调用父类构造器，虚拟机会保证在子类的
-<code>&lt;clinit&gt;()</code> 方法执行之前，父类的
-<code>&lt;clinit&gt;()</code> 方法已经执行完毕。</p></li>
-<li><p>由于父类的 <code>&lt;clinit&gt;()</code>
-方法先执行，意味着父类中定义的静态语句块要优先于子类的变量赋值操作。如下方代码所示：字段B的值将会是2而不是1</p></li>
+<li>
+<p><code>&lt;clinit&gt;()</code> 方法不需要显式调用父类构造器，虚拟机会保证在子类的 <code>&lt;clinit&gt;()</code> 方法执行之前，父类的 <code>&lt;clinit&gt;()</code> 方法已经执行完毕。</p>
+</li>
+<li>
+<p>由于父类的 <code>&lt;clinit&gt;()</code> 方法先执行，意味着父类中定义的静态语句块要优先于子类的变量赋值操作。如下方代码所示：字段B的值将会是2而不是1</p>
+</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">A</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">static</span> &#123;<br>        A = <span class="hljs-number">2</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sub</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Parent</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">B</span> <span class="hljs-operator">=</span> A;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    System.out.println(Sub.B); <span class="hljs-comment">// 输出 2</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<p><code>&lt;clinit&gt;()</code>
-方法不是必需的，如果一个类没有静态语句块，也没有对类变量的赋值操作，那么编译器可以不为这个类生成
-<code>&lt;clinit&gt;()</code> 方法。</p>
-<p>接口中不能使用静态代码块，但接口也需要通过
-<code>&lt;clinit&gt;()</code>
-方法为接口中定义的静态成员变量显式初始化。但接口与类不同，接口的
-<code>&lt;clinit&gt;()</code> 方法不需要先执行父类的
-<code>&lt;clinit&gt;()</code>
-方法，只有当父接口中定义的变量使用时，父接口才会初始化。</p>
-<p>虚拟机会保证一个类的 <code>&lt;clinit&gt;()</code>
-方法在多线程环境中被正确加锁、同步。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的
-<code>&lt;clinit&gt;()</code> 方法。</p>
-<h1 id="类加载的时机">4.类加载的时机</h1>
+<p><code>&lt;clinit&gt;()</code> 方法不是必需的，如果一个类没有静态语句块，也没有对类变量的赋值操作，那么编译器可以不为这个类生成 <code>&lt;clinit&gt;()</code> 方法。</p>
+<p>接口中不能使用静态代码块，但接口也需要通过 <code>&lt;clinit&gt;()</code> 方法为接口中定义的静态成员变量显式初始化。但接口与类不同，接口的 <code>&lt;clinit&gt;()</code> 方法不需要先执行父类的 <code>&lt;clinit&gt;()</code> 方法，只有当父接口中定义的变量使用时，父接口才会初始化。</p>
+<p>虚拟机会保证一个类的 <code>&lt;clinit&gt;()</code> 方法在多线程环境中被正确加锁、同步。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的 <code>&lt;clinit&gt;()</code> 方法。</p>
+<h1 id="4类加载的时机"><a class="markdownIt-Anchor" href="#4类加载的时机"></a> 4.类加载的时机</h1>
 <p>在上文，我们说过：</p>
 <blockquote>
 <p>Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最</p>
@@ -437,134 +439,100 @@ aria-hidden="true">3de64ff2-77de-4468-af3a-c61bbb8cd944.png</figcaption>
 </blockquote>
 <p>在Java语言里面，类型的加载、连接和初始化过程都是在程序运行期间完成的，这种策略让Java语言进行提前编译会面临额外的困难，也会让类加载时稍微增加一些性能开销，但是却为Java应用提供了极高的扩展性和灵活性，Java天生可以动态扩展的语言特性就是依赖运行期动态加载和动态连接这个特点实现的。</p>
 <p>一个类型从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期将会经历加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）七个阶段，其中验证、准备、解析三个部分统称为连接（Linking）。</p>
-<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/loadclass.png" srcset="/img/loading.gif" lazyload alt="Load Class" style="zoom:80%;" /></p>
+<img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/loadclass.png" srcset="/img/loading.gif" lazyload alt="Load Class" style="zoom:80%;" />
 <p><code>加载</code>、<code>验证</code>、<code>准备</code>、<code>初始化</code>和<code>卸载</code>这五个阶段的顺序是确定的，类型的加载过程必须按照这种顺序按部就班地开始，而解析阶段则不一定：它在某些情况下可以在初始化阶段之后再开始，</p>
 <blockquote>
 <p>这是为了支持Java语言的运行时绑定特性（也称为动态绑定或晚期绑定）。</p>
 </blockquote>
-<h2 id="主动引用">4.1 主动引用</h2>
-<p>Java
-虚拟机规范没有强制约束类加载过程的第一阶段（即：加载）什么时候开始，但对于“初始化”阶段，有着严格的规定。有且仅有
-5
-种情况必须立即对类进行“初始化”：《Java虚拟机规范》则是严格规定了有且只有六种情况必须立即对类进行“初始化”（而加载、验证、准备自然需要在此之前开始）：</p>
+<h2 id="41-主动引用"><a class="markdownIt-Anchor" href="#41-主动引用"></a> 4.1 主动引用</h2>
+<p>Java 虚拟机规范没有强制约束类加载过程的第一阶段（即：加载）什么时候开始，但对于“初始化”阶段，有着严格的规定。有且仅有 5 种情况必须立即对类进行“初始化”：《Java虚拟机规范》则是严格规定了有且只有六种情况必须立即对类进行“初始化”（而加载、验证、准备自然需要在此之前开始）：</p>
 <ul>
-<li><p>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法的那个类），虚拟机会先初始化这个类。</p></li>
-<li><p>遇到new、getstatic、putstatic（调用静态方法）或invokestatic（访问静态指令）这四条字节码指令时，如果类型没有进行过初始化，则需要先触发其初始化阶段。</p></li>
-<li><p>使用java.lang.reflect包的方法对类型进行反射调用的时候，如果类型没有进行过初始化，则需要先触发其初始化。其实跟前面一样，反射调用要么是已经有实例了，要么是静态方法，都需要初始化；</p></li>
-<li><p>当初始化类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化。也就是子类的初始化会触发父类的初始化；</p></li>
-<li><p>当使用JDK
-7新加入的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解</p></li>
+<li>
+<p>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法的那个类），虚拟机会先初始化这个类。</p>
+</li>
+<li>
+<p>遇到new、getstatic、putstatic（调用静态方法）或invokestatic（访问静态指令）这四条字节码指令时，如果类型没有进行过初始化，则需要先触发其初始化阶段。</p>
+</li>
+<li>
+<p>使用java.lang.reflect包的方法对类型进行反射调用的时候，如果类型没有进行过初始化，则需要先触发其初始化。其实跟前面一样，反射调用要么是已经有实例了，要么是静态方法，都需要初始化；</p>
+</li>
+<li>
+<p>当初始化类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化。也就是子类的初始化会触发父类的初始化；</p>
+</li>
+<li>
+<p>当使用JDK 7新加入的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解</p>
+</li>
 </ul>
 <p>析结果为REF_getStatic、REF_putStatic、REF_invokeStatic、REF_newInvokeSpecial四种类型的方法句</p>
 <p>柄，并且这个方法句柄对应的类没有进行过初始化，则需要先触发其初始化。</p>
 <ul>
-<li>当一个接口中定义了JDK
-8新加入的默认方法（被default关键字修饰的接口方法）时，如果有</li>
+<li>当一个接口中定义了JDK 8新加入的默认方法（被default关键字修饰的接口方法）时，如果有</li>
 </ul>
 <p>这个接口的实现类发生了初始化，那该接口要在其之前被初始化。</p>
-<p>这
-6种场景中的行为称为对一个类进行<strong>主动引用</strong>，除此之外，其它所有引用类的方式都不会触发初始化，称为<strong>被动引用</strong>。</p>
-<h2 id="被动引用">4.2 被动引用</h2>
+<p>这 6种场景中的行为称为对一个类进行<strong>主动引用</strong>，除此之外，其它所有引用类的方式都不会触发初始化，称为<strong>被动引用</strong>。</p>
+<h2 id="42-被动引用"><a class="markdownIt-Anchor" href="#42-被动引用"></a> 4.2 被动引用</h2>
 <ul>
 <li>Demo1：通过子类引用父类的静态字段，只会触发父类的初始化，而不会触发子类的初始化。</li>
 <li>Demo2：定义对象数组，不会触发该类的初始化。</li>
 <li>Demo3：常量在编译期间会存入调用类的常量池中，本质上并没有直接引用定义常量的类，不会触发定义常量所在的类。</li>
-<li>通过类名获取 Class 对象，不会触发类的初始化，Hello.class 不会让
-Hello 类初始化。</li>
-<li>通过 Class.forName 加载指定类时，如果指定参数 initialize 为 false
-时，也不会触发类初始化，其实这个参数是告诉虚拟机，是否要对类进行初始化。Class.forName(“jvm.Hello”)默认会加载
-Hello 类。</li>
-<li>通过 ClassLoader 默认的 loadClass
-方法，也不会触发初始化动作（加载了，但是不初始化）。</li>
+<li>通过类名获取 Class 对象，不会触发类的初始化，Hello.class 不会让 Hello 类初始化。</li>
+<li>通过 Class.forName 加载指定类时，如果指定参数 initialize 为 false 时，也不会触发类初始化，其实这个参数是告诉虚拟机，是否要对类进行初始化。Class.forName(“jvm.Hello”)默认会加载 Hello 类。</li>
+<li>通过 ClassLoader 默认的 loadClass 方法，也不会触发初始化动作（加载了，但是不初始化）。</li>
 </ul>
 <blockquote>
-<p>诸如 Class.forName(), classLoader.loadClass() 等 Java API, 反射API,
-以及 JNI_FindClass 都可以启动类加载。 JVM 本身也会进行类加载。 比如在
-JVM 启动时加载核心类，java.lang.Object, java.lang.Thread 等等。</p>
+<p>诸如 Class.forName(), classLoader.loadClass() 等 Java API, 反射API, 以及 JNI_FindClass 都可以启动类加载。 JVM 本身也会进行类加载。 比如在 JVM 启动时加载核心类，java.lang.Object, java.lang.Thread 等等。</p>
 </blockquote>
-<h3 id="demo1"><a
-target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo1</h3>
+<h3 id=""><a class="markdownIt-Anchor" href="#"></a> <a target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo1</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuperClass</span> &#123;<br>    <span class="hljs-keyword">static</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;SuperClass init!&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">123</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">SuperClass</span> &#123;<br>    <span class="hljs-keyword">static</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;SubClass init!&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NotInitialization</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        System.out.println(SubClass.value);<br>        <span class="hljs-comment">// SuperClass init!</span><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上述代码运行之后，只会输出“SuperClass init！”，而不会输出“SubClass
-init！”。对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</p>
-<h3 id="demo2"><a
-target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo2</h3>
+<p>上述代码运行之后，只会输出“SuperClass init！”，而不会输出“SubClass init！”。对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</p>
+<h3 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> <a target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo2</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 被动使用类字段演示二：</span><br><span class="hljs-comment">* 通过数组定义来引用类，不会触发此类的初始化</span><br><span class="hljs-comment">**/</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NotInitialization</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SuperClass[] superClasses = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SuperClass</span>[<span class="hljs-number">10</span>];<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="demo3"><a
-target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo3</h3>
+<h3 id="-3"><a class="markdownIt-Anchor" href="#-3"></a> <a target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#demo2">#</a>Demo3</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 被动引用 Demo3:</span><br><span class="hljs-comment"> * 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化。</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> ylb</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConstClass</span> &#123;<br>    <span class="hljs-keyword">static</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;ConstClass init!&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">HELLO_BINGO</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello world&quot;</span>;<br><br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NotInitialization</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        System.out.println(ConstClass.HELLO_BINGO);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上述代码运行之后，也没有输出“ConstClass
-init！”，这是因为虽然在Java源码中确实引用了ConstClass类的常量HELLOWORLD，但其实在编译阶段通过常量传播优化，已经将此常量的值“hello
-world”直接存储在NotInitialization类的常量池中，以后NotInitialization对常量ConstClass.HELLOWORLD的引用，实际都被转化为NotInitialization类对自身常量池的引用了。</p>
+<p>上述代码运行之后，也没有输出“ConstClass init！”，这是因为虽然在Java源码中确实引用了ConstClass类的常量HELLOWORLD，但其实在编译阶段通过常量传播优化，已经将此常量的值“hello world”直接存储在NotInitialization类的常量池中，以后NotInitialization对常量ConstClass.HELLOWORLD的引用，实际都被转化为NotInitialization类对自身常量池的引用了。</p>
 <p>也就是说，实际上NotInitialization的Class文件之中并没有ConstClass类的符号引用入口，这两个类在编译成</p>
 <p>Class文件后就已不存在任何联系了。</p>
-<h2 id="接口的加载过程">4.3 接口的加载过程</h2>
+<h2 id="43-接口的加载过程"><a class="markdownIt-Anchor" href="#43-接口的加载过程"></a> 4.3 接口的加载过程</h2>
 <p>接口加载过程与类加载过程稍有不同。</p>
 <p>当一个类在初始化时，要求其父类全部都已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，当真正用到父接口的时候才会初始化。</p>
-<h1 id="类加载器">5.类加载器</h1>
-<p>类加载过程可以描述为“通过一个类的全限定名 a.b.c.XXClass
-来获取描述此类的 Class
-对象”，这个过程由“类加载器（ClassLoader）”来完成。这样的好处在于，子类加载器可以复用父加载器加载的类。</p>
-<p>一般<strong>启动类加载器</strong>是由 JVM 内部实现的，在 Java 的 API
-里无法拿到，但是我们可以侧面看到和影响它。后 2 种类加载器在 Oracle
-Hotspot JVM
-里，都是在中<code>sun.misc.Launcher</code>定义的，<strong>扩展类加载器和应用类加载器</strong>一般都继承自<code>URLClassLoader</code>类，这个类也默认实现了从各种不同来源加载
-class 字节码转换成 Class 的方法。</p>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/esz0u-1684769425399-5.png" srcset="/img/loading.gif" lazyload
-alt="c32f4986-0e72-4268-a90a-7451e1931161.png" />
-<figcaption
-aria-hidden="true">c32f4986-0e72-4268-a90a-7451e1931161.png</figcaption>
-</figure>
+<h1 id="5类加载器"><a class="markdownIt-Anchor" href="#5类加载器"></a> 5.类加载器</h1>
+<p>类加载过程可以描述为“通过一个类的全限定名 a.b.c.XXClass 来获取描述此类的 Class 对象”，这个过程由“类加载器（ClassLoader）”来完成。这样的好处在于，子类加载器可以复用父加载器加载的类。</p>
+<p>一般<strong>启动类加载器</strong>是由 JVM 内部实现的，在 Java 的 API 里无法拿到，但是我们可以侧面看到和影响它。后 2 种类加载器在 Oracle Hotspot JVM 里，都是在中<code>sun.misc.Launcher</code>定义的，<strong>扩展类加载器和应用类加载器</strong>一般都继承自<code>URLClassLoader</code>类，这个类也默认实现了从各种不同来源加载 class 字节码转换成 Class 的方法。</p>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/esz0u-1684769425399-5.png" srcset="/img/loading.gif" lazyload alt="" /></p>
 <p>系统自带的类加载器分为三种：</p>
 <ul>
 <li>启动类加载器（BootstrapClassLoader）</li>
 <li>扩展类加载器（ExtClassLoader）</li>
 <li>应用类加载器（AppClassLoader）</li>
 </ul>
-<p>[<img
-src="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/JVM%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%2032%20%E8%AE%B2%EF%BC%88%E5%AE%8C%EF%BC%89/assets/csrk7.png" srcset="/img/loading.gif" lazyload
-alt="8a806e88-cd41-4a28-b552-76efb0a1fdba.png" />]</p>
+<p>![<img src="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/JVM%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%2032%20%E8%AE%B2%EF%BC%88%E5%AE%8C%EF%BC%89/assets/csrk7.png" srcset="/img/loading.gif" lazyload alt="" />]</p>
 <ul>
-<li><strong>启动类加载器: Bootstrap ClassLoader</strong></li>
+<li><strong>启动类加载器:  Bootstrap ClassLoader</strong></li>
 </ul>
-<p>负责加载 Jre/lib/目录中的，或通过-Xbootclasspath
-参数指定路径中的，且被虚拟机认可（按文件名识别，如
-rt.jar）的类。它用来加载 Java 的核心类，是用原生 C++
-代码来实现的，并不继承自
-java.lang.ClassLoader（负责加载JDK中jre/lib/rt.jar里所有的class）。它可以看做是
-JVM
-自带的，我们再代码层面无法直接获取到启动类加载器的引用，所以不允许直接操作它，启动类加载器是无法被Java程序直接引用的。</p>
+<p>负责加载 Jre/lib/目录中的，或通过-Xbootclasspath 参数指定路径中的，且被虚拟机认可（按文件名识别，如 rt.jar）的类。它用来加载 Java 的核心类，是用原生 C++ 代码来实现的，并不继承自 java.lang.ClassLoader（负责加载JDK中jre/lib/rt.jar里所有的class）。它可以看做是 JVM 自带的，我们再代码层面无法直接获取到启动类加载器的引用，所以不允许直接操作它，启动类加载器是无法被Java程序直接引用的。</p>
 <blockquote>
-<p>java.lang.String 是由启动类加载器加载的，所以
-String.class.getClassLoader() 就会返回 null。</p>
+<p>java.lang.String 是由启动类加载器加载的，所以 String.class.getClassLoader() 就会返回 null。</p>
 </blockquote>
 <ul>
 <li><strong>扩展类加载器： Extension ClassLoader</strong></li>
 </ul>
-<p>负责加载Jre/lib/ext/目录(RE 的扩展目录)中的，或通过 -java.ext.dirs
-系统变量指定路径中的类库。</p>
+<p>负责加载Jre/lib/ext/目录(RE 的扩展目录)中的，或通过 -java.ext.dirs 系统变量指定路径中的类库。</p>
 <ul>
-<li><strong>应用程序加载器: Application ClassLoader</strong></li>
+<li><strong>应用程序加载器:  Application ClassLoader</strong></li>
 </ul>
-<p>负责加载用户路径（classpath）上的类库以及-Djava.class.path所指定目录下的类和jar包。在应用程序代码里可以通过
-ClassLoader 的静态方法 getSystemClassLoader()
-来获取应用类加载器。如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p>
+<p>负责加载用户路径（classpath）上的类库以及-Djava.class.path所指定目录下的类和jar包。在应用程序代码里可以通过 ClassLoader 的静态方法 getSystemClassLoader() 来获取应用类加载器。如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p>
 <ul>
 <li><strong>自定义加载器: 继承ClassLoader实现</strong></li>
 </ul>
-<p>如果用户自定义了类加载器，则自定义类加载器都以应用类加载器作为父加载器。应用类加载器的父类加载器为扩展类加载器。这些类加载器是有层次关系的，启动加载器又叫根加载器，是扩展加载器的父加载器，但是直接从
-ExClassLoader 里拿不到它的引用，同样会返回 null。</p>
-<p>要创建用户自己的类加载器，只需要继承java.lang.ClassLoader类，然后覆盖它的findClass(String
-name)方法即可，即指明如何获取类的字节码流。</p>
+<p>如果用户自定义了类加载器，则自定义类加载器都以应用类加载器作为父加载器。应用类加载器的父类加载器为扩展类加载器。这些类加载器是有层次关系的，启动加载器又叫根加载器，是扩展加载器的父加载器，但是直接从 ExClassLoader 里拿不到它的引用，同样会返回 null。</p>
+<p>要创建用户自己的类加载器，只需要继承java.lang.ClassLoader类，然后覆盖它的findClass(String name)方法即可，即指明如何获取类的字节码流。</p>
 <p>1、如果不想打破双亲委派模型，那么只需要重写findClass方法即可,也不需要重写resolveClass方法</p>
 <p>2、如果想打破双亲委派模型，那么就重写整个loadClass方法。自定义类加载器的核心是对于字节码文件的获取。</p>
 <blockquote>
 <p>自定义类加载器的作用：jvm自带的三个加载器只能加载指定路径下的类字节码。如果某个情况下，我们需要加载应用程序之外的类文件呢？比如本地D盘下的，或者去加载网络上的某个类文件，这种情况就可以使用自定义加载器了。</p>
 <p>还有，两个没有关系的自定义类加载器之间加载的类是不共享的（只共享父类加载器，兄弟之间不共享），这样就可以实现不同的类型沙箱的隔离性，我们可以用多个类加载器，各自加载同一个类的不同版本，大家可以相互之间不影响彼此，从而在这个基础上可以实现类的动态加载卸载，热插拔的插件机制等，具体信息大家可以参考OSGi等模块化技术。</p>
 </blockquote>
-<h1 id="类加载机制">6.类加载机制</h1>
+<h1 id="6类加载机制"><a class="markdownIt-Anchor" href="#6类加载机制"></a> 6.类加载机制</h1>
 <p>JVM的类加载机制主要有如下3种。</p>
 <ul>
 <li><strong>全盘负责</strong></li>
@@ -575,8 +543,7 @@ name)方法即可，即指明如何获取类的字节码流。</p>
 </ul>
 <p>如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。</p>
 <blockquote>
-<p>如果几个类加载器都没有加载到指定名称的类，那么会抛出
-ClassNotFountException 异常。</p>
+<p>如果几个类加载器都没有加载到指定名称的类，那么会抛出 ClassNotFountException 异常。</p>
 </blockquote>
 <ul>
 <li><strong>缓存机制</strong></li>
@@ -585,38 +552,23 @@ ClassNotFountException 异常。</p>
 <blockquote>
 <p>这就是为很么修改了Class后，必须重新启动JVM，程序所做的修改才会生效的原因。</p>
 </blockquote>
-<h2 id="双亲委派">6.1 双亲委派</h2>
-<h3 id="为什么叫双亲委派">6.1.1 <strong>为什么叫双亲委派？</strong></h3>
-<p><em>双亲委派”这个词估计也就是翻译错误的问题，或者是这样一种可能性。相对于AppClassLoader，即应用程序类加载器。它加载我们项目（工程）下的
-CLASSPATH 路径下的类，它会委托 ExtClassLoader
-标准扩展（Extension）类加载器（也有称作扩展类加载器），这时
-ExtClassLoader 会再次委派 BootstrapClassLoader
-启动类加载器。BootstrapClassLoader 是 Java
-虚拟机的第一个类加载器，它不能再向上委托了。</em></p>
+<h2 id="61-双亲委派"><a class="markdownIt-Anchor" href="#61-双亲委派"></a> 6.1 双亲委派</h2>
+<h3 id="611-为什么叫双亲委派"><a class="markdownIt-Anchor" href="#611-为什么叫双亲委派"></a> 6.1.1 <strong>为什么叫双亲委派？</strong></h3>
+<p><em>双亲委派”这个词估计也就是翻译错误的问题，或者是这样一种可能性。相对于AppClassLoader，即应用程序类加载器。它加载我们项目（工程）下的 CLASSPATH 路径下的类，它会委托 ExtClassLoader 标准扩展（Extension）类加载器（也有称作扩展类加载器），这时 ExtClassLoader 会再次委派 BootstrapClassLoader 启动类加载器。BootstrapClassLoader 是 Java 虚拟机的第一个类加载器，它不能再向上委托了。</em></p>
 <p><em>因此，根据这个过程，我们发现一共委托了两次，所以“双亲委派”中有一个双。而“亲”字，在中国代表的是亲人的意思，而委托两次，都是交给父类来处理，因此都算得上叫亲人。所以“双亲委派”中的双亲应该就是这样来的,</em></p>
 <p>在前面我们说过：采用双亲委派的加载请求，最终都是委托给顶层的启动类加载器进行加载。</p>
 <blockquote>
-<p>在 java.lang.ClassLoader 中的 <code>loadClass</code>
-方法中实现该过程。</p>
+<p>在 java.lang.ClassLoader 中的 <code>loadClass</code> 方法中实现该过程。</p>
 </blockquote>
-<h3 id="为什么使用双亲委派模型">6.1.2
-<strong>为什么使用双亲委派模型?</strong></h3>
+<h3 id="612-为什么使用双亲委派模型"><a class="markdownIt-Anchor" href="#612-为什么使用双亲委派模型"></a> 6.1.2 <strong>为什么使用双亲委派模型?</strong></h3>
 <ul>
 <li>避免同一个类被多次加载</li>
 <li>每个加载器只能加载自己范围内的类，避免核心类被篡改。</li>
 </ul>
-<figure>
-<img
-src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230522231555610.png" srcset="/img/loading.gif" lazyload
-alt="image-20230522231555610" />
-<figcaption aria-hidden="true">image-20230522231555610</figcaption>
-</figure>
-<p>比如我们常用String、Object
-类，无论使用哪个类加载器加载，最终都会委派给最顶端的启动类加载器加载，从而使得不同加载器加载的类都是同一个。</p>
-<p>如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为
-java.lang.Object 的类，并放在 classpath 下，那么系统将会出现多个不同的
-String、Object 类，Java 类型体系中最基础的行为也就无法保证。</p>
-<h3 id="如何打破双亲委派">6.1.3 <strong>如何打破双亲委派？</strong></h3>
+<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/jvm/image-20230522231555610.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p>比如我们常用String、Object 类，无论使用哪个类加载器加载，最终都会委派给最顶端的启动类加载器加载，从而使得不同加载器加载的类都是同一个。</p>
+<p>如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为 java.lang.Object 的类，并放在 classpath 下，那么系统将会出现多个不同的 String、Object 类，Java 类型体系中最基础的行为也就无法保证。</p>
+<h3 id="613-如何打破双亲委派"><a class="markdownIt-Anchor" href="#613-如何打破双亲委派"></a> 6.1.3 <strong>如何打破双亲委派？</strong></h3>
 <p>自定义类加载器，重写loadClass方法</p>
 <ul>
 <li>loadClass：双亲委派机制就是通过该方法实现的。默认过程-先判断该类是否被当前层的类加载过，如果没有就将该类委托给父类加载器。如果最顶端父类无法加载则向下传递。</li>
@@ -629,59 +581,32 @@ String、Object 类，Java 类型体系中最基础的行为也就无法保证�
 <blockquote>
 <p>如果自定义的方法不想违背双亲委派模型，则只需要重写findclass方法即可，如果想违背双亲委派模型，则还需要重写loadclass方法。</p>
 </blockquote>
-<h1 id="一些实用的技巧">7.一些实用的技巧</h1>
-<h2 id="如何排查找不到jar包的问题">7.1 如何排查找不到Jar包的问题？</h2>
+<h1 id="7一些实用的技巧"><a class="markdownIt-Anchor" href="#7一些实用的技巧"></a> 7.一些实用的技巧</h1>
+<h2 id="71-如何排查找不到jar包的问题"><a class="markdownIt-Anchor" href="#71-如何排查找不到jar包的问题"></a> 7.1 如何排查找不到Jar包的问题？</h2>
 <p>有时候我们会面临明明已经把某个jar加入到了环境里，可以运行的时候还是找不到。那么我们有没有一种方法，可以直接看到各个类加载器加载了哪些jar，以及把哪些路径加到了classpath里？答案是肯定的，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> jvm;<br><br><span class="hljs-keyword">import</span> java.lang.reflect.Field;<br><span class="hljs-keyword">import</span> java.net.URL;<br><span class="hljs-keyword">import</span> java.net.URLClassLoader;<br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">JvmClassLoaderPrintPath</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><br>        <span class="hljs-comment">// 启动类加载器</span><br>        URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();<br>        System.out.println(<span class="hljs-string">&quot;启动类加载器&quot;</span>);<br>        <span class="hljs-keyword">for</span>(URL url : urls) &#123;<br>            System.out.println(<span class="hljs-string">&quot; ==&gt; &quot;</span> +url.toExternalForm());<br>        &#125;<br><br>        <span class="hljs-comment">// 扩展类加载器</span><br>        printClassLoader(<span class="hljs-string">&quot;扩展类加载器&quot;</span>, JvmClassLoaderPrintPath.class.getClassLoader().getParent());<br><br>        <span class="hljs-comment">// 应用类加载器</span><br>        printClassLoader(<span class="hljs-string">&quot;应用类加载器&quot;</span>, JvmClassLoaderPrintPath.class.getClassLoader());<br><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">printClassLoader</span><span class="hljs-params">(String name, ClassLoader CL)</span>&#123;<br>        <span class="hljs-keyword">if</span>(CL != <span class="hljs-literal">null</span>) &#123;<br>            System.out.println(name + <span class="hljs-string">&quot; ClassLoader -&gt; &quot;</span> + CL.toString());<br>            printURLForClassLoader(CL);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            System.out.println(name + <span class="hljs-string">&quot; ClassLoader -&gt; null&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">printURLForClassLoader</span><span class="hljs-params">(ClassLoader CL)</span>&#123;<br><br>        <span class="hljs-type">Object</span> <span class="hljs-variable">ucp</span> <span class="hljs-operator">=</span> insightField(CL,<span class="hljs-string">&quot;ucp&quot;</span>);<br>        <span class="hljs-type">Object</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> insightField(ucp,<span class="hljs-string">&quot;path&quot;</span>);<br>        <span class="hljs-type">ArrayList</span> <span class="hljs-variable">ps</span> <span class="hljs-operator">=</span> (ArrayList) path;<br>        <span class="hljs-keyword">for</span> (Object p : ps)&#123;<br>            System.out.println(<span class="hljs-string">&quot; ==&gt; &quot;</span> + p.toString());<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Object <span class="hljs-title function_">insightField</span><span class="hljs-params">(Object obj, String fName)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">Field</span> <span class="hljs-variable">f</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>            <span class="hljs-keyword">if</span>(obj <span class="hljs-keyword">instanceof</span> URLClassLoader)&#123;<br>                f = URLClassLoader.class.getDeclaredField(fName);<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                f = obj.getClass().getDeclaredField(fName);<br>            &#125;<br>            f.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-keyword">return</span> f.get(obj);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <p>代码执行结果如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">启动类加载器<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/resources.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/rt.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/sunrsasign.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/jsse.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/jce.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/charsets.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/jfr.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/classes<br><br>扩展类加载器 ClassLoader -&gt; sun.misc.Launcher<span class="hljs-variable">$ExtClassLoader</span>@15db9742<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/access-bridge-64.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/cldrdata.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/dnsns.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/jaccess.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/jfxrt.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/localedata.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/nashorn.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/sunec.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/sunjce_provider.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/sunmscapi.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/sunpkcs11.jar<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/ext/zipfs.jar<br><br>应用类加载器 ClassLoader -&gt; sun.misc.Launcher<span class="hljs-variable">$AppClassLoader</span>@73d16e93<br>   ==&gt; file:/D:/git/studyjava/build/classes/java/main/<br>   ==&gt; file:/D:/git/studyjava/build/resources/main<br></code></pre></td></tr></table></figure>
-<p>从打印结果，我们可以看到三种类加载器各自默认加载了哪些 jar
-包和包含了哪些 classpath 的路径。</p>
-<h2 id="如何排查类的方法不一致的问题">7.2
-如何排查类的方法不一致的问题？</h2>
-<p>假如我们确定一个 jar 或者 class 已经在 classpath
-里了，但是却总是提示<code>java.lang.NoSuchMethodError</code>，这是怎么回事呢？</p>
-<p>很可能是加载了错误的或者重复加载了不同版本的 jar
-包。这时候，用前面的方法就可以先排查一下，加载了具体什么
-jar，然后是不是不同路径下有重复的 class 文件，但是版本不一样。</p>
-<h2
-id="怎么看到加载了哪些类以及加载顺序">7.3怎么看到加载了哪些类，以及加载顺序？</h2>
-<p>还是针对上一个问题，假如有两个地方有
-Hello.class，一个是新版本，一个是旧的，怎么才能直观地看到他们的加载顺序呢？也没有问题，我们可以直接打印加载的类清单和加载顺序。</p>
-<p>只需要在类的启动命令行参数加上<code>-XX:+TraceClassLoading</code>
-或者 <code>-verbose</code> 即可，注意需要加载 Java
-命令之后，要执行的类名之前，不然不起作用。例如：</p>
+<p>从打印结果，我们可以看到三种类加载器各自默认加载了哪些 jar 包和包含了哪些 classpath 的路径。</p>
+<h2 id="72-如何排查类的方法不一致的问题"><a class="markdownIt-Anchor" href="#72-如何排查类的方法不一致的问题"></a> 7.2 如何排查类的方法不一致的问题？</h2>
+<p>假如我们确定一个 jar 或者 class 已经在 classpath 里了，但是却总是提示<code>java.lang.NoSuchMethodError</code>，这是怎么回事呢？</p>
+<p>很可能是加载了错误的或者重复加载了不同版本的 jar 包。这时候，用前面的方法就可以先排查一下，加载了具体什么 jar，然后是不是不同路径下有重复的 class 文件，但是版本不一样。</p>
+<h2 id="73怎么看到加载了哪些类以及加载顺序"><a class="markdownIt-Anchor" href="#73怎么看到加载了哪些类以及加载顺序"></a> 7.3怎么看到加载了哪些类，以及加载顺序？</h2>
+<p>还是针对上一个问题，假如有两个地方有 Hello.class，一个是新版本，一个是旧的，怎么才能直观地看到他们的加载顺序呢？也没有问题，我们可以直接打印加载的类清单和加载顺序。</p>
+<p>只需要在类的启动命令行参数加上<code>-XX:+TraceClassLoading</code> 或者 <code>-verbose</code> 即可，注意需要加载 Java 命令之后，要执行的类名之前，不然不起作用。例如：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs csharp">$ java -XX:+TraceClassLoading jvm.HelloClassLoader <br>[<span class="hljs-meta">Opened D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.Object from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.io.Serializable from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.Comparable from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.CharSequence from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.String from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.reflect.AnnotatedElement from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.reflect.GenericDeclaration from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.reflect.Type from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.Class from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.Cloneable from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.ClassLoader from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.System from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br><span class="hljs-comment">// .......  此处省略了100多条类加载信息</span><br>[<span class="hljs-meta">Loaded jvm.Hello from __JVM_DefineClass__</span>]<br>[<span class="hljs-meta">Loaded java.util.concurrent.ConcurrentHashMap$ForwardingNode from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>Hello Class Initialized!<br>[<span class="hljs-meta">Loaded java.lang.Shutdown from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br>[<span class="hljs-meta">Loaded java.lang.Shutdown$Lock from D:\Program Files\Java\jre1.8.0_231\lib\rt.jar</span>]<br></code></pre></td></tr></table></figure>
-<p>上面的信息，可以很清楚的看到类的加载先后顺序，以及是从哪个 jar
-里加载的，这样排查类加载的问题非常方便。</p>
-<h2 id="怎么调整或修改-ext-和本地加载路径">7.4怎么调整或修改 ext
-和本地加载路径？</h2>
-<p>从前面的例子我们可以看到，假如什么都不设置，直接执行 java
-命令，默认也会加载非常多的 jar 包，怎么可以自定义加载哪些 jar
-包呢？比如我的代码很简单，只加载 rt.jar 行不行？答案是肯定的。</p>
+<p>上面的信息，可以很清楚的看到类的加载先后顺序，以及是从哪个 jar 里加载的，这样排查类加载的问题非常方便。</p>
+<h2 id="74怎么调整或修改-ext-和本地加载路径"><a class="markdownIt-Anchor" href="#74怎么调整或修改-ext-和本地加载路径"></a> 7.4怎么调整或修改 ext 和本地加载路径？</h2>
+<p>从前面的例子我们可以看到，假如什么都不设置，直接执行 java 命令，默认也会加载非常多的 jar 包，怎么可以自定义加载哪些 jar 包呢？比如我的代码很简单，只加载 rt.jar 行不行？答案是肯定的。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ java -Dsun.boot.class.path=<span class="hljs-string">&quot;D:\Program Files\Java\jre1.8.0_231\lib\rt.jar&quot;</span> -Djava.ext.dirs= jvm.JvmClassLoaderPrintPath<br><br>启动类加载器<br>   ==&gt; file:/D:/Program%20Files/Java/jdk1.8.0_231/jre/lib/rt.jar<br>扩展类加载器 ClassLoader -&gt; sun.misc.Launcher<span class="hljs-variable">$ExtClassLoader</span>@15db9742<br>应用类加载器 ClassLoader -&gt; sun.misc.Launcher<span class="hljs-variable">$AppClassLoader</span>@73d16e93<br>   ==&gt; file:/D:/git/studyjava/build/classes/java/main/<br>   ==&gt; file:/D:/git/studyjava/build/resources/main<br></code></pre></td></tr></table></figure>
-<p>我们看到启动类加载器只加载了
-rt.jar，而扩展类加载器什么都没加载，这就达到了我们的目的。</p>
-<p>其中命令行参数<code>-Dsun.boot.class.path</code>表示我们要指定启动类加载器加载什么，最基础的东西都在
-rt.jar 这个包了里，所以一般配置它就够了。</p>
-<p>需要注意的是因为在 windows 系统默认 JDK
-安装路径有个空格，所以需要把整个路径用双引号括起来，如果路径没有空格，或是
-Linux/Mac 系统，就不需要双引号了。</p>
+<p>我们看到启动类加载器只加载了 rt.jar，而扩展类加载器什么都没加载，这就达到了我们的目的。</p>
+<p>其中命令行参数<code>-Dsun.boot.class.path</code>表示我们要指定启动类加载器加载什么，最基础的东西都在 rt.jar 这个包了里，所以一般配置它就够了。</p>
+<p>需要注意的是因为在 windows 系统默认 JDK 安装路径有个空格，所以需要把整个路径用双引号括起来，如果路径没有空格，或是 Linux/Mac 系统，就不需要双引号了。</p>
 <p>参数<code>-Djava.ext.dirs</code>表示扩展类加载器要加载什么，一般情况下不需要的话可以直接配置为空即可。</p>
-<h2
-id="怎么运行期加载额外的-jar-包或者-class-呢">7.5怎么运行期加载额外的
-jar 包或者 class 呢？</h2>
-<p>有时候我们在程序已经运行了以后，还是想要再额外的去加载一些 jar
-或类，需要怎么做呢？</p>
-<p>简单说就是不使用命令行参数的情况下，怎么用代码来运行时改变加载类的路径和方式。假如说，在<code>d:/app/jvm</code>路径下，有我们刚才使用过的
-Hello.class 文件，怎么在代码里能加载这个 Hello 类呢？</p>
-<p>两个办法，<strong>一个是前面提到的自定义 ClassLoader
-的方式，还有一个就是直接在当前的应用类加载器里，使用 URLClassLoader
-类的方法 addURL，不过这个方法是 protected
-的，需要反射处理一下，然后又因为程序在启动时并没有显示加载 Hello
-类，所以在添加完了 classpath 以后，没法直接显式初始化，需要使用
-Class.forName
-的方式来拿到已经加载的Hello类（Class.forName("jvm.Hello")默认会初始化并执行静态代码块）</strong>。</p>
+<h2 id="75怎么运行期加载额外的-jar-包或者-class-呢"><a class="markdownIt-Anchor" href="#75怎么运行期加载额外的-jar-包或者-class-呢"></a> 7.5怎么运行期加载额外的 jar 包或者 class 呢？</h2>
+<p>有时候我们在程序已经运行了以后，还是想要再额外的去加载一些 jar 或类，需要怎么做呢？</p>
+<p>简单说就是不使用命令行参数的情况下，怎么用代码来运行时改变加载类的路径和方式。假如说，在<code>d:/app/jvm</code>路径下，有我们刚才使用过的 Hello.class 文件，怎么在代码里能加载这个 Hello 类呢？</p>
+<p>两个办法，<strong>一个是前面提到的自定义 ClassLoader 的方式，还有一个就是直接在当前的应用类加载器里，使用 URLClassLoader 类的方法 addURL，不过这个方法是 protected 的，需要反射处理一下，然后又因为程序在启动时并没有显示加载 Hello 类，所以在添加完了 classpath 以后，没法直接显式初始化，需要使用 Class.forName 的方式来拿到已经加载的Hello类（Class.forName(“jvm.Hello”)默认会初始化并执行静态代码块）</strong>。</p>
 <p>代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> jvm;<br><br><span class="hljs-keyword">import</span> java.lang.reflect.InvocationTargetException;<br><span class="hljs-keyword">import</span> java.lang.reflect.Method;<br><span class="hljs-keyword">import</span> java.net.MalformedURLException;<br><span class="hljs-keyword">import</span> java.net.URL;<br><span class="hljs-keyword">import</span> java.net.URLClassLoader;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">JvmAppClassLoaderAddURL</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">appPath</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;file:/d:/app/&quot;</span>;<br>        <span class="hljs-type">URLClassLoader</span> <span class="hljs-variable">urlClassLoader</span> <span class="hljs-operator">=</span> (URLClassLoader) JvmAppClassLoaderAddURL.class.getClassLoader();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">Method</span> <span class="hljs-variable">addURL</span> <span class="hljs-operator">=</span> URLClassLoader.class.getDeclaredMethod(<span class="hljs-string">&quot;addURL&quot;</span>, URL.class);<br>            addURL.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-type">URL</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">URL</span>(appPath);<br>            addURL.invoke(urlClassLoader, url);<br>            Class.forName(<span class="hljs-string">&quot;jvm.Hello&quot;</span>); <span class="hljs-comment">// 效果跟Class.forName(&quot;jvm.Hello&quot;).newInstance()一样</span><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>执行以下，结果如下：</p>
@@ -689,10 +614,10 @@ Class.forName
 <p>$ java JvmAppClassLoaderAddURL Hello Class Initialized!</p>
 </blockquote>
 <p>结果显示 Hello 类被加载，成功的初始化并执行了其中的代码逻辑。</p>
-<h1 id="read-more">8.Read more</h1>
-<p>:lollipop::https://blog.csdn.net/VincentlVL/article/details/120516607</p>
-<p>:lollipop::https://doocs.gitee.io/jvm/08-load-class-time.html#%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F</p>
-<p>:lollipop::http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/JVM%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%2032%20%E8%AE%B2%EF%BC%88%E5%AE%8C%EF%BC%89/06%20Java%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%9A%E5%B1%B1%E4%B8%8D%E8%BE%9E%E5%9C%9F%EF%BC%8C%E6%95%85%E8%83%BD%E6%88%90%E5%85%B6%E9%AB%98.md</p>
+<h1 id="8read-more"><a class="markdownIt-Anchor" href="#8read-more"></a> 8.Read more</h1>
+<p>🍭:<a target="_blank" rel="noopener" href="https://blog.csdn.net/VincentlVL/article/details/120516607">https://blog.csdn.net/VincentlVL/article/details/120516607</a></p>
+<p>🍭:<a target="_blank" rel="noopener" href="https://doocs.gitee.io/jvm/08-load-class-time.html#%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">https://doocs.gitee.io/jvm/08-load-class-time.html#类的生命周期</a></p>
+<p>🍭:<a target="_blank" rel="noopener" href="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/JVM%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%2032%20%E8%AE%B2%EF%BC%88%E5%AE%8C%EF%BC%89/06%20Java%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%9A%E5%B1%B1%E4%B8%8D%E8%BE%9E%E5%9C%9F%EF%BC%8C%E6%95%85%E8%83%BD%E6%88%90%E5%85%B6%E9%AB%98.md">http://learn.lianglianglee.com/专栏/JVM 核心技术 32 讲（完）/06 Java 类加载器：山不辞土，故能成其高.md</a></p>
 <hr />
 <p><strong>博客说明</strong></p>
 <blockquote>
