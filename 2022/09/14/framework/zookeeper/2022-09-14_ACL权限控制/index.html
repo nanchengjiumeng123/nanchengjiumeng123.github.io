@@ -16,12 +16,12 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1. ACL 权限控制 ZooKeeper 基础知识基本分为三大模块：  数据模型 Watch 监控 ACL 权限控制  在前面已经讲了数据模型与Watch 监控，现在来讲一下ACL权限控制。 权限控制相信你一定很熟悉。比如 Linux 系统将对文件的使用者分为三种身份，即 User、Group、Others。使用者对文件拥有读（read） 写（write）以及执行（execute）3 种方式的">
+    <meta name="description" content="1. ACL 权限控制 ZooKeeper 基础知识基本分为三大模块：  数据模型 Watch 监控 ACL 权限控制  在前面已经讲了数据模型与Watch 监控，现在来讲一下ACL权限控制。 权限控制相信你一定很熟悉。比如 Linux 系统将对文件的使用者分为三种身份，即 User、Group、Others。使用者对文件拥有读（read） 写（write）以及执行（execute）3 种方式的控">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ACL权限控制">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/09/14/framework/zookeeper/2022-09-14_ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="1. ACL 权限控制 ZooKeeper 基础知识基本分为三大模块：  数据模型 Watch 监控 ACL 权限控制  在前面已经讲了数据模型与Watch 监控，现在来讲一下ACL权限控制。 权限控制相信你一定很熟悉。比如 Linux 系统将对文件的使用者分为三种身份，即 User、Group、Others。使用者对文件拥有读（read） 写（write）以及执行（execute）3 种方式的">
+<meta property="og:description" content="1. ACL 权限控制 ZooKeeper 基础知识基本分为三大模块：  数据模型 Watch 监控 ACL 权限控制  在前面已经讲了数据模型与Watch 监控，现在来讲一下ACL权限控制。 权限控制相信你一定很熟悉。比如 Linux 系统将对文件的使用者分为三种身份，即 User、Group、Others。使用者对文件拥有读（read） 写（write）以及执行（execute）3 种方式的控">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/mmexport1650523562461.jpg">
 <meta property="article:published_time" content="2022-09-14T05:13:12.000Z">
@@ -277,7 +277,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="1-acl-权限控制"><a class="markdownIt-Anchor" href="#1-acl-权限控制"></a> 1. ACL 权限控制</h1>
+                <h1 id="acl-权限控制">1. ACL 权限控制</h1>
 <p>ZooKeeper 基础知识基本分为三大模块：</p>
 <ul>
 <li>数据模型</li>
@@ -285,49 +285,92 @@
 <li>ACL 权限控制</li>
 </ul>
 <p>在前面已经讲了<code>数据模型</code>与<code>Watch 监控</code>，现在来讲一下ACL权限控制。</p>
-<p>权限控制相信你一定很熟悉。比如 Linux 系统将对文件的使用者分为三种身份，即 User、Group、Others。使用者对文件拥有读（read） 写（write）以及执行（execute）3 种方式的控制权。这种权限控制方式相对比较粗糙，在复杂的授权场景下往往并不适用。比如下边一个应用场景。</p>
-<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67twGANQ9kAABTpMHtYI0138.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p>权限控制相信你一定很熟悉。比如 Linux
+系统将对文件的使用者分为三种身份，即
+User、Group、Others。使用者对文件拥有读（read）
+写（write）以及执行（execute）3
+种方式的控制权。这种权限控制方式相对比较粗糙，在复杂的授权场景下往往并不适用。比如下边一个应用场景。</p>
+<p><img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67twGANQ9kAABTpMHtYI0138.png" srcset="/img/loading.gif" lazyload /></p>
 <p>上图如果使用 Linux 权限来设计，则：</p>
-<p>首先作为技术组长使用 User 身份，具有读、写、执行权限。项目组其他成员使用 Group 身份，具有读写权限，其他项目组的人员则没有任何权限。这样就实现了满足要求的权限设定了。</p>
+<p>首先作为技术组长使用 User
+身份，具有读、写、执行权限。项目组其他成员使用 Group
+身份，具有读写权限，其他项目组的人员则没有任何权限。这样就实现了满足要求的权限设定了。</p>
 <p>但是针对于Zookeeper来说。Zookeeper有临时节点的特性。比如现在新加入一个实习生，他只有熟悉项目的权限，却没有修改项目的能力。则此时使用的权限规则就无法满足要求。</p>
-<p><strong>ZooKeeper 中的 ACl 就能应对这种复杂的权限应用场景</strong></p>
-<h1 id="2acl的使用"><a class="markdownIt-Anchor" href="#2acl的使用"></a> 2.ACL的使用</h1>
-<p>ACL 权限设置通常可以分为 3 部分，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如<code>scheme:id:permission</code>格式的 ACL 请求信息。</p>
-<h2 id="21-权限模式scheme"><a class="markdownIt-Anchor" href="#21-权限模式scheme"></a> 2.1 权限模式（Scheme）</h2>
-<p>权限模式就是用来设置 ZooKeeper 服务器进行权限验证的方式。ZooKeeper 的权限验证方式大体分为两种类型:</p>
+<p><strong>ZooKeeper 中的 ACl
+就能应对这种复杂的权限应用场景</strong></p>
+<h1 id="acl的使用">2.ACL的使用</h1>
+<p>ACL 权限设置通常可以分为 3
+部分，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如<code>scheme:id:permission</code>格式的
+ACL 请求信息。</p>
+<h2 id="权限模式scheme">2.1 权限模式（Scheme）</h2>
+<p>权限模式就是用来设置 ZooKeeper 服务器进行权限验证的方式。ZooKeeper
+的权限验证方式大体分为两种类型:</p>
 <ul>
-<li>
-<p><strong>范围验证</strong></p>
-<p>ZooKeeper 可以针对一个 IP 或者一段 IP 地址授予某种权限。比如我们可以让一个 IP 地址为“ip：192.168.1.10”的机器对服务器上的某个数据节点具有写入的权限。或者也可以通过“ip:192.168.1.10/22”给<strong>一段 IP 地址的机器赋权</strong>。</p>
-</li>
-<li>
-<p><strong>口令验证</strong></p>
+<li><p><strong>范围验证</strong></p>
+<p>ZooKeeper 可以针对一个 IP 或者一段 IP
+地址授予某种权限。比如我们可以让一个 IP
+地址为“ip：192.168.1.10”的机器对服务器上的某个数据节点具有写入的权限。或者也可以通过“ip:192.168.1.10/22”给<strong>一段
+IP 地址的机器赋权</strong>。</p></li>
+<li><p><strong>口令验证</strong></p>
 <p>也可以理解为用户名密码的方式，这是我们最熟悉也是日常生活中经常使用的模式，比如我们打开自己的电脑或者去银行取钱都需要提供相应的密码。</p>
-<p>在 ZooKeeper 中这种验证方式是 Digest 认证，我们知道通过网络传输相对来说并不安全，所以“绝不通过明文在网络发送密码”也是程序设计中很重要的原则之一，而 Digest 这种认证方式首先在客户端传送<code>username:password</code>这种形式的权限表示符后，ZooKeeper 服务端会对密码 部分使用 SHA-1 和 BASE64 算法进行加密，以保证安全性。另一种权限模式 Super 可以认为是一种特殊的 Digest 认证。具有 Super 权限的客户端可以对 ZooKeeper 上的任意数据节点进行任意操作。下面这段代码给出了 Digest 模式下客户端的调用方式。</p>
+<p>在 ZooKeeper 中这种验证方式是 Digest
+认证，我们知道通过网络传输相对来说并不安全，所以“绝不通过明文在网络发送密码”也是程序设计中很重要的原则之一，而
+Digest
+这种认证方式首先在客户端传送<code>username:password</code>这种形式的权限表示符后，ZooKeeper
+服务端会对密码 部分使用 SHA-1 和 BASE64
+算法进行加密，以保证安全性。另一种权限模式 Super 可以认为是一种特殊的
+Digest 认证。具有 Super 权限的客户端可以对 ZooKeeper
+上的任意数据节点进行任意操作。下面这段代码给出了 Digest
+模式下客户端的调用方式。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">//创建节点<br><br>create /digest_node1<br><br>//设置digest权限验证<br><br>setAcl /digest_node1 digest:用户名:<span class="hljs-built_in">base64</span>格式密码:rwadc <br><br>//查询节点Acl权限<br><br>getAcl /digest_node1 <br><br>//授权操作<br><br>addauth digest user:passwd<br></code></pre></td></tr></table></figure>
-<p>最后一种授权模式是 world 模式，其实这种授权模式对应于系统中的所有用户，本质上起不到任何作用。设置了 world 权限模式系统中的所有用户操作都可以不进行权限验证。</p>
-</li>
+<p>最后一种授权模式是 world
+模式，其实这种授权模式对应于系统中的所有用户，本质上起不到任何作用。设置了
+world 权限模式系统中的所有用户操作都可以不进行权限验证。</p></li>
 </ul>
-<h2 id="22-授权对象id"><a class="markdownIt-Anchor" href="#22-授权对象id"></a> 2.2 授权对象（ID）</h2>
-<p>接下来我们再看一下授权对象部分，其实这个很好理解，所谓的授权对象就是说我们要把权限赋予谁，而对应于 4 种不同的权限模式来说，如果我们选择采用 IP 方式，使用的授权对象可以是一个 IP 地址或 IP 地址段；而如果使用 Digest 或 Super 方式，则对应于一个用户名。如果是 World 模式，是授权系统中所有的用户。</p>
-<h2 id="23-权限信息permission"><a class="markdownIt-Anchor" href="#23-权限信息permission"></a> 2.3 权限信息（Permission）</h2>
-<p>权限就是指我们可以在数据节点上执行的操作种类，如下图所示：在 ZooKeeper 中已经定义好的权限有 5 种：</p>
+<h2 id="授权对象id">2.2 授权对象（ID）</h2>
+<p>接下来我们再看一下授权对象部分，其实这个很好理解，所谓的授权对象就是说我们要把权限赋予谁，而对应于
+4 种不同的权限模式来说，如果我们选择采用 IP
+方式，使用的授权对象可以是一个 IP 地址或 IP 地址段；而如果使用 Digest 或
+Super 方式，则对应于一个用户名。如果是 World
+模式，是授权系统中所有的用户。</p>
+<h2 id="权限信息permission">2.3 权限信息（Permission）</h2>
+<p>权限就是指我们可以在数据节点上执行的操作种类，如下图所示：在
+ZooKeeper 中已经定义好的权限有 5 种：</p>
 <ul>
 <li>数据节点（create）创建权限，授予权限的对象可以在数据节点下创建子节点；</li>
 <li>数据节点（wirte）更新权限，授予权限的对象可以更新该数据节点；</li>
 <li>数据节点（read）读取权限，授予权限的对象可以读取该节点的内容以及子节点的信息；</li>
 <li>数据节点（delete）删除权限，授予权限的对象可以删除该数据节点的子节点；</li>
-<li>数据节点（admin）管理者权限，授予权限的对象可以对该数据节点体进行 ACL 权限设置。</li>
+<li>数据节点（admin）管理者权限，授予权限的对象可以对该数据节点体进行
+ACL 权限设置。</li>
 </ul>
-<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67tw2AbgggAACW3WWz4D4066.png" srcset="/img/loading.gif" lazyload alt="image" /></p>
-<p><em><strong>Mark:</strong></em></p>
-<p><strong>每个节点都有维护自身的 ACL 权限数据，即使是该节点的子节点也是有自己的 ACL 权限而不是直接继承其父节点的权限</strong>。如下中“172.168.11.1”服务器有“/Config”节点的读取权限，但是没有其子节的“/Config/dataBase_Config1”权限。</p>
-<p><img src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67txWALBicAABysKoJmFg484.png" srcset="/img/loading.gif" lazyload alt="image" /></p>
-<h2 id="24-权限扩展"><a class="markdownIt-Anchor" href="#24-权限扩展"></a> 2.4 权限扩展</h2>
-<p>虽然 ZooKeeper 自身的权限控制机制已经做得很细，但是它还是提供了一种权限扩展机制来让用户实现自己的权限控制方式。</p>
-<p>官方文档中对这种机制的定义是 <code>Pluggable ZooKeeper Authenication</code>，意思是可插拔的授权机制，从名称上我们可以看出它的灵活性。要想实现自定义的权限控制机制，最核心的一点是实现 ZooKeeper 提供的权限控制器接口 <code>AuthenticationProvider</code>。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67tw2AbgggAACW3WWz4D4066.png" srcset="/img/loading.gif" lazyload
+alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p><strong><em>Mark:</em></strong></p>
+<p><strong>每个节点都有维护自身的 ACL
+权限数据，即使是该节点的子节点也是有自己的 ACL
+权限而不是直接继承其父节点的权限</strong>。如下中“172.168.11.1”服务器有“/Config”节点的读取权限，但是没有其子节的“/Config/dataBase_Config1”权限。</p>
+<figure>
+<img
+src="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/zookeeper/CgqCHl67txWALBicAABysKoJmFg484.png" srcset="/img/loading.gif" lazyload
+alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h2 id="权限扩展">2.4 权限扩展</h2>
+<p>虽然 ZooKeeper
+自身的权限控制机制已经做得很细，但是它还是提供了一种权限扩展机制来让用户实现自己的权限控制方式。</p>
+<p>官方文档中对这种机制的定义是
+<code>Pluggable ZooKeeper Authenication</code>，意思是可插拔的授权机制，从名称上我们可以看出它的灵活性。要想实现自定义的权限控制机制，最核心的一点是实现
+ZooKeeper 提供的权限控制器接口 <code>AuthenticationProvider</code>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AuthenticationProvider</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * The String used to represent this provider. This will correspond to the</span><br><span class="hljs-comment">     * scheme field of an Id.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> the scheme of this provider.</span><br><span class="hljs-comment">     * 用于表示此提供程序的字符串。这将对应于Id的scheme字段。</span><br><span class="hljs-comment">     */</span><br>    String <span class="hljs-title function_">getScheme</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * This method is called when a client passes authentication data for this</span><br><span class="hljs-comment">     * scheme. The authData is directly from the authentication packet. The</span><br><span class="hljs-comment">     * implementor may attach new ids to the authInfo field of cnxn or may use</span><br><span class="hljs-comment">     * cnxn to send packets back to the client.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> cnxn</span><br><span class="hljs-comment">     *                the cnxn that received the authentication information.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> authData</span><br><span class="hljs-comment">     *                the authentication data received.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> TODO</span><br><span class="hljs-comment">     * 当客户端传递此方案的身份验证数据时，将调用此方法。authData直接来自认证报文。实现者可以将新的id附加到cnxn的authInfo字段，也可以使用cnxn将包发送回客户端</span><br><span class="hljs-comment">     */</span><br>    KeeperException.Code <span class="hljs-title function_">handleAuthentication</span><span class="hljs-params">(ServerCnxn cnxn, <span class="hljs-type">byte</span>[] authData)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * This method is called when admin server command passes authentication data for this</span><br><span class="hljs-comment">     * scheme.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> request</span><br><span class="hljs-comment">     *                the request that contains the authentication information.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> authData</span><br><span class="hljs-comment">     *                the authentication data received.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Ids</span><br><span class="hljs-comment">     *                the list of Id. Empty list means not authenticated</span><br><span class="hljs-comment">     * 当管理服务器命令为此方案传递身份验证数据时，将调用此方法。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">default</span> List&lt;Id&gt; <span class="hljs-title function_">handleAuthentication</span><span class="hljs-params">(HttpServletRequest request, <span class="hljs-type">byte</span>[] authData)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * This method is called to see if the given id matches the given id</span><br><span class="hljs-comment">     * expression in the ACL. This allows schemes to use application specific</span><br><span class="hljs-comment">     * wild cards.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id</span><br><span class="hljs-comment">     *                the id to check.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> aclExpr</span><br><span class="hljs-comment">     *                the expression to match ids against.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true if the id can be matched by the expression.</span><br><span class="hljs-comment">     * 调用此方法以查看给定id是否与ACL中的给定id表达式匹配。这允许方案使用特定于应用程序的通配符。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">matches</span><span class="hljs-params">(String id, String aclExpr)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * This method is used to check if the authentication done by this provider</span><br><span class="hljs-comment">     * should be used to identify the creator of a node. Some ids such as hosts</span><br><span class="hljs-comment">     * and ip addresses are rather transient and in general don&#x27;t really</span><br><span class="hljs-comment">     * identify a client even though sometimes they do.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true if this provider identifies creators.</span><br><span class="hljs-comment">     * 此方法用于检查此提供程序完成的身份验证是否应用于标识节点的创建者。一些id，如主机和ip地址，是相当短暂的，通常不能真正识别客户端，即使有时它们可以。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAuthenticated</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Validates the syntax of an id.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id</span><br><span class="hljs-comment">     *                the id to validate.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true if id is well formed.</span><br><span class="hljs-comment">     * 验证id的语法。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(String id)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * &lt;param&gt;id&lt;/param&gt; represents the authentication info which is set in server connection.</span><br><span class="hljs-comment">     * id may contain both user name as well as password.</span><br><span class="hljs-comment">     * This method should be implemented to extract the user name.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id authentication info set by client.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> String user name</span><br><span class="hljs-comment">     * 表示在服务器连接中设置的身份验证信息。Id可能包含用户名和密码。应该实现这个方法来提取用户名。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">default</span> String <span class="hljs-title function_">getUserName</span><span class="hljs-params">(String id)</span> &#123;<br>        <span class="hljs-comment">// Most of the authentication providers id contains only user name.</span><br>        <span class="hljs-keyword">return</span> id;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>实现了自定义权限后，如何才能让 ZooKeeper 服务端使用自定义的权限验证方式呢？接下来就需要将自定义的权限控制注册到 ZooKeeper 服务器中，而注册的方式通常有两种。</p>
+<p>实现了自定义权限后，如何才能让 ZooKeeper
+服务端使用自定义的权限验证方式呢？接下来就需要将自定义的权限控制注册到
+ZooKeeper 服务器中，而注册的方式通常有两种。</p>
 <p>第一种是通过设置系统属性来注册自定义的权限控制器：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">-Dzookeeper.authProvider.x</span>=<span class="hljs-string">CustomAuthenticationProvider</span><br></code></pre></td></tr></table></figure>
 <p>另一种是在配置文件 zoo.cfg 中进行配置：</p>
@@ -335,61 +378,78 @@
 <blockquote>
 <p>自定义ACL此处不会详细讲解，感兴趣的盆友可以自己查询相关资料。</p>
 </blockquote>
-<h1 id="3-acl-内部实现原理"><a class="markdownIt-Anchor" href="#3-acl-内部实现原理"></a> 3. ACL 内部实现原理</h1>
-<h2 id="31-客户端处理过程"><a class="markdownIt-Anchor" href="#31-客户端处理过程"></a> 3.1 客户端处理过程</h2>
-<p>以节点授权 addAuth 接口为例，首先客户端通过 ClientCnxn 类中的 addAuthInfo 方法向服务端发送 ACL 权限信息变更请求，该方法首先将 scheme 和 auth 封装成 AuthPacket 类，并通过 RequestHeader 方法表示该请求是权限操作请求，最后将这些数据统一封装到 packet 中，并添加到 outgoingQueue 队列中发送给服务端。</p>
+<h1 id="acl-内部实现原理">3. ACL 内部实现原理</h1>
+<h2 id="客户端处理过程">3.1 客户端处理过程</h2>
+<p>以节点授权 addAuth 接口为例，首先客户端通过 ClientCnxn 类中的
+addAuthInfo 方法向服务端发送 ACL 权限信息变更请求，该方法首先将 scheme
+和 auth 封装成 AuthPacket 类，并通过 RequestHeader
+方法表示该请求是权限操作请求，最后将这些数据统一封装到 packet
+中，并添加到 outgoingQueue 队列中发送给服务端。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addAuthInfo</span><span class="hljs-params">(String scheme, <span class="hljs-type">byte</span>[] auth)</span> &#123;<br>    <span class="hljs-keyword">if</span> (!state.isAlive()) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    authInfo.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AuthData</span>(scheme, auth));<br>    queuePacket(<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">RequestHeader</span>(ClientCnxn.AUTHPACKET_XID, OpCode.auth),<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">AuthPacket</span>(<span class="hljs-number">0</span>, scheme, auth),<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-literal">null</span>,<br>        <span class="hljs-literal">null</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 <blockquote>
-<p>queuePacket(<br />
-RequestHeader h,<br />
-ReplyHeader r,<br />
-Record request,<br />
-Record response,<br />
-AsyncCallback cb,<br />
-String clientPath,<br />
-String serverPath,<br />
-Object ctx,<br />
-WatchRegistration watchRegistration,<br />
-WatchDeregistration watchDeregistration)</p>
+<p>queuePacket( RequestHeader h, ReplyHeader r, Record request, Record
+response, AsyncCallback cb, String clientPath, String serverPath, Object
+ctx, WatchRegistration watchRegistration, WatchDeregistration
+watchDeregistration)</p>
 <p>这个方法我们在讲Watcher机制的时候讲过，就是讲数据封装到packet中，然后添加到outgoingQueue队列中发送给服务端。</p>
 </blockquote>
-<h2 id="32-服务端实现过程"><a class="markdownIt-Anchor" href="#32-服务端实现过程"></a> 3.2 服务端实现过程</h2>
-<p>相比于客户端的处理过程，服务器端对 ACL 内部实现就比较复杂，当节点授权请求发送到服务端后，在服务器的处理中首先调用 readRequest（）方法作为服务器处理的入口，其内部只是调用 processPacket 方法。</p>
+<h2 id="服务端实现过程">3.2 服务端实现过程</h2>
+<p>相比于客户端的处理过程，服务器端对 ACL
+内部实现就比较复杂，当节点授权请求发送到服务端后，在服务器的处理中首先调用
+readRequest（）方法作为服务器处理的入口，其内部只是调用 processPacket
+方法。</p>
 <p><strong>NIOServerCnxn:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">readRequest</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-type">RequestHeader</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RequestHeader</span>();<br>        ByteBufferInputStream.byteBuffer2Record(incomingBuffer, h);<br>        <span class="hljs-type">RequestRecord</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> RequestRecord.fromBytes(incomingBuffer.slice());<br>        zkServer.processPacket(<span class="hljs-built_in">this</span>, h, request);<br>    &#125;<br></code></pre></td></tr></table></figure>
-<p>而在 processPacket 方法的内部，首先反序列化客户端的请求信息并封装到 AuthPacket 对象中。之后通过 getServerProvider 方法根据不同的 scheme 判断具体的实现类。</p>
+<p>而在 processPacket 方法的内部，首先反序列化客户端的请求信息并封装到
+AuthPacket 对象中。之后通过 getServerProvider 方法根据不同的 scheme
+判断具体的实现类。</p>
 <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-keyword">public</span> <span class="hljs-literal">void</span> processPacket(ServerCnxn cnxn, RequestHeader h, RequestRecord request) throws IOException &#123;<br><span class="hljs-params">...</span> <span class="hljs-params">...</span><br>  <span class="hljs-keyword">if</span> (h.getType() == OpCode.auth) &#123;<br>           <span class="hljs-params">...</span> <span class="hljs-params">...</span><br>           AuthPacket authPacket = request.readRecord(AuthPacket<span class="hljs-type">::new</span>);<br>           <span class="hljs-built_in">String</span> scheme = authPacket.getScheme();<br>           ServerAuthenticationProvider ap = ProviderRegistry.getServerProvider(scheme);<br>           Code authReturn = KeeperException.Code.AUTHFAILED;<br>           <span class="hljs-keyword">if</span> (ap != <span class="hljs-built_in">null</span>) &#123;<br>                   authReturn = ap.handleAuthentication(<br>                       <span class="hljs-literal">new</span> ServerAuthenticationProvider.ServerObjs(this, cnxn),<br>                       authPacket.getAuth());<br>                 <span class="hljs-params">...</span> <span class="hljs-params">...</span><br>               &#125;<br>        &#125;<br>    <span class="hljs-params">...</span> <span class="hljs-params">...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <blockquote>
 <p>authReturn == KeeperException.Code.OK表明权限验证成功。</p>
 </blockquote>
-<h2 id="33-digest-模式验证"><a class="markdownIt-Anchor" href="#33-digest-模式验证"></a> 3.3 Digest 模式验证</h2>
-<p>这里我们使用 Digest 模式为例，因此该实现类是 DigestAuthenticationProvider 。之后调用其 <code>handleAuthentication()</code> 方法进行权限验证。如果返 KeeperException.Code.OK 则表示该请求已经通过了权限验证，如果返回的状态是其他或者抛出异常则表示权限验证失败。</p>
+<h2 id="digest-模式验证">3.3 Digest 模式验证</h2>
+<p>这里我们使用 Digest 模式为例，因此该实现类是
+DigestAuthenticationProvider 。之后调用其
+<code>handleAuthentication()</code> 方法进行权限验证。如果返
+KeeperException.Code.OK
+则表示该请求已经通过了权限验证，如果返回的状态是其他或者抛出异常则表示权限验证失败。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> KeeperException.Code <span class="hljs-title function_">handleAuthentication</span><span class="hljs-params">(ServerCnxn cnxn, <span class="hljs-type">byte</span>[] authData)</span> &#123;<br>    <span class="hljs-keyword">final</span> List&lt;Id&gt; ids = handleAuthentication(authData);<br>    <span class="hljs-keyword">if</span> (ids.isEmpty()) &#123;<br>        <span class="hljs-keyword">return</span> KeeperException.Code.AUTHFAILED;<br>    &#125;<br>    <span class="hljs-keyword">for</span> (Id id : ids) &#123;<br>        cnxn.addAuthInfo(id);<br>    &#125;<br>    <span class="hljs-keyword">return</span> KeeperException.Code.OK;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>handleAuthentication</strong></p>
 <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">private</span> List&lt;Id&gt; handleAuthentication(<span class="hljs-keyword">final</span> byte[] authData) &#123;<br>     <span class="hljs-keyword">final</span> List&lt;Id&gt; ids = <span class="hljs-keyword">new</span> <span class="hljs-type">ArrayList</span>&lt;&gt;();<br>     <span class="hljs-keyword">final</span> <span class="hljs-keyword">String</span> id = <span class="hljs-keyword">new</span> <span class="hljs-type">String</span>(authData);<br>     <span class="hljs-keyword">try</span> &#123;<br>         <span class="hljs-keyword">final</span> <span class="hljs-keyword">String</span> digest = generateDigest(id);<br>         <span class="hljs-keyword">if</span> (digest.equals(superDigest)) &#123;<br>             ids.add(<span class="hljs-keyword">new</span> <span class="hljs-type">Id</span>(<span class="hljs-string">&quot;super&quot;</span>, <span class="hljs-string">&quot;&quot;</span>));<br>         &#125;<br>         ids.add(<span class="hljs-keyword">new</span> <span class="hljs-type">Id</span>(getScheme(), digest));<br>     &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-keyword">final</span> NoSuchAlgorithmException e) &#123;<br>         LOG.error(<span class="hljs-string">&quot;Missing algorithm&quot;</span>, e);<br>     &#125;<br>     <span class="hljs-keyword">return</span> Collections.unmodifiableList(ids);<br> &#125;<br></code></pre></td></tr></table></figure>
-<h1 id="4addauthinfo"><a class="markdownIt-Anchor" href="#4addauthinfo"></a> 4.addAuthInfo</h1>
-<p>重点讲解一下 addAuthInfo 函数，其作用是<code>将解析到的权限信息存储到 ZooKeeper 服务器的内存中</code>，该信息在整个会话存活期间一直会保存在服务器上，如果会话关闭，该信息则会被删，<strong>这个特性很像我们之前学过的数据节点中的临时节点</strong>。</p>
-<p>经过上面的步骤，服务器已经将客户端 ACL 请求解析并将对应的会话权限信息存储在服务器上，下面我们再看一下服务器是如何进行权限验证的。</p>
-<p>首先，在处理一次权限请求时，先通过 PrepRequestProcessor 中的 checkAcl 函数检查对应的请求权限，</p>
+<h1 id="addauthinfo">4.addAuthInfo</h1>
+<p>重点讲解一下 addAuthInfo
+函数，其作用是<code>将解析到的权限信息存储到 ZooKeeper 服务器的内存中</code>，该信息在整个会话存活期间一直会保存在服务器上，如果会话关闭，该信息则会被删，<strong>这个特性很像我们之前学过的数据节点中的临时节点</strong>。</p>
+<p>经过上面的步骤，服务器已经将客户端 ACL
+请求解析并将对应的会话权限信息存储在服务器上，下面我们再看一下服务器是如何进行权限验证的。</p>
+<p>首先，在处理一次权限请求时，先通过 PrepRequestProcessor 中的 checkAcl
+函数检查对应的请求权限，</p>
 <ul>
-<li>
-<p>如果该节点没有任何权限设置则直接返回</p>
-</li>
-<li>
-<p>如果该节点有权限设置则循环遍历节点信息进行检查</p>
-</li>
+<li><p>如果该节点没有任何权限设置则直接返回</p></li>
+<li><p>如果该节点有权限设置则循环遍历节点信息进行检查</p></li>
 </ul>
-<p>如果具有相应的权限则直接返回表明权限认证成功，否则最后抛出 NoAuthException 异常中断操作表明权限认证失败。</p>
+<p>如果具有相应的权限则直接返回表明权限认证成功，否则最后抛出
+NoAuthException 异常中断操作表明权限认证失败。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">checkACL</span><span class="hljs-params">(...)</span>&#123;<br><br>  ...<br><br>  <span class="hljs-keyword">for</span> (ACL a : acl) &#123;<br><br>    <span class="hljs-keyword">if</span>(authId.getScheme().equals(id.getScheme()..)&#123;<br><br>      <span class="hljs-keyword">return</span>;<br><br>    &#125;<br><br>  &#125;<br><br>  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">KeeperException</span>.NoAuthException();<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="5总结"><a class="markdownIt-Anchor" href="#5总结"></a> 5.总结</h1>
-<p>到目前为止我们对 ACL 权限在 ZooKeeper 服务器客户端和服务端的底层实现过程进行了深度的分析。总体来说，客户端在 ACL 权限请求发送过程的步骤比较简单：<code>首先是封装该请求的类型，之后将权限信息封装到 request 中并发送给服务端。而服务器的实现比较复杂，首先分析请求类型是否是权限相关操作，之后根据不同的权限模式（scheme）调用不同的实现类验证权限最后存储权限信息。</code>本课时的例子采用了授权接口 addAuth 而没有采用权限设置接口 setAcl，是因为权限设置接口相对简单，其核心功能点已经包括在授权接口实现中。而在授权接口中，<strong>值得注意的是会话的授权信息存储在 ZooKeeper 服务端的内存中，如果客户端会话关闭，授权信息会被删除。下次连接服务器后，需要重新调用授权接口进行授权。</strong></p>
-<h1 id="6"><a class="markdownIt-Anchor" href="#6"></a> 6.🍪</h1>
+<h1 id="总结">5.总结</h1>
+<p>到目前为止我们对 ACL 权限在 ZooKeeper
+服务器客户端和服务端的底层实现过程进行了深度的分析。总体来说，客户端在
+ACL
+权限请求发送过程的步骤比较简单：<code>首先是封装该请求的类型，之后将权限信息封装到 request 中并发送给服务端。而服务器的实现比较复杂，首先分析请求类型是否是权限相关操作，之后根据不同的权限模式（scheme）调用不同的实现类验证权限最后存储权限信息。</code>本课时的例子采用了授权接口
+addAuth 而没有采用权限设置接口
+setAcl，是因为权限设置接口相对简单，其核心功能点已经包括在授权接口实现中。而在授权接口中，<strong>值得注意的是会话的授权信息存储在
+ZooKeeper
+服务端的内存中，如果客户端会话关闭，授权信息会被删除。下次连接服务器后，需要重新调用授权接口进行授权。</strong></p>
+<h1 id="section">6.🍪</h1>
 <p>如果一个客户端对服务器上的一个节点设置了只有它自己才能操作的权限，那么等这个客户端下线或被删除后。对其创建的节点要想进行修改应该怎么做呢？</p>
 <blockquote>
-<p>我们可以通过“super 模式”即超级管理员的方式删除该节点或变更该节点的权限验证方式。正因为“super 模式”有如此大的权限，我们在平时使用时也应该更加谨慎。</p>
+<p>我们可以通过“super
+模式”即超级管理员的方式删除该节点或变更该节点的权限验证方式。正因为“super
+模式”有如此大的权限，我们在平时使用时也应该更加谨慎。</p>
 </blockquote>
-<h1 id="8read-more"><a class="markdownIt-Anchor" href="#8read-more"></a> 8.Read more</h1>
-<p>🍭:<a target="_blank" rel="noopener" href="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/03%20ACL%20%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%9C%AA%E7%BB%8F%E6%8E%88%E6%9D%83%E7%9A%84%E8%AE%BF%E9%97%AE%EF%BC%9F.md">ACL 权限控制</a></p>
+<h1 id="read-more">8.Read more</h1>
+<p>:lollipop::<a
+target="_blank" rel="noopener" href="http://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/ZooKeeper%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98-%E5%AE%8C/03%20ACL%20%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%9C%AA%E7%BB%8F%E6%8E%88%E6%9D%83%E7%9A%84%E8%AE%BF%E9%97%AE%EF%BC%9F.md">ACL
+权限控制</a></p>
 <hr />
 <p><strong>博客说明</strong></p>
 <blockquote>

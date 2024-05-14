@@ -16,12 +16,12 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.异常 Java 中的异常处理是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。 异常是不需要的或意外的事件，它发生在程序执行期间，即在运行时，它会扰乱程序指令的正常流程。程序可以捕获和处理异常。当方法中发生异常时，">
+    <meta name="description" content="1.异常 Java 中的异常处理是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。 异常是不需要的或意外的事件，它发生在程序执行期间，即在运行时，它会扰乱程序指令的正常流程。程序可以捕获和处理异常。当方法中发生异常时，它">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2023/01/30/java_se/2022-05-13_%E5%BC%82%E5%B8%B8/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="1.异常 Java 中的异常处理是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。 异常是不需要的或意外的事件，它发生在程序执行期间，即在运行时，它会扰乱程序指令的正常流程。程序可以捕获和处理异常。当方法中发生异常时，">
+<meta property="og:description" content="1.异常 Java 中的异常处理是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。 异常是不需要的或意外的事件，它发生在程序执行期间，即在运行时，它会扰乱程序指令的正常流程。程序可以捕获和处理异常。当方法中发生异常时，它">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/mmexport1650949543256.jpg">
 <meta property="article:published_time" content="2023-01-30T02:51:33.000Z">
@@ -276,18 +276,23 @@
             
               <div class="markdown-body">
                 
-                <h1 id="1异常"><a class="markdownIt-Anchor" href="#1异常"></a> 1.异常</h1>
-<p><strong>Java 中的异常处理</strong>是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。</p>
+                <h1 id="异常">1.异常</h1>
+<p><strong>Java
+中的异常处理</strong>是处理运行时错误以保持应用程序正常流程的有效手段之一。Java异常处理是一种处理运行时错误的机制，如ClassNotFoundException、IOException、SQLException、RemoteException等。</p>
 <p><strong>异常</strong>是不需要的或意外的事件，它发生在程序执行期间，即在运行时，它会扰乱程序指令的正常流程。程序可以捕获和处理异常。当方法中发生异常时，它会创建一个对象。该对象称为异常对象。它包含有关异常的信息，例如异常的名称和描述以及发生异常时程序的状态。</p>
 <blockquote>
-<p><strong>错误</strong>表示不可恢复的情况，例如 Java 虚拟机 (JVM) 内存耗尽、内存泄漏、堆栈溢出错误、库不兼容、无限递归等。错误通常是程序员无法控制的，我们不应该试图去处理错误。</p>
+<p><strong>错误</strong>表示不可恢复的情况，例如 Java 虚拟机 (JVM)
+内存耗尽、内存泄漏、堆栈溢出错误、库不兼容、无限递归等。错误通常是程序员无法控制的，我们不应该试图去处理错误。</p>
 </blockquote>
-<p>讨论最重要的部分，即<strong>Error 和 Exception 之间的区别</strong>，如下所示：</p>
+<p>讨论最重要的部分，即<strong>Error 和 Exception
+之间的区别</strong>，如下所示：</p>
 <ul>
-<li><strong>错误：</strong> 错误表示一个合理的应用程序不应尝试捕获的严重问题。</li>
-<li><strong>异常：</strong> 异常表示合理的应用程序可能会尝试捕获的情况。</li>
+<li><strong>错误：</strong>
+错误表示一个合理的应用程序不应尝试捕获的严重问题。</li>
+<li><strong>异常：</strong>
+异常表示合理的应用程序可能会尝试捕获的情况。</li>
 </ul>
-<h2 id="11-出现异常的主要原因"><a class="markdownIt-Anchor" href="#11-出现异常的主要原因"></a> 1.1 出现异常的主要原因</h2>
+<h2 id="出现异常的主要原因">1.1 出现异常的主要原因</h2>
 <ul>
 <li>无效的用户输入</li>
 <li>设备故障</li>
@@ -296,152 +301,215 @@
 <li>代码错误</li>
 <li>打开一个不可用的文件</li>
 </ul>
-<h2 id="12-异常层次结构"><a class="markdownIt-Anchor" href="#12-异常层次结构"></a> 1.2 异常层次结构</h2>
-<p>所有异常和错误类型都是 Throwable 类的子类，<strong>Throwable</strong>是层次结构的基类。一类由<strong>Exception</strong>领导。此类用于用户程序应捕获的异常情况。NullPointerException 是此类异常的一个示例。</p>
-<p>Java 运行时系统 ( <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/jvm-works-jvm-architecture/">JVM</a> ) 使用另一个类别<strong>Error</strong>来指示与运行时环境本身 (JRE) 相关的错误。StackOverflowError 是此类错误的一个示例。</p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/Exception-in-java1.png" srcset="/img/loading.gif" lazyload alt="Java 中的异常层次结构" /></p>
+<h2 id="异常层次结构">1.2 异常层次结构</h2>
+<p>所有异常和错误类型都是 Throwable
+类的子类，<strong>Throwable</strong>是层次结构的基类。一类由<strong>Exception</strong>领导。此类用于用户程序应捕获的异常情况。NullPointerException
+是此类异常的一个示例。</p>
+<p>Java 运行时系统 ( <a
+target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/jvm-works-jvm-architecture/">JVM</a>
+) 使用另一个类别<strong>Error</strong>来指示与运行时环境本身 (JRE)
+相关的错误。StackOverflowError 是此类错误的一个示例。</p>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/Exception-in-java1.png" srcset="/img/loading.gif" lazyload
+alt="Java 中的异常层次结构" />
+<figcaption aria-hidden="true">Java 中的异常层次结构</figcaption>
+</figure>
 <p>由于<strong>Error</strong>通常是程序员无法控制的，所以我们不应该试图去处理错误，我们只针对<strong>Exception</strong>这类处理即可。</p>
-<h2 id="13-异常类型"><a class="markdownIt-Anchor" href="#13-异常类型"></a> 1.3 异常类型</h2>
-<p>Java 定义了几种与其各种类库相关的异常类型。Java 还允许用户定义自己的异常。</p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/Group21-660x330.jpg" srcset="/img/loading.gif" lazyload alt="异常类型" /></p>
+<h2 id="异常类型">1.3 异常类型</h2>
+<p>Java 定义了几种与其各种类库相关的异常类型。Java
+还允许用户定义自己的异常。</p>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/Group21-660x330.jpg" srcset="/img/loading.gif" lazyload
+alt="异常类型" />
+<figcaption aria-hidden="true">异常类型</figcaption>
+</figure>
 <p><strong>异常可以按两种方式分类：</strong></p>
-<ol>
+<ol type="1">
 <li><strong>内置异常</strong>
 <ul>
 <li>检查异常</li>
 <li>未经检查的异常</li>
-</ul>
-</li>
+</ul></li>
 <li><strong>用户定义的异常</strong></li>
 </ol>
 <p>让我们讨论上面定义的列出的异常，如下所示：</p>
-<h2 id="14-内置异常"><a class="markdownIt-Anchor" href="#14-内置异常"></a> <strong>1.4  内置异常</strong></h2>
+<h2 id="内置异常"><strong>1.4 内置异常</strong></h2>
 <p>内置异常是 Java 库中可用的异常。这些异常适用于解释某些错误情况。</p>
 <ul>
-<li>**检查异常：**已检查异常称为编译时异常，因为这些异常是在编译时由编译器检查的。</li>
-<li>**未检查异常：**未检查异常与检查异常正好相反。编译器不会在编译时检查这些异常。简单来说，如果一个程序抛出一个unchecked exception，即使我们没有处理或声明它，程序也不会给出编译错误。</li>
+<li><strong>检查异常：</strong>已检查异常称为编译时异常，因为这些异常是在编译时由编译器检查的。</li>
+<li><strong>未检查异常：</strong>未检查异常与检查异常正好相反。编译器不会在编译时检查这些异常。简单来说，如果一个程序抛出一个unchecked
+exception，即使我们没有处理或声明它，程序也不会给出编译错误。</li>
 </ul>
 <blockquote>
 <p>未检查异常属于运行时异常，都继承RuntimeException。这些异常只有在运行的时候才能确定是否抛出异常。编译时不由编译器检查。</p>
 </blockquote>
-<h3 id="141-检查异常"><a class="markdownIt-Anchor" href="#141-检查异常"></a> 1.4.1 检查异常</h3>
-<p>这些 是在编译时检查的异常。如果方法中的某些代码抛出已检查的异常，则该方法必须处理该异常，或者必须使用<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/throw-throws-java/"><em>throws</em>关键字</a>指定该异常。在检查异常中，有两种类型：完全检查异常和部分检查异常。一个完全检查的异常是一个检查异常，它的所有子类也被检查，像 IOException，InterruptedException。部分检查异常是一种检查异常，其中某些子类未检查，如 Exception。</p>
-<p>例如，考虑下面的 Java 程序，它打开位于“C:\test\a.txt”位置的文件并打印它的前三行。该程序无法编译，因为函数 main() 使用 FileReader() 并且 FileReader() 抛出已检查的异常<em>FileNotFoundException</em>。它还使用 readLine() 和 close() 方法，这些方法也抛出已检查的异常<em>IOException</em>。</p>
+<h3 id="检查异常">1.4.1 检查异常</h3>
+<p>这些
+是在编译时检查的异常。如果方法中的某些代码抛出已检查的异常，则该方法必须处理该异常，或者必须使用<a
+target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/throw-throws-java/"><em>throws</em>关键字</a>指定该异常。在检查异常中，有两种类型：完全检查异常和部分检查异常。一个完全检查的异常是一个检查异常，它的所有子类也被检查，像
+IOException，InterruptedException。部分检查异常是一种检查异常，其中某些子类未检查，如
+Exception。</p>
+<p>例如，考虑下面的 Java
+程序，它打开位于“C:.txt”位置的文件并打印它的前三行。该程序无法编译，因为函数
+main() 使用 FileReader() 并且 FileReader()
+抛出已检查的异常<em>FileNotFoundException</em>。它还使用 readLine() 和
+close() 方法，这些方法也抛出已检查的异常<em>IOException</em>。</p>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>      <span class="hljs-type">FileReader</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>(<span class="hljs-string">&quot;C:\\test\\a.txt&quot;</span>);<br>      <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">fileInput</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(file);<br>      <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">counter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; counter &lt; <span class="hljs-number">3</span>; counter++)<br>          System.out.println(fileInput.readLine());<br>      fileInput.close();<br>  &#125;<br><br></code></pre></td></tr></table></figure>
 <p><strong>输出：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">D:\workspace\project\IdeaProjects\demo\src\main\java\com\example\demo\aaa\DDD.java:<span class="hljs-number">58</span>:<span class="hljs-number">27</span><br>java: 未报告的异常错误java.io.FileNotFoundException; 必须对其进行捕获或声明以便抛出<br></code></pre></td></tr></table></figure>
-<p>程序是无法运行的，因为我们必须手动处理这些检查异常，要修复上述程序，我们要么需要使用 throws 指定异常列表，要么需要使用 try-catch 块。即可使上述程序无编译错误。</p>
-<h3 id="142-非检查异常运行时异常"><a class="markdownIt-Anchor" href="#142-非检查异常运行时异常"></a> 1.4.2 非检查异常（运行时异常）</h3>
-<p>这些是编译时不检查的异常。在 C++ 中，所有异常都是未经检查的，因此编译器不会强制处理或指定异常。由程序员来文明，并指定或捕获异常。在 Java 中，<em>Error</em>和<em>RuntimeException</em>类下的异常是非检查的异常，throwable 下的所有其他异常都是检查异常。</p>
-<p>以下 Java 程序。它编译得很好，但在运行时会抛出<em>ArithmeticException</em>。编译器允许它编译，因为<em>ArithmeticException</em>是一个非检查的异常。</p>
+<p>程序是无法运行的，因为我们必须手动处理这些检查异常，要修复上述程序，我们要么需要使用
+throws 指定异常列表，要么需要使用 try-catch
+块。即可使上述程序无编译错误。</p>
+<h3 id="非检查异常运行时异常">1.4.2 非检查异常（运行时异常）</h3>
+<p>这些是编译时不检查的异常。在 C++
+中，所有异常都是未经检查的，因此编译器不会强制处理或指定异常。由程序员来文明，并指定或捕获异常。在
+Java
+中，<em>Error</em>和<em>RuntimeException</em>类下的异常是非检查的异常，throwable
+下的所有其他异常都是检查异常。</p>
+<p>以下 Java
+程序。它编译得很好，但在运行时会抛出<em>ArithmeticException</em>。编译器允许它编译，因为<em>ArithmeticException</em>是一个非检查的异常。</p>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String args[])</span>&#123;<br>       <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>       <span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br>       <span class="hljs-type">int</span> <span class="hljs-variable">z</span> <span class="hljs-operator">=</span> y / x;<br>   &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>输出：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Exception in thread <span class="hljs-string">&quot;main&quot;</span> java.lang.ArithmeticException: / by zero<br>	at com.example.demo.aaa.DDD.main(DDD.java:<span class="hljs-number">60</span>)<br></code></pre></td></tr></table></figure>
-<p>简而言之，<em><strong>非检查的异常是不需要在 throws 子句中捕获或声明的运行时异常</strong></em>。这些异常通常是由编程错误引起的，例如试图越界访问数组中的索引或试图除以零。</p>
-<p>非检查的异常包括 RuntimeException 类的所有子类，以及 Error 类及其子类。</p>
-<h2 id="15-用户自定义异常"><a class="markdownIt-Anchor" href="#15-用户自定义异常"></a> 1.5 用户自定义异常</h2>
+<p>简而言之，<strong><em>非检查的异常是不需要在 throws
+子句中捕获或声明的运行时异常</em></strong>。这些异常通常是由编程错误引起的，例如试图越界访问数组中的索引或试图除以零。</p>
+<p>非检查的异常包括 RuntimeException 类的所有子类，以及 Error
+类及其子类。</p>
+<h2 id="用户自定义异常">1.5 用户自定义异常</h2>
 <p>异常是程序执行期间发生的问题（运行时错误）。当发生异常时，程序会突然终止，并且不会执行生成异常行之后的代码。</p>
-<p>有时，Java 中内置的异常并不能描述某种情况。在这种情况下，用户还可以创建异常，称为“用户定义的异常”，并使用“throw”关键字抛出该异常。</p>
-<h3 id="为什么要使用自定义异常"><a class="markdownIt-Anchor" href="#为什么要使用自定义异常"></a> 为什么要使用自定义异常？</h3>
+<p>有时，Java
+中内置的异常并不能描述某种情况。在这种情况下，用户还可以创建异常，称为“用户定义的异常”，并使用“throw”关键字抛出该异常。</p>
+<h3 id="为什么要使用自定义异常">为什么要使用自定义异常？</h3>
 <ul>
 <li>捕获并提供对现有 Java 异常子集的特定处理。</li>
 <li>业务逻辑异常：这些是与业务逻辑和工作流相关的异常。这对于应用程序用户或开发人员了解确切的问题很有用。</li>
 </ul>
-<p>为了创建自定义异常，我们需要扩展属于<strong>java.lang 包的 Exception 类。</strong></p>
+<p>为了创建自定义异常，我们需要扩展属于<strong>java.lang 包的 Exception
+类。</strong></p>
 <p>例如，下面代码中的 MyException 扩展了 Exception 类。</p>
 <p>自定义异常只需要继承RuntimeException即可。下列为一个简单的自定义异常。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span>&#123;<br><br>    <span class="hljs-keyword">private</span> String errorCode;<br>    <span class="hljs-keyword">private</span> String errorMsg;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyException</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>();<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyException</span><span class="hljs-params">(String errorCode, String errorMsg)</span> &#123;<br>        <span class="hljs-built_in">this</span>.errorCode = errorCode;<br>        <span class="hljs-built_in">this</span>.errorMsg = errorMsg;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>使用：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String args[])</span>&#123;<br>    ... ...<br>    <span class="hljs-comment">//逻辑失败处理</span><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyException</span>(<span class="hljs-string">&quot;your errorCode&quot;</span>,<span class="hljs-string">&quot;your errorMsg&quot;</span>);<br>    <br>   &#125;<br></code></pre></td></tr></table></figure>
-<h2 id="16-打印异常的方法"><a class="markdownIt-Anchor" href="#16-打印异常的方法"></a> 1.6 打印异常的方法</h2>
-<h3 id="161-printstacktrace"><a class="markdownIt-Anchor" href="#161-printstacktrace"></a> 1.6.1 <strong>printStackTrace()</strong></h3>
+<h2 id="打印异常的方法">1.6 打印异常的方法</h2>
+<h3 id="printstacktrace">1.6.1 <strong>printStackTrace()</strong></h3>
 <ul>
-<li><code>printStackTrace()</code>– 该方法打印异常信息，格式为异常名称：<strong>异常描述，堆栈</strong></li>
+<li><code>printStackTrace()</code>–
+该方法打印异常信息，格式为异常名称：<strong>异常描述，堆栈</strong></li>
 </ul>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-type">int</span> a=<span class="hljs-number">5</span>;<br>     <span class="hljs-type">int</span> b=<span class="hljs-number">0</span>;<br>     <span class="hljs-keyword">try</span>&#123;<br>         System.out.println(a/b);<br>     &#125; <span class="hljs-keyword">catch</span>(ArithmeticException e)&#123;<br>         e.printStackTrace();<br>     &#125; <br> &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>输出:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">java.lang.ArithmeticException: / by zero<br>	at com.example.demo.aaa.DDD.main(DDD.java:<span class="hljs-number">61</span>)<br></code></pre></td></tr></table></figure>
-<h3 id="162-tostring"><a class="markdownIt-Anchor" href="#162-tostring"></a> 1.6.2 <strong>toString()</strong></h3>
+<h3 id="tostring">1.6.2 <strong>toString()</strong></h3>
 <ul>
-<li><code>toString()</code> – 该方法以异常名称：<strong>异常描述的格式打印异常信息</strong>。</li>
+<li><code>toString()</code> –
+该方法以异常名称：<strong>异常描述的格式打印异常信息</strong>。</li>
 </ul>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-type">int</span> a=<span class="hljs-number">5</span>;<br>     <span class="hljs-type">int</span> b=<span class="hljs-number">0</span>;<br>     <span class="hljs-keyword">try</span>&#123;<br>         System.out.println(a/b);<br>     &#125; <span class="hljs-keyword">catch</span>(ArithmeticException e)&#123;<br>          System.out.println(e.toString());<br>     &#125; <br> &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>输出:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">java.lang.ArithmeticException: / by zero<br></code></pre></td></tr></table></figure>
-<h3 id="163-getmessage"><a class="markdownIt-Anchor" href="#163-getmessage"></a> 1.6.3 <strong>getMessage()</strong></h3>
+<h3 id="getmessage">1.6.3 <strong>getMessage()</strong></h3>
 <ul>
-<li><code>getMessage()</code> - 该方法只打印异常的<strong>描述</strong>。</li>
+<li><code>getMessage()</code> -
+该方法只打印异常的<strong>描述</strong>。</li>
 </ul>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-type">int</span> a=<span class="hljs-number">5</span>;<br>     <span class="hljs-type">int</span> b=<span class="hljs-number">0</span>;<br>     <span class="hljs-keyword">try</span>&#123;<br>         System.out.println(a/b);<br>     &#125; <span class="hljs-keyword">catch</span>(ArithmeticException e)&#123;<br>           System.out.println(e.getMessage());<br>     &#125; <br> &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>输出:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">/ by zero<br></code></pre></td></tr></table></figure>
-<h3 id="164-不处理异常"><a class="markdownIt-Anchor" href="#164-不处理异常"></a> 1.6.4 不处理异常</h3>
+<h3 id="不处理异常">1.6.4 不处理异常</h3>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-type">int</span> a=<span class="hljs-number">5</span>;<br>     <span class="hljs-type">int</span> b=<span class="hljs-number">0</span>;<br>     System.out.println(a/b);<br> &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>则为：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Exception in thread <span class="hljs-string">&quot;main&quot;</span> java.lang.ArithmeticException: / by zero<br>	at com.example.demo.aaa.DDD.main(DDD.java:<span class="hljs-number">61</span>)<br></code></pre></td></tr></table></figure>
-<h1 id="2jvm-是如何处理异常的"><a class="markdownIt-Anchor" href="#2jvm-是如何处理异常的"></a> 2.JVM 是如何处理异常的？</h1>
-<p>**默认异常处理：**无论何时在方法内部，如果发生异常，该方法都会创建一个称为异常对象的对象，并将其交给运行时系统 (JVM)。</p>
-<p>异常对象包含<strong>异常的名称和描述以及发生异常的程序的当前状态</strong>。创建异常对象并在运行时系统中处理它称为抛出异常。可能有一个已调用的方法列表，以到达发生异常的方法。这个有序的方法列表称为<strong>Call Stack</strong>。现在将发生以下过程。</p>
+<h1 id="jvm-是如何处理异常的">2.JVM 是如何处理异常的？</h1>
+<p><strong>默认异常处理：</strong>无论何时在方法内部，如果发生异常，该方法都会创建一个称为异常对象的对象，并将其交给运行时系统
+(JVM)。</p>
+<p>异常对象包含<strong>异常的名称和描述以及发生异常的程序的当前状态</strong>。创建异常对象并在运行时系统中处理它称为抛出异常。可能有一个已调用的方法列表，以到达发生异常的方法。这个有序的方法列表称为<strong>Call
+Stack</strong>。现在将发生以下过程。</p>
 <ul>
-<li>运行时系统搜索调用堆栈以找到包含可以处理发生的异常的代码块的方法。代码块称为<strong>Exception handler（异常处理程序</strong>）。</li>
+<li>运行时系统搜索调用堆栈以找到包含可以处理发生的异常的代码块的方法。代码块称为<strong>Exception
+handler（异常处理程序</strong>）。</li>
 <li>运行时系统从发生异常的方法开始搜索，并按照调用方法的相反顺序遍历调用堆栈。</li>
 <li>如果找到合适的处理程序，则将发生的异常传递给它。合适的处理程序意味着抛出的异常对象的类型与它可以处理的异常对象的类型相匹配。</li>
-<li>如果运行时系统搜索调用堆栈上的所有方法，但找不到合适的处理程序，则运行时系统将 Exception Object 移交给<strong>默认的异常处理程序</strong>，它是运行时系统的一部分。该处理程序以下列格式打印异常信息并<strong>异常</strong>终止程序。</li>
+<li>如果运行时系统搜索调用堆栈上的所有方法，但找不到合适的处理程序，则运行时系统将
+Exception Object
+移交给<strong>默认的异常处理程序</strong>，它是运行时系统的一部分。该处理程序以下列格式打印异常信息并<strong>异常</strong>终止程序。</li>
 </ul>
 <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lasso">Exception <span class="hljs-keyword">in</span> <span class="hljs-keyword">thread</span> <span class="hljs-string">&quot;xxx&quot;</span> Name of Exception : Description<br><span class="hljs-params">...</span> <span class="hljs-params">...</span><span class="hljs-params">...</span> ..  <span class="hljs-comment">// Call Stack</span><br></code></pre></td></tr></table></figure>
 <p>还记得上面，如果没有处理异常打印，它会默认打印：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">Exception <span class="hljs-keyword">in</span> thread <span class="hljs-string">&quot;main&quot;</span> java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.ArithmeticException</span>: / by zero<br>	at com<span class="hljs-selector-class">.example</span><span class="hljs-selector-class">.demo</span><span class="hljs-selector-class">.aaa</span><span class="hljs-selector-class">.DDD</span><span class="hljs-selector-class">.main</span>(DDD<span class="hljs-selector-class">.java</span>:<span class="hljs-number">61</span>)<br></code></pre></td></tr></table></figure>
 <p><strong>调用堆栈的流程</strong></p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/call-stack.png" srcset="/img/loading.gif" lazyload alt="调用堆栈" /></p>
-<h1 id="3try-catch异常处理"><a class="markdownIt-Anchor" href="#3try-catch异常处理"></a> 3.try-catch异常处理</h1>
+<figure>
+<img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/java_se/throwable/call-stack.png" srcset="/img/loading.gif" lazyload
+alt="调用堆栈" />
+<figcaption aria-hidden="true">调用堆栈</figcaption>
+</figure>
+<h1 id="try-catch异常处理">3.try-catch异常处理</h1>
 <p>针对于程序中异常的处理方式，一般有2种：</p>
 <ul>
-<li>手动抛出异常：<code>throw new MyException(&quot;your errorCode&quot;, &quot;your errorMsg&quot;)</code></li>
+<li>手动抛出异常：<code>throw new MyException("your errorCode", "your errorMsg")</code></li>
 <li>通过try-cathc-finally处理</li>
 </ul>
 <p><strong>例子：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-type">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span>];<br>     <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> arr[<span class="hljs-number">4</span>];<br>     System.out.println(<span class="hljs-string">&quot;Hi, I want to execute&quot;</span>);<br> &#125;<br></code></pre></td></tr></table></figure>
 <p><strong>输出：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Exception in thread <span class="hljs-string">&quot;main&quot;</span> java.lang.ArrayIndexOutOfBoundsException: <span class="hljs-number">4</span><br>	at com.example.demo.aaa.DDD.main(DDD.java:<span class="hljs-number">59</span>)<br></code></pre></td></tr></table></figure>
-<p>在上面的例子中，一个数组被定义为大小，即你只能访问索引 0 到 3 的元素。但是你试图访问索引 4 处的元素（错误地）这就是它抛出异常的原因。<strong>在这种情况下，JVM异常</strong>终止程序。语句System.out.println(“Hi, I want to execute”); 永远不会执行。要执行它，我们必须使用 try-catch 处理异常。因此，为了继续程序的正常流程，我们需要一个 try-catch 子句。</p>
+<p>在上面的例子中，一个数组被定义为大小，即你只能访问索引 0 到 3
+的元素。但是你试图访问索引 4
+处的元素（错误地）这就是它抛出异常的原因。<strong>在这种情况下，JVM异常</strong>终止程序。语句System.out.println("Hi,
+I want to execute"); 永远不会执行。要执行它，我们必须使用 try-catch
+处理异常。因此，为了继续程序的正常流程，我们需要一个 try-catch
+子句。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// block of code to monitor for errors</span><br>    <span class="hljs-comment">// the code you think can raise an exception</span><br>&#125; <span class="hljs-keyword">catch</span> (ExceptionType1 exOb) &#123;<br>    <span class="hljs-comment">// exception handler for ExceptionType1</span><br>&#125; <span class="hljs-keyword">catch</span> (ExceptionType2 exOb) &#123;<br>    <span class="hljs-comment">// exception handler for ExceptionType2</span><br>&#125;<br><span class="hljs-comment">// optional</span><br><span class="hljs-keyword">finally</span> &#123;  <span class="hljs-comment">// block of code to be executed after try block ends </span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>以下要点：</p>
 <ul>
-<li>
-<p>在一个方法中，可以有多个可能引发异常的语句，因此将所有这些语句放在它们自己的<strong>try块中，并在它们自己的catch</strong>块中为每个语句提供一个单独的异常处理程序。</p>
-</li>
-<li>
-<p>如果<strong>try</strong>块中发生异常，则该异常由与其关联的异常处理程序处理。要关联异常处理程序，我们必须在它之后放置一个<strong>catch</strong>块。可以有多个异常处理程序。每个<strong>catch</strong>块都是一个异常处理程序，用于处理由其参数指示的类型的异常。参数 ExceptionType 声明它可以处理的异常类型，并且必须是从<strong>Throwable</strong>类继承的类的名称。</p>
-</li>
-<li>
-<p>对于每个 try 块，可以有零个或多个 catch 块，但<strong>只有一个</strong>final 块。</p>
+<li><p>在一个方法中，可以有多个可能引发异常的语句，因此将所有这些语句放在它们自己的<strong>try块中，并在它们自己的catch</strong>块中为每个语句提供一个单独的异常处理程序。</p></li>
+<li><p>如果<strong>try</strong>块中发生异常，则该异常由与其关联的异常处理程序处理。要关联异常处理程序，我们必须在它之后放置一个<strong>catch</strong>块。可以有多个异常处理程序。每个<strong>catch</strong>块都是一个异常处理程序，用于处理由其参数指示的类型的异常。参数
+ExceptionType
+声明它可以处理的异常类型，并且必须是从<strong>Throwable</strong>类继承的类的名称。</p></li>
+<li><p>对于每个 try 块，可以有零个或多个 catch
+块，但<strong>只有一个</strong>final 块。</p>
 <blockquote>
-<p>finally 块是可选的。无论 try 块中是否发生异常，它总是被执行。如果发生异常，那么它将在<strong>try 和 catch 块之后执行。</strong> 而如果没有发生异常，那么就会在<strong>try</strong>块之后执行。java中的finally块用于放置重要代码，例如清理代码，例如关闭文件或关闭连接。</p>
-</blockquote>
-</li>
+<p>finally 块是可选的。无论 try
+块中是否发生异常，它总是被执行。如果发生异常，那么它将在<strong>try 和
+catch 块之后执行。</strong>
+而如果没有发生异常，那么就会在<strong>try</strong>块之后执行。java中的finally块用于放置重要代码，例如清理代码，例如关闭文件或关闭连接。</p>
+</blockquote></li>
 </ul>
-<h1 id="4常见的异常"><a class="markdownIt-Anchor" href="#4常见的异常"></a> 4.常见的异常</h1>
-<ol>
-<li><strong>ArithmeticException：</strong> 当算术运算出现异常情况时抛出。</li>
-<li>**ArrayIndexOutOfBoundsException：**抛出它表示已使用非法索引访问数组。索引为负数或大于或等于数组的大小。</li>
-<li><strong>ClassNotFoundException：</strong> 当我们尝试访问未找到其定义的类时引发此异常</li>
-<li><strong>FileNotFoundException：</strong> 当文件不可访问或无法打开时会引发此异常。</li>
+<h1 id="常见的异常">4.常见的异常</h1>
+<ol type="1">
+<li><strong>ArithmeticException：</strong>
+当算术运算出现异常情况时抛出。</li>
+<li><strong>ArrayIndexOutOfBoundsException：</strong>抛出它表示已使用非法索引访问数组。索引为负数或大于或等于数组的大小。</li>
+<li><strong>ClassNotFoundException：</strong>
+当我们尝试访问未找到其定义的类时引发此异常</li>
+<li><strong>FileNotFoundException：</strong>
+当文件不可访问或无法打开时会引发此异常。</li>
 <li><strong>IOException：</strong> 当输入输出操作失败或中断时抛出</li>
-<li><strong>InterruptedException：</strong> 当一个线程正在等待、休眠或做一些处理，被中断时抛出。</li>
-<li><strong>NoSuchFieldException：</strong> 当类不包含指定的字段（或变量）时抛出</li>
-<li>**NoSuchMethodException：**访问未找到的方法时抛出。</li>
-<li><strong>NullPointerException：</strong> 引用空对象的成员时引发此异常。Null 代表什么都没有</li>
-<li><strong>NumberFormatException：</strong> 当方法无法将字符串转换为数字格式时会引发此异常。</li>
+<li><strong>InterruptedException：</strong>
+当一个线程正在等待、休眠或做一些处理，被中断时抛出。</li>
+<li><strong>NoSuchFieldException：</strong>
+当类不包含指定的字段（或变量）时抛出</li>
+<li><strong>NoSuchMethodException：</strong>访问未找到的方法时抛出。</li>
+<li><strong>NullPointerException：</strong>
+引用空对象的成员时引发此异常。Null 代表什么都没有</li>
+<li><strong>NumberFormatException：</strong>
+当方法无法将字符串转换为数字格式时会引发此异常。</li>
 <li><strong>RuntimeException：</strong> 这表示在运行时发生的异常。</li>
-<li><strong>StringIndexOutOfBoundsException：</strong> 它由 String 类方法抛出，指示索引为负数或大于字符串的大小</li>
-<li>**IllegalArgumentException ：**当该方法接收到不完全符合给定关系或条件的参数时，此异常将抛出错误或错误语句。它属于未经检查的异常。</li>
-<li>**IllegalStateException ：**当应用程序中的特定操作未访问该方法时，此异常将抛出错误或错误消息。它属于未经检查的异常。</li>
+<li><strong>StringIndexOutOfBoundsException：</strong> 它由 String
+类方法抛出，指示索引为负数或大于字符串的大小</li>
+<li><strong>IllegalArgumentException
+：</strong>当该方法接收到不完全符合给定关系或条件的参数时，此异常将抛出错误或错误语句。它属于未经检查的异常。</li>
+<li><strong>IllegalStateException
+：</strong>当应用程序中的特定操作未访问该方法时，此异常将抛出错误或错误消息。它属于未经检查的异常。</li>
 </ol>
 <hr />
 <p><strong>博客说明</strong></p>

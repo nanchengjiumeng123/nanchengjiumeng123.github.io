@@ -16,12 +16,12 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.背景 在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用 JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI) 组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB 的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web 和企业组件，并提供有">
+    <meta name="description" content="1.背景 在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用 JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI) 组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB 的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web 和企业组件，并提供有助">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring框架介绍">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/05/10/framework/spring/2022-05-10_Spring%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="1.背景 在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用 JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI) 组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB 的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web 和企业组件，并提供有">
+<meta property="og:description" content="1.背景 在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用 JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI) 组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB 的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web 和企业组件，并提供有助">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/pink_girl.jpg">
 <meta property="article:published_time" content="2022-05-10T02:51:33.000Z">
@@ -277,153 +277,257 @@
             
               <div class="markdown-body">
                 
-                <h1 id="1背景"><a class="markdownIt-Anchor" href="#1背景"></a> 1.背景</h1>
-<p>在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用 JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI) 组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB 的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web 和企业组件，并提供有助于企业应用程序开发的服务。然而，使用 EJB 开发企业应用程序并不容易，因为开发人员需要执行各种任务，例如创建 Home 和 Remote 接口以及实现生命周期回调方法，这导致为 EJB 提供代码的复杂性由于这种复杂性，</p>
-<h1 id="2-spring框架"><a class="markdownIt-Anchor" href="#2-spring框架"></a> 2. Spring框架</h1>
-<h2 id="21-介绍"><a class="markdownIt-Anchor" href="#21-介绍"></a> 2.1 介绍</h2>
-<p><code>Spring 框架（通常称为 Spring）的出现是为了解决所有这些复杂问题</code>。该框架使用各种新技术，例如面向方面的编程 (AOP)、Plain Old Java Object (POJO) 和依赖注入 (DI) ，开发企业应用程序，从而消除使用 EJB 开发企业应用程序时涉及的复杂性**，Spring 是一个开源轻量级框架，它允许 Java EE  开发人员构建简单、可靠和可扩展的企业应用程序。该框架主要侧重于提供各种方式来帮助我们管理我们的业务对象。与经典的 Java 框架和应用程序编程接口 (API)（例如 Java 数据库连接 (JDBC)、JavaServer Pages (JSP) 和 Java Servlet）相比，它使 Web 应用程序的开发更加容易。**</p>
-<p>Spring框架可以看成是子框架的集合，也叫层，比如Spring AOP。Spring 对象关系映射（Spring ORM）。Spring Web Flow 和 Spring Web MVC。它是用于开发企业应用程序的轻量级应用程序框架。在构建 Web 应用程序时，我们可以单独使用这些模块中的任何一个。这些模块也可以组合在一起以在 Web 应用程序中提供更好的功能。由于依赖注入，Spring 框架是松散耦合的。</p>
+                <h1 id="背景">1.背景</h1>
+<p>在 Enterprise Java Beans (EJB) 出现之前，Java 开发人员需要使用
+JavaBeans 来创建 Web 应用程序。尽管 JavaBeans 有助于开发用户界面 (UI)
+组件，但它们无法提供开发健壮且安全的企业应用程序所需的服务，例如事务管理和安全性。EJB
+的出现被视为这个问题的解决方案 EJB 扩展了 Java 组件，例如 Web
+和企业组件，并提供有助于企业应用程序开发的服务。然而，使用 EJB
+开发企业应用程序并不容易，因为开发人员需要执行各种任务，例如创建 Home 和
+Remote 接口以及实现生命周期回调方法，这导致为 EJB
+提供代码的复杂性由于这种复杂性，</p>
+<h1 id="spring框架">2. Spring框架</h1>
+<h2 id="介绍">2.1 介绍</h2>
+<p><code>Spring 框架（通常称为 Spring）的出现是为了解决所有这些复杂问题</code>。该框架使用各种新技术，例如面向方面的编程
+(AOP)、Plain Old Java Object (POJO) 和依赖注入 (DI)
+，开发企业应用程序，从而消除使用 EJB
+开发企业应用程序时涉及的复杂性<strong>，Spring
+是一个开源轻量级框架，它允许 Java EE
+开发人员构建简单、可靠和可扩展的企业应用程序。该框架主要侧重于提供各种方式来帮助我们管理我们的业务对象。与经典的
+Java 框架和应用程序编程接口 (API)（例如 Java 数据库连接
+(JDBC)、JavaServer Pages (JSP) 和 Java Servlet）相比，它使 Web
+应用程序的开发更加容易。</strong></p>
+<p>Spring框架可以看成是子框架的集合，也叫层，比如Spring AOP。Spring
+对象关系映射（Spring ORM）。Spring Web Flow 和 Spring Web
+MVC。它是用于开发企业应用程序的轻量级应用程序框架。在构建 Web
+应用程序时，我们可以单独使用这些模块中的任何一个。这些模块也可以组合在一起以在
+Web 应用程序中提供更好的功能。由于依赖注入，Spring
+框架是松散耦合的。</p>
 <blockquote>
-<p>Spring的形成，最初来自Rod Jahnson所著的一本很有影响力的书籍《<a target="_blank" rel="noopener" href="https://item.jd.com/68619611892.html">Expert One-on-One J2EE Design and Development</a>》，就是在这本书中第一次出现了Spring的一些核心思想，该书出版于2002年。</p>
+<p>Spring的形成，最初来自Rod Jahnson所著的一本很有影响力的书籍《<a
+target="_blank" rel="noopener" href="https://item.jd.com/68619611892.html">Expert One-on-One J2EE
+Design and
+Development</a>》，就是在这本书中第一次出现了Spring的一些核心思想，该书出版于2002年。</p>
 </blockquote>
-<h2 id="22-spring框架的演变"><a class="markdownIt-Anchor" href="#22-spring框架的演变"></a> 2.2 Spring框架的演变</h2>
-<p>Spring Framework 于 2004 年首次发布，之后进行了重大的重大修订，如 Spring 2.0 提供了 XML 命名空间和 AspectJ 支持，Spring 2.5 提供了注解驱动的配置，Spring 3.0 提供了基于 Java 的@Configuration 模型。spring 框架的最新版本是 4.0。它发布时支持 Java 8 和 Java EE 7 技术。尽管我们仍然可以将 Spring 与旧版本的 java 一起使用，但最低要求仅限于 Java SE 6。Spring 4.0 还支持 Java EE 7 技术，例如 java 消息服务 (JMS) 2.0、java 持久性 API (JPA) 2.1、 Bean 验证 1.1、servlet 3.1 和 JCache，如今spring已经来到了spring5.0。</p>
-<h1 id="3-spring框架架构"><a class="markdownIt-Anchor" href="#3-spring框架架构"></a> 3. Spring框架架构</h1>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/Spring-Framework-Architecture-1677156614942-1.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<p>Spring 框架由七个模块组成，如上图所示。这些模块是 <strong>Spring Core、Spring AOP、Spring Web MVC、Spring DAO、Spring ORM、Spring context</strong> 和 <strong>Spring Web flow</strong>。这些模块提供了不同的平台来开发不同的企业应用程序；例如，你可以使用 Spring Web MVC 模块来开发基于 MVC 的应用程序。</p>
-<h2 id="31-spring-框架模块"><a class="markdownIt-Anchor" href="#31-spring-框架模块"></a> 3.1 Spring 框架模块</h2>
+<h2 id="spring框架的演变">2.2 Spring框架的演变</h2>
+<p>Spring Framework 于 2004 年首次发布，之后进行了重大的重大修订，如
+Spring 2.0 提供了 XML 命名空间和 AspectJ 支持，Spring 2.5
+提供了注解驱动的配置，Spring 3.0 提供了基于 Java 的@Configuration
+模型。spring 框架的最新版本是 4.0。它发布时支持 Java 8 和 Java EE 7
+技术。尽管我们仍然可以将 Spring 与旧版本的 java
+一起使用，但最低要求仅限于 Java SE 6。Spring 4.0 还支持 Java EE 7
+技术，例如 java 消息服务 (JMS) 2.0、java 持久性 API (JPA) 2.1、 Bean
+验证 1.1、servlet 3.1 和 JCache，如今spring已经来到了spring5.0。</p>
+<h1 id="spring框架架构">3. Spring框架架构</h1>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/Spring-Framework-Architecture-1677156614942-1.png" srcset="/img/loading.gif" lazyload /></p>
+<p>Spring 框架由七个模块组成，如上图所示。这些模块是 <strong>Spring
+Core、Spring AOP、Spring Web MVC、Spring DAO、Spring ORM、Spring
+context</strong> 和 <strong>Spring Web
+flow</strong>。这些模块提供了不同的平台来开发不同的企业应用程序；例如，你可以使用
+Spring Web MVC 模块来开发基于 MVC 的应用程序。</p>
+<h2 id="spring-框架模块">3.1 Spring 框架模块</h2>
 <ul>
-<li>
-<p><strong>Spring Core：</strong><br />
-Spring Core模块是Spring框架的核心组件，提供了IoC容器，Spring容器有两种实现方式，分别是bean工厂和应用上下文。Bean 工厂是使用 org.springframework.beans.factory.BeanFactory 接口定义的，充当 bean 的容器。Bean 工厂容器允许我们将依赖项的配置和规范与程序逻辑分离。在 Spring 框架中，Bean 工厂充当中央 IoC 容器，负责实例化应用程序对象。它还配置和组装这些对象之间的依赖关系。BeanFactory 接口有许多实现。XmlBeanFactory 类是 BeanFactory 接口最常见的实现。</p>
-</li>
-<li>
-<p><strong>Spring AOP ：</strong><br />
-与将应用程序分解为对象层次结构的面向对象编程 (OOP) 类似，AOP 将程序分解为方面或关注点。Spring AOP 模块允许我们在 Spring AOP 中的 Spring 应用程序中实现关注点或方面，这些方面是常规的 Spring bean 或使用 @Aspect 注释注释的常规类。这些方面有助于应用程序的事务管理和日志记录以及故障监控。例如，在银行操作中需要事务管理，例如将金额从一个帐户转移到另一个账户， Spring AOP 模块提供了一个可以应用于事务 API 的事务管理抽象层。</p>
-</li>
-<li>
-<p><strong>Spring ORM</strong> ：</p>
-<p>Spring ORM 模块用于从应用程序中的数据库访问数据。它提供用于使用 JDO、Hibernate 和 iBatis 操作数据库的 API。Spring ORM 支持 DAO，它提供了一种便捷的方式来构建以下基于 DAO 的 ORM 解决方案：</p>
+<li><p><strong>Spring Core：</strong> Spring
+Core模块是Spring框架的核心组件，提供了IoC容器，Spring容器有两种实现方式，分别是bean工厂和应用上下文。Bean
+工厂是使用 org.springframework.beans.factory.BeanFactory
+接口定义的，充当 bean 的容器。Bean
+工厂容器允许我们将依赖项的配置和规范与程序逻辑分离。在 Spring
+框架中，Bean 工厂充当中央 IoC
+容器，负责实例化应用程序对象。它还配置和组装这些对象之间的依赖关系。BeanFactory
+接口有许多实现。XmlBeanFactory 类是 BeanFactory
+接口最常见的实现。</p></li>
+<li><p><strong>Spring AOP ：</strong>
+与将应用程序分解为对象层次结构的面向对象编程 (OOP) 类似，AOP
+将程序分解为方面或关注点。Spring AOP 模块允许我们在 Spring AOP 中的
+Spring 应用程序中实现关注点或方面，这些方面是常规的 Spring bean 或使用
+<span class="citation" data-cites="Aspect">@Aspect</span>
+注释注释的常规类。这些方面有助于应用程序的事务管理和日志记录以及故障监控。例如，在银行操作中需要事务管理，例如将金额从一个帐户转移到另一个账户，
+Spring AOP 模块提供了一个可以应用于事务 API 的事务管理抽象层。</p></li>
+<li><p><strong>Spring ORM</strong> ：</p>
+<p>Spring ORM 模块用于从应用程序中的数据库访问数据。它提供用于使用
+JDO、Hibernate 和 iBatis 操作数据库的 API。Spring ORM 支持
+DAO，它提供了一种便捷的方式来构建以下基于 DAO 的 ORM 解决方案：</p>
 <ul>
 <li>简单的声明式事务管理</li>
 <li>透明的异常处理</li>
 <li>线程安全的轻量级模板类</li>
 <li>DAO 支持类</li>
 <li>资源管理</li>
-</ul>
-</li>
-<li>
-<p><strong>Spring Web MVC ：</strong><br />
-Spring 的 Web MVC 模块实现了用于创建 Web 应用程序的 MVC 架构。它将 Web 应用程序的模型和视图组件的代码分开。在 Spring MVC 中，当从浏览器生成请求时，它首先转到 DispatcherServlet 类（前端控制器），该类使用一组处理程序映射将请求分派给控制器（SimpleFormController 类或 AbstractWizardformController 类）。控制器提取并处理请求中嵌入的信息，并将结果以模型对象的形式发送给 DispatcherServlet 类。最后，DispatcherServlet 类使用 ViewResolver 类将结果发送到视图，视图将这些结果显示给用户。</p>
-</li>
-<li>
-<p><strong>Spring Web Flow</strong> ：</p>
-<p>Spring Web Flow 模块是 Spring Web MVC 模块的扩展。Spring Web MVC 框架提供了表单控制器，如SimpleFormController 类和AbstractWizardFormController 类，以实现预定义的工作流。Spring Web Flow 有助于定义管理 Web 应用程序不同页面之间工作流的 XML 文件或 Java 类。Spring Web Flow 是单独发布的，可以通过<a target="_blank" rel="noopener" href="http://www.springframework.xn--org-128d716rdvfcs4a">http://www.springframework.org网站下载</a>。</p>
+</ul></li>
+<li><p><strong>Spring Web MVC ：</strong> Spring 的 Web MVC
+模块实现了用于创建 Web 应用程序的 MVC 架构。它将 Web
+应用程序的模型和视图组件的代码分开。在 Spring MVC
+中，当从浏览器生成请求时，它首先转到 DispatcherServlet
+类（前端控制器），该类使用一组处理程序映射将请求分派给控制器（SimpleFormController
+类或 AbstractWizardformController
+类）。控制器提取并处理请求中嵌入的信息，并将结果以模型对象的形式发送给
+DispatcherServlet 类。最后，DispatcherServlet 类使用 ViewResolver
+类将结果发送到视图，视图将这些结果显示给用户。</p></li>
+<li><p><strong>Spring Web Flow</strong> ：</p>
+<p>Spring Web Flow 模块是 Spring Web MVC 模块的扩展。Spring Web MVC
+框架提供了表单控制器，如SimpleFormController
+类和AbstractWizardFormController 类，以实现预定义的工作流。Spring Web
+Flow 有助于定义管理 Web 应用程序不同页面之间工作流的 XML 文件或 Java
+类。Spring Web Flow
+是单独发布的，可以通过http://www.springframework.org网站下载。</p>
 <p>以下是 Spring Web Flow 的优点：</p>
 <ul>
-<li>通过在 XML 文件中定义 Web 流，可以清楚地提供应用程序不同 UI 之间的流。</li>
-<li>Web 流定义可帮助我们虚拟地将应用程序拆分为不同的模块，并在多种情况下重用这些模块。</li>
+<li>通过在 XML 文件中定义 Web 流，可以清楚地提供应用程序不同 UI
+之间的流。</li>
+<li>Web
+流定义可帮助我们虚拟地将应用程序拆分为不同的模块，并在多种情况下重用这些模块。</li>
+</ul></li>
+<li><p><strong>Spring Web DAO ：</strong> Spring 框架中的 DAO
+包通过使用数据访问技术（如 JDBC、Hibernate 或 JDO）提供 DAO
+支持。该模块通过消除提供繁琐的 JDBC 编码的需要引入了 JDBC
+抽象层。它还提供编程式和声明式事务管理类。Spring DAO 包支持异构 Java
+数据库连接和 O/R 映射，这有助于 Spring
+使用多种数据访问技术。为了方便快捷地访问数据库资源，Spring框架提供了抽象的DAO基类。Spring
+框架支持的每种数据访问技术都有多种实现。例如，在 JDBC 中，JdbcDaoSupport
+类及其方法用于访问 DataSource 实例和预配置的 JdbcTemplate
+实例。</p></li>
+<li><p><strong>Spring Context ：</strong> Spring Context
+基于核心模块。也就是我们常说的<code>ApplicationContext</code>，
+org.springframework.context.ApplicationContext是BeanFactory的一个接口。该模块的特性源自
+org.springframework.beans 包，还支持国际化
+(I18N)、验证、事件传播和资源加载等功能。Application 上下文实现
+MessageSource 接口并向应用程序提供消息传递功能。</p></li>
 </ul>
-</li>
-<li>
-<p><strong>Spring Web DAO ：</strong><br />
-Spring 框架中的 DAO 包通过使用数据访问技术（如 JDBC、Hibernate 或 JDO）提供 DAO 支持。该模块通过消除提供繁琐的 JDBC 编码的需要引入了 JDBC 抽象层。它还提供编程式和声明式事务管理类。Spring DAO 包支持异构 Java 数据库连接和 O/R 映射，这有助于 Spring 使用多种数据访问技术。为了方便快捷地访问数据库资源，Spring框架提供了抽象的DAO基类。Spring 框架支持的每种数据访问技术都有多种实现。例如，在 JDBC 中，JdbcDaoSupport 类及其方法用于访问 DataSource 实例和预配置的 JdbcTemplate 实例。</p>
-</li>
-<li>
-<p><strong>Spring Context ：</strong><br />
-Spring Context 基于核心模块。也就是我们常说的<code>ApplicationContext</code>， org.springframework.context.ApplicationContext是BeanFactory的一个接口。该模块的特性源自 org.springframework.beans 包，还支持国际化 (I18N)、验证、事件传播和资源加载等功能。Application 上下文实现 MessageSource 接口并向应用程序提供消息传递功能。</p>
-</li>
-</ul>
-<h1 id="4spring组件"><a class="markdownIt-Anchor" href="#4spring组件"></a> 4.Spring组件</h1>
+<h1 id="spring组件">4.Spring组件</h1>
 <p>Spring Framework 相关组件：</p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-8.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h2 id="41-core-containerspring的核心容器"><a class="markdownIt-Anchor" href="#41-core-containerspring的核心容器"></a> 4.1 Core Container（Spring的核心容器）</h2>
-<p>Spring 的核心容器是其他模块建立的基础，由 Beans 模块、Core 核心模块、Context 上下文模块和 SpEL 表达式语言模块组成，没有这些核心容器，也不可能有 AOP、Web 等上层的功能。具体介绍如下。</p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-8.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="core-containerspring的核心容器">4.1 Core
+Container（Spring的核心容器）</h2>
+<p>Spring 的核心容器是其他模块建立的基础，由 Beans 模块、Core
+核心模块、Context 上下文模块和 SpEL
+表达式语言模块组成，没有这些核心容器，也不可能有 AOP、Web
+等上层的功能。具体介绍如下。</p>
 <ul>
-<li>
-<p><strong>Beans 模块</strong>：提供了框架的基础部分，包括控制反转[IOC]和依赖注入[DI]。</p>
-</li>
-<li>
-<p><strong>Core 核心模块</strong>：封装了 Spring 框架的底层部分，包括资源访问、类型转换及一些常用工具类。</p>
-</li>
-<li>
-<p><strong>Context 上下文模块</strong>：建立在 Core 和 Beans 模块的基础之上，集成 Beans 模块功能并添加资源绑定、数据验证、国际化、Java EE 支持、容器生命周期、事件传播等。ApplicationContext 接口是上下文模块的焦点。</p>
-</li>
-<li>
-<p><strong>SpEL 模块</strong>：提供了强大的表达式语言支持，支持访问和修改属性值，方法调用，支持访问及修改数组、容器和索引器，命名变量，支持算数和逻辑运算，支持从 Spring 容器获取 Bean，它也支持列表投影、选择和一般的列表聚合等。</p>
-</li>
+<li><p><strong>Beans
+模块</strong>：提供了框架的基础部分，包括控制反转[IOC]和依赖注入[DI]。</p></li>
+<li><p><strong>Core 核心模块</strong>：封装了 Spring
+框架的底层部分，包括资源访问、类型转换及一些常用工具类。</p></li>
+<li><p><strong>Context 上下文模块</strong>：建立在 Core 和 Beans
+模块的基础之上，集成 Beans
+模块功能并添加资源绑定、数据验证、国际化、Java EE
+支持、容器生命周期、事件传播等。ApplicationContext
+接口是上下文模块的焦点。</p></li>
+<li><p><strong>SpEL
+模块</strong>：提供了强大的表达式语言支持，支持访问和修改属性值，方法调用，支持访问及修改数组、容器和索引器，命名变量，支持算数和逻辑运算，支持从
+Spring 容器获取
+Bean，它也支持列表投影、选择和一般的列表聚合等。</p></li>
 </ul>
 <p>对应的源码模块如下：</p>
 <hr />
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130162802973.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h2 id="42-data-accessintegration数据访问集成"><a class="markdownIt-Anchor" href="#42-data-accessintegration数据访问集成"></a> 4.2 Data Access/Integration（数据访问／集成）</h2>
-<p>数据访问／集成层包括 JDBC、ORM、OXM、JMS 和 Transactions 模块，具体介绍如下。</p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130162802973.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="data-accessintegration数据访问集成">4.2 Data
+Access/Integration（数据访问／集成）</h2>
+<p>数据访问／集成层包括 JDBC、ORM、OXM、JMS 和 Transactions
+模块，具体介绍如下。</p>
 <ul>
-<li><strong>JDBC 模块</strong>：提供了一个 JDBC 的样例模板，使用这些模板能消除传统冗长的 JDBC 编码还有必须的事务控制，而且能享受到 Spring 管理事务的好处。</li>
-<li><strong>ORM 模块</strong>：提供与流行的“对象-关系”映射框架无缝集成的 API，包括 JPA、JDO、Hibernate 和 MyBatis 等。而且还可以使用 Spring 事务管理，无需额外控制事务。</li>
-<li><strong>OXM 模块</strong>：提供了一个支持 Object /XML 映射的抽象层实现，如 JAXB、Castor、XMLBeans、JiBX 和 XStream。将 Java 对象映射成 XML 数据，或者将XML 数据映射成 Java 对象。</li>
-<li><strong>JMS 模块</strong>：指 Java 消息服务，提供一套 “消息生产者、消息消费者”模板用于更加简单的使用 JMS，JMS 用于用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。</li>
-<li><strong>Transactions 事务模块</strong>：支持编程和声明式事务管理。</li>
+<li><strong>JDBC 模块</strong>：提供了一个 JDBC
+的样例模板，使用这些模板能消除传统冗长的 JDBC
+编码还有必须的事务控制，而且能享受到 Spring 管理事务的好处。</li>
+<li><strong>ORM 模块</strong>：提供与流行的“对象-关系”映射框架无缝集成的
+API，包括 JPA、JDO、Hibernate 和 MyBatis 等。而且还可以使用 Spring
+事务管理，无需额外控制事务。</li>
+<li><strong>OXM 模块</strong>：提供了一个支持 Object /XML
+映射的抽象层实现，如 JAXB、Castor、XMLBeans、JiBX 和 XStream。将 Java
+对象映射成 XML 数据，或者将XML 数据映射成 Java 对象。</li>
+<li><strong>JMS 模块</strong>：指 Java 消息服务，提供一套
+“消息生产者、消息消费者”模板用于更加简单的使用 JMS，JMS
+用于用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。</li>
+<li><strong>Transactions
+事务模块</strong>：支持编程和声明式事务管理。</li>
 </ul>
 <p>对应的源码模块如下：</p>
 <hr />
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130162935159.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h2 id="43-web模块"><a class="markdownIt-Anchor" href="#43-web模块"></a> 4.3 Web模块</h2>
-<p>Spring 的 Web 层包括 Web、Servlet、WebSocket 和 Webflux 组件，具体介绍如下。</p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130162935159.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="web模块">4.3 Web模块</h2>
+<p>Spring 的 Web 层包括 Web、Servlet、WebSocket 和 Webflux
+组件，具体介绍如下。</p>
 <ul>
-<li><strong>Web 模块</strong>：提供了基本的 Web 开发集成特性，例如多文件上传功能、使用的 Servlet 监听器的 IOC 容器初始化以及 Web 应用上下文。</li>
-<li><strong>Servlet 模块</strong>：提供了一个 Spring MVC Web 框架实现。Spring MVC 框架提供了基于注解的请求资源注入、更简单的数据绑定、数据验证等及一套非常易用的 JSP 标签，完全无缝与 Spring 其他技术协作。</li>
-<li><strong>WebSocket 模块</strong>：提供了简单的接口，用户只要实现响应的接口就可以快速的搭建 WebSocket Server，从而实现双向通讯。</li>
-<li><strong>Webflux 模块</strong>： Spring WebFlux 是 Spring Framework 5.x中引入的新的响应式web框架。与Spring MVC不同，它不需要Servlet API，是完全异步且非阻塞的，并且通过Reactor项目实现了Reactive Streams规范。Spring WebFlux 用于创建基于事件循环执行模型的完全异步且非阻塞的应用程序。</li>
+<li><strong>Web 模块</strong>：提供了基本的 Web
+开发集成特性，例如多文件上传功能、使用的 Servlet 监听器的 IOC
+容器初始化以及 Web 应用上下文。</li>
+<li><strong>Servlet 模块</strong>：提供了一个 Spring MVC Web
+框架实现。Spring MVC
+框架提供了基于注解的请求资源注入、更简单的数据绑定、数据验证等及一套非常易用的
+JSP 标签，完全无缝与 Spring 其他技术协作。</li>
+<li><strong>WebSocket
+模块</strong>：提供了简单的接口，用户只要实现响应的接口就可以快速的搭建
+WebSocket Server，从而实现双向通讯。</li>
+<li><strong>Webflux 模块</strong>： Spring WebFlux 是 Spring Framework
+5.x中引入的新的响应式web框架。与Spring MVC不同，它不需要Servlet
+API，是完全异步且非阻塞的，并且通过Reactor项目实现了Reactive
+Streams规范。Spring WebFlux
+用于创建基于事件循环执行模型的完全异步且非阻塞的应用程序。</li>
 </ul>
 <p>此外Spring4.x中还有Portlet 模块，在Spring 5.x中已经移除</p>
 <ul>
-<li><strong>Portlet 模块</strong>：提供了在 Portlet 环境中使用 MVC 实现，类似 Web-Servlet 模块的功能。</li>
+<li><strong>Portlet 模块</strong>：提供了在 Portlet 环境中使用 MVC
+实现，类似 Web-Servlet 模块的功能。</li>
 </ul>
 <p>对应的源码模块如下：</p>
 <hr />
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163141867.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h2 id="44-aop-aspects-instrumentation和messaging"><a class="markdownIt-Anchor" href="#44-aop-aspects-instrumentation和messaging"></a> 4.4 AOP、Aspects、Instrumentation和Messaging</h2>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163141867.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="aopaspectsinstrumentation和messaging">4.4
+AOP、Aspects、Instrumentation和Messaging</h2>
 <p>在 Core Container 之上是 AOP、Aspects 等模块，具体介绍如下：</p>
 <ul>
-<li><strong>AOP 模块</strong>：提供了面向切面编程实现，提供比如日志记录、权限控制、性能统计等通用功能和业务逻辑分离的技术，并且能动态的把这些功能添加到需要的代码中，这样各司其职，降低业务逻辑和通用功能的耦合。</li>
-<li><strong>Aspects 模块</strong>：提供与 AspectJ 的集成，是一个功能强大且成熟的面向切面编程（AOP）框架。</li>
-<li><strong>Instrumentation 模块</strong>：提供了类工具的支持和类加载器的实现，可以在特定的应用服务器中使用。</li>
-<li><strong>messaging 模块</strong>：Spring 4.0 以后新增了消息（Spring-messaging）模块，该模块提供了对消息传递体系结构和协议的支持。</li>
-<li><strong>jcl 模块</strong>： Spring 5.x中新增了日志框架集成的模块。</li>
+<li><strong>AOP
+模块</strong>：提供了面向切面编程实现，提供比如日志记录、权限控制、性能统计等通用功能和业务逻辑分离的技术，并且能动态的把这些功能添加到需要的代码中，这样各司其职，降低业务逻辑和通用功能的耦合。</li>
+<li><strong>Aspects 模块</strong>：提供与 AspectJ
+的集成，是一个功能强大且成熟的面向切面编程（AOP）框架。</li>
+<li><strong>Instrumentation
+模块</strong>：提供了类工具的支持和类加载器的实现，可以在特定的应用服务器中使用。</li>
+<li><strong>messaging 模块</strong>：Spring 4.0
+以后新增了消息（Spring-messaging）模块，该模块提供了对消息传递体系结构和协议的支持。</li>
+<li><strong>jcl 模块</strong>： Spring
+5.x中新增了日志框架集成的模块。</li>
 </ul>
 <p>对应的源码模块如下：</p>
 <hr />
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163330973.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h2 id="45-test模块"><a class="markdownIt-Anchor" href="#45-test模块"></a> 4.5 Test模块</h2>
-<p>Test 模块：Spring 支持 Junit 和 TestNG 测试框架，而且还额外提供了一些基于 Spring 的测试功能，比如在测试 Web 框架时，模拟 Http 请求的功能。</p>
-<p>包含Mock Objects, TestContext Framework, Spring MVC Test, WebTestClient。</p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163330973.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="test模块">4.5 Test模块</h2>
+<p>Test 模块：Spring 支持 Junit 和 TestNG
+测试框架，而且还额外提供了一些基于 Spring 的测试功能，比如在测试 Web
+框架时，模拟 Http 请求的功能。</p>
+<p>包含Mock Objects, TestContext Framework, Spring MVC Test,
+WebTestClient。</p>
 <p>对应的源码模块如下：</p>
 <hr />
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163426380.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/image-20230130163426380.png" srcset="/img/loading.gif" lazyload /></p>
 <blockquote>
-<p>这也印证了前面所说的观点：Spring 框架是松散耦合的，可以看成是子框架的集合</p>
+<p>这也印证了前面所说的观点：Spring
+框架是松散耦合的，可以看成是子框架的集合</p>
 </blockquote>
-<h1 id="5为什么要使用spring"><a class="markdownIt-Anchor" href="#5为什么要使用spring"></a> 5.为什么要使用Spring</h1>
+<h1 id="为什么要使用spring">5.为什么要使用Spring</h1>
 <p>最重要的体现在它能做什么，这是Spring的核心所在:</p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-0.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-0.png" srcset="/img/loading.gif" lazyload /></p>
 <p>官方对此专门对此做了详细介绍，感兴趣可以看下</p>
-<p><img src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-01.png" srcset="/img/loading.gif" lazyload alt="" /></p>
-<h1 id="6如何学习spring"><a class="markdownIt-Anchor" href="#6如何学习spring"></a> 6.如何学习spring?</h1>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/Spring-guides/spring-framework-introduce-01.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="如何学习spring">6.如何学习spring?</h1>
 <p>非常负责任的告诉你，最好最全的资料在Spring的官网，Spring能成为最主要的企业开发框架，文档和生态体系也做的很好，在学习Spring时，一定要把它当做生态体系，而是不是一个简单的开发框架。如下是Spring相关地址：</p>
 <ul>
-<li>
-<p>Spring官方网站：<a target="_blank" rel="noopener" href="http://www.springframework.org/">http://www.springframework.org</a></p>
-</li>
-<li>
-<p>Spring 官方各个版本文档：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/">https://docs.spring.io/spring-framework/docs/</a></p>
-</li>
-<li>
-<p>Github地址：<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p>
-</li>
+<li><p>Spring官方网站：<a
+target="_blank" rel="noopener" href="http://www.springframework.org/">http://www.springframework.org</a></p></li>
+<li><p>Spring 官方各个版本文档：<a
+target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/">https://docs.spring.io/spring-framework/docs/</a></p></li>
+<li><p>Github地址：<a
+target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p></li>
 </ul>
-<h1 id="7read-more"><a class="markdownIt-Anchor" href="#7read-more"></a> 7.Read more</h1>
-<p>🍭:<a target="_blank" rel="noopener" href="https://pdai.tech/md/spring/spring-x-framework-introduce.html">https://pdai.tech/md/spring/spring-x-framework-introduce.html</a></p>
+<h1 id="read-more">7.Read more</h1>
+<p>:lollipop::https://pdai.tech/md/spring/spring-x-framework-introduce.html</p>
 <hr />
 <p><strong>博客说明</strong></p>
 <blockquote>
