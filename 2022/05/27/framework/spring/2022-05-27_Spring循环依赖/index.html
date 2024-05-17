@@ -18,14 +18,14 @@
   
     <meta name="description" content="1.Bean实例化、循环依赖 1.1 什么是循环依赖？ 如下有 A、B、C 三个类，可以看到发生了循环依赖：彼此互相依赖，导致各自都需要对方的依赖，形成依赖闭环。  但是我们会发现field属性注入、setter方法注入的循环依赖：即使发生了循环依赖，我们依然可以启动，使用并没有任何影响。这种方式是我们最为常用的依赖注入方式，Spring会解决field属性注入、setter方法注入的循环依赖。但">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring框架介绍">
-<meta property="og:url" content="https://nanchengjiumeng123.top/2022/05/10/framework/spring/2022-05-27_Spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/index.html">
+<meta property="og:title" content="Spring循环依赖">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2022/05/27/framework/spring/2022-05-27_Spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
 <meta property="og:description" content="1.Bean实例化、循环依赖 1.1 什么是循环依赖？ 如下有 A、B、C 三个类，可以看到发生了循环依赖：彼此互相依赖，导致各自都需要对方的依赖，形成依赖闭环。  但是我们会发现field属性注入、setter方法注入的循环依赖：即使发生了循环依赖，我们依然可以启动，使用并没有任何影响。这种方式是我们最为常用的依赖注入方式，Spring会解决field属性注入、setter方法注入的循环依赖。但">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/banner/summer_girl.jpg">
-<meta property="article:published_time" content="2022-05-10T02:51:33.000Z">
-<meta property="article:modified_time" content="2024-05-14T04:08:06.318Z">
+<meta property="article:published_time" content="2022-05-27T07:51:33.000Z">
+<meta property="article:modified_time" content="2024-05-16T14:47:09.177Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
   
   
   
-  <title>Spring框架介绍 - nanchengjiumeng123.top</title>
+  <title>Spring循环依赖 - nanchengjiumeng123.top</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Spring框架介绍"></span>
+            <span id="subtitle" data-typed-text="Spring循环依赖"></span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-10 10:51" pubdate>
-          2022年5月10日 上午
+        <time datetime="2022-05-27 15:51" pubdate>
+          2022年5月27日 下午
         </time>
       </span>
     
@@ -272,7 +272,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Spring框架介绍</h1>
+            <h1 id="seo-header">Spring循环依赖</h1>
             
             
               <div class="markdown-body">
@@ -613,8 +613,8 @@ style="text-align: left;">B中注入A的方式为setter方法，A中注入B的�
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Spring框架介绍</div>
-      <div>https://nanchengjiumeng123.top/2022/05/10/framework/spring/2022-05-27_Spring循环依赖/</div>
+      <div>Spring循环依赖</div>
+      <div>https://nanchengjiumeng123.top/2022/05/27/framework/spring/2022-05-27_Spring循环依赖/</div>
     </div>
     <div class="license-meta">
       
@@ -626,7 +626,7 @@ style="text-align: left;">B中注入A的方式为setter方法，A中注入B的�
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年5月10日</div>
+          <div>2022年5月27日</div>
         </div>
       
       
@@ -658,9 +658,9 @@ style="text-align: left;">B中注入A的方式为setter方法，A中注入B的�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/05/10/framework/spring/2022-05-10_Spring%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/" title="Spring框架介绍">
+                      <a href="/2022/05/27/framework/spring/2022-05-22_Spring%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" title="Spring依赖注入">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Spring框架介绍</span>
+                        <span class="hidden-mobile">Spring依赖注入</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -668,8 +668,8 @@ style="text-align: left;">B中注入A的方式为setter方法，A中注入B的�
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/05/05/build_blog/2022-05-05_%E4%BD%BF%E7%94%A8SM.MS%E3%80%81GitHub%E3%80%81OSS%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/" title="使用SM.MS、GitHub、OSS搭建图床">
-                        <span class="hidden-mobile">使用SM.MS、GitHub、OSS搭建图床</span>
+                      <a href="/2022/05/20/framework/spring/2022-05-20_Spring%20Bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="Spring Bean生命周期">
+                        <span class="hidden-mobile">Spring Bean生命周期</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
