@@ -16,16 +16,16 @@
   <meta name="author" content="Yang Xin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Spring依赖注入 spring依赖注入包括三种：1.setter注入，2.构造器注入，3,属性注入， 1.基于构造器注入 1234567891011@Servicepublic class UserServiceImpl &#123;    private final UserDao userDao;    @Autowired    public UserServiceImpl(UserDa">
+    <meta name="description" content="Spring依赖注入 spring依赖注入包括三种：1.setter注入，2.构造器注入，3.属性注入， 1.基于构造器注入 1234567891011@Servicepublic class UserServiceImpl &#123;    private final UserDao userDao;    @Autowired    public UserServiceImpl(UserDa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring依赖注入">
 <meta property="og:url" content="https://nanchengjiumeng123.top/2022/05/27/framework/spring/2022-05-22_Spring%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="nanchengjiumeng123.top">
-<meta property="og:description" content="Spring依赖注入 spring依赖注入包括三种：1.setter注入，2.构造器注入，3,属性注入， 1.基于构造器注入 1234567891011@Servicepublic class UserServiceImpl &#123;    private final UserDao userDao;    @Autowired    public UserServiceImpl(UserDa">
+<meta property="og:description" content="Spring依赖注入 spring依赖注入包括三种：1.setter注入，2.构造器注入，3.属性注入， 1.基于构造器注入 1234567891011@Servicepublic class UserServiceImpl &#123;    private final UserDao userDao;    @Autowired    public UserServiceImpl(UserDa">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/banner/IMG_5892(20220826-144621).jpg">
 <meta property="article:published_time" content="2022-05-27T10:31:55.000Z">
-<meta property="article:modified_time" content="2024-05-16T14:47:40.113Z">
+<meta property="article:modified_time" content="2024-05-18T06:40:30.589Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
@@ -278,7 +278,7 @@
               <div class="markdown-body">
                 
                 <h1 id="spring依赖注入">Spring依赖注入</h1>
-<p>spring依赖注入包括三种：<strong>1.setter注入，2.构造器注入，3,属性注入</strong>，</p>
+<p>spring依赖注入包括三种：<strong>1.setter注入，2.构造器注入，3.属性注入</strong>，</p>
 <h1 id="基于构造器注入">1.基于构造器注入</h1>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserDao userDao;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span><span class="hljs-params">(UserDao userDao)</span> &#123;<br>        <span class="hljs-built_in">this</span>.userDao = userDao;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 <h1 id="基于setter注入">2.基于setter注入</h1>
