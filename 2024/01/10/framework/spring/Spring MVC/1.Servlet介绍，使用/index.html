@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="nanchengjiumeng123.top">
 <meta property="og:description" content="1.Servlet介绍 Servlet其实就是Server Applet（运行在服务端的小程序），是运行在 Web 服务器上，能够创建动态内动容的小型 Java 程序。使用Java语言实现的一个接口，属于面向企业级Java的一部分 Servlet 通常通过 HTTP（超文本传输协议）接收和响应来自 Web 客户端的请求。Servlet实例是由web服务器创建的，它是单例多线程的。单例是指Servl">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/wn3p54njnns.jpg">
+<meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/2391716388915_.pic.jpg">
 <meta property="article:published_time" content="2024-01-10T02:51:33.000Z">
-<meta property="article:modified_time" content="2024-05-22T15:19:40.623Z">
+<meta property="article:modified_time" content="2024-05-22T15:29:33.814Z">
 <meta property="article:author" content="Yang Xin">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/wn3p54njnns.jpg">
+<meta name="twitter:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/2391716388915_.pic.jpg">
   
   
   
@@ -193,7 +193,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/wn3p54njnns.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/2391716388915_.pic.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -294,12 +294,8 @@ App<strong>let</strong>（运行在服务端的小程序），<code>是运行在
 <p>Tomcat 是Web应用服务器，是一个Servlet/JSP容器，Tomcat
 作为Servlet容器，负责处理客户请求，把请求传送给Servlet，并将Servlet的响应传送回给客户.而Servlet是一种运行在支持Java语言的服务器上的组件.
 <code>Servlet最常见的用途是扩展Java Web服务器功能，提供非常安全的，可移植的，易于使用的CGI替代品</code>.</p>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/874710-20170214204632894-1786729693-20240519212809236.png" srcset="/img/loading.gif" lazyload
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/874710-20170214204632894-1786729693-20240519212809236.png" srcset="/img/loading.gif" lazyload /></p>
 <p>①：Tomcat将http请求文本接收并解析，然后封装成HttpServletRequest类型的request对象，所有的HTTP头数据读可以通过request对象调用对应的方法查询到。</p>
 <p>②：Tomcat同时会要响应的信息封装为HttpServletResponse类型的response对象，通过设置response属性就可以控制要输出到浏览器的内容，然后将response交给Tomcat，Tomcat就会将其变成响应文本的格式发送给浏览器</p>
 <p>Java Servlet API
@@ -317,12 +313,8 @@ alt="img" />
 <p>FastCGI是CGI的一种变体，它采用了进程复用的方式来提高性能。传统的CGI模式每次请求都会创建一个新的进程来处理，因此一旦访问量过大，web服务器要承担相当大
 负载。而FastCGI则通过保持一组预先创建好的进程，来避免重复的进程创建和销毁操作，从而提高了性能。FastCGI在CGI的基础上增加了一些额外的功能，例如连接的复用、多线程支持等。</p>
 <h1 id="使用servlet">5.使用Servlet</h1>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/image-20240519213558741.png" srcset="/img/loading.gif" lazyload
-alt="image-20240519213558741" />
-<figcaption aria-hidden="true">image-20240519213558741</figcaption>
-</figure>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/image-20240519213558741.png" srcset="/img/loading.gif" lazyload /></p>
 <p>Servlet接口定义的是一套处理网络请求的规范，所有实现Servlet的类，都需要实现它那五个方法，其中最主要的是两个生命周期方法
 <code>init()</code>和<code>destroy()</code>，还有一个处理请求的<code>service()</code>，也就是说，所有实现Servlet接口的类，或者说，所有想要处理网络请求的类，都需要：</p>
 <ul>
@@ -332,12 +324,8 @@ alt="image-20240519213558741" />
 <li><p>destory()，最后服务器关闭时，需要销毁这个Servlet对象，执行destroy()方法</p></li>
 </ul>
 <h2 id="httpservlet">5.1 HttpServlet</h2>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/image-20240519214605225.png" srcset="/img/loading.gif" lazyload
-alt="image-20240519214605225" />
-<figcaption aria-hidden="true">image-20240519214605225</figcaption>
-</figure>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/image-20240519214605225.png" srcset="/img/loading.gif" lazyload /></p>
 <ul>
 <li><p>ServletConfig接口：用来定义一个在初始化期间将配置信息（Servlet名、初始化参数等）传递给Servlet的Servlet配置对象。它的主要实现子类是StandardWrapperFacade类。</p></li>
 <li><p>GenericServlet（Generic-通用的）抽象类：用于包装Servlet接口，其中提供了很多Servlet接口的默认实现，这样我们实现Servlet的时候，就不必实现Servlet接口的所有方法，只重写核心方法即可。</p></li>
@@ -367,12 +355,8 @@ res)方法中执行。最后服务器关闭时，才会销毁这个Servlet对象
 <p>到现在就知道我们为什么要重写doGet和doPost方法了吧，因为最终程序调用到的就是我们自己写的doGet和doPost方法</p>
 <h2 id="servletconfig">6.2 ServletConfig</h2>
 <p>就是Servlet配置，还记得web.xml吗，其实就是Tomcat解析web.xml，获取Servlet配置，通过反射创建Servlet实例。</p>
-<figure>
-<img
-src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/v2-3dd656100783b3e9e62621ad8e2e9b04_r.jpg" srcset="/img/loading.gif" lazyload
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img
+src="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/v2-3dd656100783b3e9e62621ad8e2e9b04_r.jpg" srcset="/img/loading.gif" lazyload /></p>
 <h2 id="requestresponse">6.3 Request/Response</h2>
 <p>Http请求到了Tomcat之后，Tomcat通过一系列操作将请求头，请求地址，参数等信息封装进了request对象中。</p>
 <p>返回信息时，Tomcat会得到返回response对象，遍历里面的信息，组装成http响应发给客户端。</p>
@@ -419,7 +403,7 @@ WebFlux开发的Web项目就可以不运行在Servlet容器中，比如它可以
   
     <span>></span>
     
-  <a href="/categories/%E6%A1%86%E6%9E%B6/Spring/SpringMVC/" class="category-chain-item">SpringMVC</a>
+  <a href="/categories/%E6%A1%86%E6%9E%B6/Spring/Spring-MVC/" class="category-chain-item">Spring MVC</a>
   
   
 
