@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yang Xin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.Spring的Controller中，可以有重名的映射吗？ 在Spring MVC的控制器中，不能有重名的映射。每个映射（mapping）都必须是唯一的，以确保Spring MVC能够正确地将每个HTTP请求路由到相应的处理器方法。  映射指的是url与处理器的映射关系，而不是单单指的一个controller不能有重名方法。  1.示例 下面的代码展示了一个会导致冲突的示例： 12345678">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring的Controller中，可以有重名的映射吗？">
+<meta property="og:url" content="https://nanchengjiumeng123.top/2024/03/10/framework/spring/Spring%20MVC/8.Spring%E7%9A%84Controller%E4%B8%AD%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%9C%89%E9%87%8D%E5%90%8D%E7%9A%84%E6%98%A0%E5%B0%84%E5%90%97%EF%BC%9F/index.html">
+<meta property="og:site_name" content="nanchengjiumeng123.top">
+<meta property="og:description" content="1.Spring的Controller中，可以有重名的映射吗？ 在Spring MVC的控制器中，不能有重名的映射。每个映射（mapping）都必须是唯一的，以确保Spring MVC能够正确地将每个HTTP请求路由到相应的处理器方法。  映射指的是url与处理器的映射关系，而不是单单指的一个controller不能有重名方法。  1.示例 下面的代码展示了一个会导致冲突的示例： 12345678">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/0a772d16efb03750e3fc8ab7772b76b2.jpg">
+<meta property="article:published_time" content="2024-03-10T02:51:33.000Z">
+<meta property="article:modified_time" content="2024-05-22T15:19:40.615Z">
+<meta property="article:author" content="Yang Xin">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/0a772d16efb03750e3fc8ab7772b76b2.jpg">
+  
+  
+  
+  <title>Spring的Controller中，可以有重名的映射吗？ - nanchengjiumeng123.top</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"nanchengjiumeng123.top","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wangwang&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://nanchengjiumeng123.oss-cn-beijing.aliyuncs.com/categories/framework/spring/spring-mvc/0a772d16efb03750e3fc8ab7772b76b2.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring的Controller中，可以有重名的映射吗？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-10 10:51" pubdate>
+          2024年3月10日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spring的Controller中，可以有重名的映射吗？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1
+id="spring的controller中可以有重名的映射吗">1.Spring的Controller中，可以有重名的映射吗？</h1>
+<p>在Spring
+MVC的控制器中，不能有重名的映射。每个映射（mapping）都必须是唯一的，以确保Spring
+MVC能够正确地将每个HTTP请求路由到相应的处理器方法。</p>
+<blockquote>
+<p>映射指的是url与处理器的映射关系，而不是单单指的一个controller不能有重名方法。</p>
+</blockquote>
+<h2 id="示例">1.示例</h2>
+<p>下面的代码展示了一个会导致冲突的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; <span class="hljs-title function_">getUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 返回用户列表</span><br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">getUser</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 返回单个用户</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码中，<code>/api/users</code>路径的<code>GET</code>请求被两个方法处理，这将导致Spring
+MVC报错。</p>
+<h2 id="报错信息">2.报错信息</h2>
+<p>当Spring MVC检测到重名的映射时，会抛出类似以下的异常：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map <span class="hljs-string">&#x27;myController&#x27;</span> method <br>public org.springframework.http.ResponseEntity&lt;java.util.List&lt;User&gt;&gt; MyController.getUsers()<br>to &#123;GET /api/users&#125;: There is already <span class="hljs-string">&#x27;myController&#x27;</span> bean method<br>public org.springframework.http.ResponseEntity&lt;User&gt; MyController.getUser() mapped.<br></code></pre></td></tr></table></figure>
+<h2 id="解决方法">3.解决方法</h2>
+<p>确保每个控制器方法的映射是唯一的。可以通过以下几种方法避免映射冲突：</p>
+<h3 id="不同的路径">3.1 不同的路径</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; <span class="hljs-title function_">getUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 返回用户列表</span><br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        <span class="hljs-comment">// 返回单个用户</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="不同的http方法">3.2 不同的HTTP方法</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; <span class="hljs-title function_">getUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 返回用户列表</span><br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">createUser</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> User user)</span> &#123;<br>        <span class="hljs-comment">// 创建新用户</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="不同的请求参数">3.3 不同的请求参数</h3>
+<p>除了路径和HTTP方法，Spring
+MVC还支持使用路径变量和请求参数来进一步区分不同的处理器方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/users&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; <span class="hljs-title function_">getUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 返回用户列表</span><br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/user&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> Long id)</span> &#123;<br>        <span class="hljs-comment">// 根据ID返回单个用户</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="路径变量和请求参数">3.4 路径变量和请求参数</h3>
+<p>除了路径和HTTP方法，Spring
+MVC还支持使用路径变量和请求参数来进一步区分不同的处理器方法。</p>
+<blockquote>
+<p><strong>在Spring
+MVC的控制器中，映射必须是唯一的，不能有重名的映射。通过确保每个映射有独特的路径、HTTP方法或请求参数，可以避免冲突并确保请求能够正确路由到对应的处理器方法。</strong></p>
+<p><code>Spring MVC将请求路径(URL)和请求方法(HTTP)结合起来唯一标识一个处理器方法。</code></p>
+</blockquote>
+<h1
+id="spring在什么时候维护mappingregistry的urllookup集合的">2.Spring在什么时候维护MappingRegistry的urlLookup集合的？</h1>
+<p>在Spring
+MVC中，<code>MappingRegistry</code>的<code>urlLookup</code>集合用于快速查找特定URL路径对应的所有映射信息。这个集合的维护发生在应用程序启动时，当Spring容器初始化并注册所有的请求映射时。</p>
+<h2
+id="什么时候维护urllookup集合">1.什么时候维护<code>urlLookup</code>集合？</h2>
+<p><code>urlLookup</code>集合的维护主要发生在应用程序启动过程中，当Spring容器扫描并注册所有控制器和处理器方法时。具体步骤如下：</p>
+<ol type="1">
+<li><strong>Spring容器启动</strong>：
+<ul>
+<li>Spring容器启动时，会创建并初始化所有定义的Spring
+Beans，包括控制器类。</li>
+</ul></li>
+<li><strong>RequestMappingHandlerMapping初始化</strong>：
+<ul>
+<li><code>RequestMappingHandlerMapping</code>是Spring
+MVC中负责处理请求映射的核心组件。</li>
+<li>在容器启动过程中，Spring会调用<code>RequestMappingHandlerMapping</code>的<code>afterPropertiesSet</code>方法。</li>
+</ul></li>
+<li><strong>扫描并注册映射方法</strong>：
+<ul>
+<li><code>RequestMappingHandlerMapping</code>会扫描所有的控制器类，并找到所有使用了<code>@RequestMapping</code>、<code>@GetMapping</code>、<code>@PostMapping</code>等注解的方法。</li>
+<li>对于每个找到的方法，Spring会创建一个<code>RequestMappingInfo</code>实例，封装该方法的映射信息。</li>
+</ul></li>
+<li><strong>维护<code>urlLookup</code>集合</strong>：
+<ul>
+<li>在注册每个映射方法时，Spring会将其映射信息添加到<code>MappingRegistry</code>的<code>urlLookup</code>集合中。</li>
+</ul></li>
+</ol>
+<p>代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java">	<span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterPropertiesSet</span><span class="hljs-params">()</span> &#123;<br>		<span class="hljs-built_in">this</span>.config = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RequestMappingInfo</span>.BuilderConfiguration();<br>		<span class="hljs-built_in">this</span>.config.setUrlPathHelper(getUrlPathHelper());<br>		<span class="hljs-built_in">this</span>.config.setPathMatcher(getPathMatcher());<br>		<span class="hljs-built_in">this</span>.config.setSuffixPatternMatch(<span class="hljs-built_in">this</span>.useSuffixPatternMatch);<br>		<span class="hljs-built_in">this</span>.config.setTrailingSlashMatch(<span class="hljs-built_in">this</span>.useTrailingSlashMatch);<br>		<span class="hljs-built_in">this</span>.config.setRegisteredSuffixPatternMatch(<span class="hljs-built_in">this</span>.useRegisteredSuffixPatternMatch);<br>		<span class="hljs-built_in">this</span>.config.setContentNegotiationManager(getContentNegotiationManager());<br><br>		<span class="hljs-built_in">super</span>.afterPropertiesSet();<br>	&#125;<br><br>在父类AbstractHandlerMethodMapping的afterPropertiesSet中：<br>  <span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterPropertiesSet</span><span class="hljs-params">()</span> &#123;<br>		initHandlerMethods();<br>	&#125;<br><br>initHandlerMethods--&gt; <span class="hljs-keyword">for</span>循环调用detectHandlerMethods（也就是针对每个controller（控制器）进行处理）<br><br>detectHandlerMethods--&gt; <span class="hljs-keyword">for</span>循环调用registerHandlerMethod（也就是针对controller所有method（处理器）进行处理）<br></code></pre></td></tr></table></figure>
+<h2 id="detecthandlermethods">2.detectHandlerMethods</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java">	<span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">detectHandlerMethods</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Object handler)</span> &#123;<br>		Class&lt;?&gt; handlerType = (handler <span class="hljs-keyword">instanceof</span> String ?<br>				obtainApplicationContext().getType((String) handler) : handler.getClass());<br><br>		<span class="hljs-keyword">if</span> (handlerType != <span class="hljs-literal">null</span>) &#123;<br>			<span class="hljs-keyword">final</span> Class&lt;?&gt; userType = ClassUtils.getUserClass(handlerType);<br>			Map&lt;Method, T&gt; methods = MethodIntrospector.selectMethods(userType,<br>					(MethodIntrospector.MetadataLookup&lt;T&gt;) method -&gt; &#123;<br>						<span class="hljs-keyword">try</span> &#123;<br>							<span class="hljs-keyword">return</span> getMappingForMethod(method, userType);<br>						&#125;<br>						<span class="hljs-keyword">catch</span> (Throwable ex) &#123;<br>							<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalStateException</span>(<span class="hljs-string">&quot;Invalid mapping on handler class [&quot;</span> +<br>									userType.getName() + <span class="hljs-string">&quot;]: &quot;</span> + method, ex);<br>						&#125;<br>					&#125;);<br>		  ... ..<br>			&#125;<br>    <br>			<span class="hljs-keyword">for</span> (Map.Entry&lt;Method, T&gt; entry : methods.entrySet()) &#123;<br>				<span class="hljs-type">Method</span> <span class="hljs-variable">invocableMethod</span> <span class="hljs-operator">=</span> AopUtils.selectInvocableMethod(entry.getKey(), userType);<br>				<span class="hljs-type">T</span> <span class="hljs-variable">mapping</span> <span class="hljs-operator">=</span> entry.getValue();<br>				registerHandlerMethod(handler, invocableMethod, mapping);<br>			&#125;<br>		&#125;<br>	<br><span class="hljs-comment">//注意getMappingForMethod</span><br></code></pre></td></tr></table></figure>
+<p>在RequestMappingHandlerMapping中实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">	<span class="hljs-meta">@Override</span><br>	<span class="hljs-meta">@Nullable</span><br>	<span class="hljs-keyword">protected</span> RequestMappingInfo <span class="hljs-title function_">getMappingForMethod</span><span class="hljs-params">(Method method, Class&lt;?&gt; handlerType)</span> &#123;<br>		<span class="hljs-type">RequestMappingInfo</span> <span class="hljs-variable">info</span> <span class="hljs-operator">=</span> createRequestMappingInfo(method);<br>		<span class="hljs-keyword">if</span> (info != <span class="hljs-literal">null</span>) &#123;<br>			<span class="hljs-type">RequestMappingInfo</span> <span class="hljs-variable">typeInfo</span> <span class="hljs-operator">=</span> createRequestMappingInfo(handlerType);<br>			<span class="hljs-keyword">if</span> (typeInfo != <span class="hljs-literal">null</span>) &#123;<br>				info = typeInfo.combine(info);<br>			&#125;<br>		&#125;<br>		<span class="hljs-keyword">return</span> info;<br>	&#125;<br><span class="hljs-comment">//所以在此处解析方法上的注解，生成RequestMappingInfo实例。不同类型的映射注解（如@RequestMapping、@GetMapping等）都会在这里被解析。</span><br></code></pre></td></tr></table></figure>
+<p>再看registerHandlerMethod</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"><span class="hljs-keyword">protected</span> void registerHandlerMethod(Object handler, <span class="hljs-keyword">Method</span> <span class="hljs-title function_">method</span>, <span class="hljs-title function_">T</span> <span class="hljs-title function_">mapping</span>) <span class="hljs-comment">&#123;</span><br><span class="hljs-comment">	this.mappingRegistry.register(mapping, handler, method);</span><br><span class="hljs-comment">&#125;</span><br><br><br><span class="hljs-title function_">this</span>.<span class="hljs-title function_">mappingRegistry</span>不就是上文所说的<span class="hljs-title function_">class</span> <span class="hljs-title function_">MappingRegistry</span> 吗。<br></code></pre></td></tr></table></figure>
+<p>MappingRegistry--&gt;register</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">register</span><span class="hljs-params">(T mapping, Object handler, Method method)</span> &#123;<br>		<span class="hljs-type">HandlerMethod</span> <span class="hljs-variable">handlerMethod</span> <span class="hljs-operator">=</span> createHandlerMethod(handler, method);<br>			... ...<br>				List&lt;String&gt; directUrls = getDirectUrls(mapping);<br>				<span class="hljs-keyword">for</span> (String url : directUrls) &#123;<br>					<span class="hljs-built_in">this</span>.urlLookup.add(url, mapping);<br>				&#125;<br>			 ... ...<br>		&#125;<br><br><span class="hljs-comment">//this.urlLookup.add(url, mapping);通过for循环将mapping（也就是每一个方法---处理器）添加进去。</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>所以此处的mapping其实就是上面生成<code>RequestMappingInfo</code>实例。Spring获取到URL路径，通过getHandler获取该URL对应到相关处理器集合，再对集合进行条件匹配的到唯一的处理器。</p>
+</blockquote>
+<h2 id="完整流程">3.完整流程</h2>
+<p>以下是完整的流程展示了Spring在应用程序启动时如何维护<code>urlLookup</code>集合：</p>
+<ol type="1">
+<li><strong>Spring容器启动</strong>：
+<ul>
+<li>Spring容器启动，初始化所有Bean。</li>
+</ul></li>
+<li><strong>RequestMappingHandlerMapping初始化</strong>：
+<ul>
+<li><code>RequestMappingHandlerMapping</code>的<code>afterPropertiesSet</code>方法被调用。</li>
+</ul></li>
+<li><strong>扫描控制器类</strong>：
+<ul>
+<li><code>RequestMappingHandlerMapping</code>扫描所有的控制器类，找到所有使用了映射注解的方法。</li>
+</ul></li>
+<li><strong>为每个方法创建RequestMappingInfo</strong>：
+<ul>
+<li>对于每个找到的方法，创建<code>RequestMappingInfo</code>实例，封装其映射信息。</li>
+</ul></li>
+<li><strong>注册映射方法</strong>：
+<ul>
+<li>调用<code>registerHandlerMethod</code>方法，将每个方法注册到<code>MappingRegistry</code>。</li>
+</ul></li>
+<li><strong>维护urlLookup集合</strong>：
+<ul>
+<li>在<code>MappingRegistry</code>的<code>register</code>方法中，将每个<code>RequestMappingInfo</code>实例添加到<code>urlLookup</code>集合中。</li>
+</ul></li>
+</ol>
+<h1
+id="handlermapping返回handlerexecutionchain">3.HandlerMapping返回HandlerExecutionChain</h1>
+<p>我们看：<code>HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);</code></p>
+<h3
+id="gethandlerexecutionchainobject-handler-httpservletrequest-request">getHandlerExecutionChain(Object
+handler, HttpServletRequest request)</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java">	<span class="hljs-keyword">protected</span> HandlerExecutionChain <span class="hljs-title function_">getHandlerExecutionChain</span><span class="hljs-params">(Object handler, HttpServletRequest request)</span> &#123;<br>		<span class="hljs-type">HandlerExecutionChain</span> <span class="hljs-variable">chain</span> <span class="hljs-operator">=</span> (handler <span class="hljs-keyword">instanceof</span> HandlerExecutionChain ?<br>				(HandlerExecutionChain) handler : <span class="hljs-keyword">new</span> <span class="hljs-title class_">HandlerExecutionChain</span>(handler));<br><br>		<span class="hljs-type">String</span> <span class="hljs-variable">lookupPath</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.urlPathHelper.getLookupPathForRequest(request);<br>    <br>		<span class="hljs-keyword">for</span> (HandlerInterceptor interceptor : <span class="hljs-built_in">this</span>.adaptedInterceptors) &#123;<br>			<span class="hljs-keyword">if</span> (interceptor <span class="hljs-keyword">instanceof</span> MappedInterceptor) &#123;<br>				<span class="hljs-type">MappedInterceptor</span> <span class="hljs-variable">mappedInterceptor</span> <span class="hljs-operator">=</span> (MappedInterceptor) interceptor;<br>				<span class="hljs-keyword">if</span> (mappedInterceptor.matches(lookupPath, <span class="hljs-built_in">this</span>.pathMatcher)) &#123;<br>					chain.addInterceptor(mappedInterceptor.getInterceptor());<br>				&#125;<br>			&#125;<br>			<span class="hljs-keyword">else</span> &#123;<br>				chain.addInterceptor(interceptor);<br>			&#125;<br>		&#125;<br>		<span class="hljs-keyword">return</span> chain;<br>	&#125;<br>	<br><span class="hljs-comment">//AbstractHandlerMapping---&gt;getHandlerExecutionChain</span><br></code></pre></td></tr></table></figure>
+<p>其实就是获取当前路径，然后再获取<code>HandlerInterceptor(所有的)</code>，再根据路径过滤掉HandlerInterceptor将符合条件的HandlerInterceptor加入到HandlerExecutionChain中。此处HandlerExecutionChain就有Handler（处理器）和定义的一组在处理器之前或者之后执行的拦截器（拦截器分为处理前拦截，处理后拦截）--HandlerInterceptor（如果我们定义的话）。别忘了拦截器的用法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HandlerInterceptor</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 处理前逻辑</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 返回true继续执行处理器，返回false中断处理</span><br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">postHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 处理后逻辑</span><br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterCompletion</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 请求完成后逻辑</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p><code>HandlerExecutionChain</code>类本身是一个简单的封装类，包含了处理器和一组拦截器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HandlerExecutionChain</span> &#123;<br><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Object handler;<br><br>	<span class="hljs-meta">@Nullable</span><br>	<span class="hljs-keyword">private</span> HandlerInterceptor[] interceptors;<br><br>	<span class="hljs-meta">@Nullable</span><br>	<span class="hljs-keyword">private</span> List&lt;HandlerInterceptor&gt; interceptorList;<br>	<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr />
+<p><strong>博客说明</strong></p>
+<blockquote>
+<p>文章所涉及的资料来自互联网整理和个人总结，意在于个人学习和经验汇总，不用于任何的商业用途。如有侵权，请联系本人删除。谢谢！</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A1%86%E6%9E%B6/" class="category-chain-item">框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spring/" class="print-no-link">#Spring</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring的Controller中，可以有重名的映射吗？</div>
+      <div>https://nanchengjiumeng123.top/2024/03/10/framework/spring/Spring MVC/8.Spring的Controller中，可以有重名的映射吗？/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yang Xin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/22/framework/spring/Spring%20MVC/9.%E4%BB%80%E4%B9%88%E6%98%AFCORS%EF%BC%9F/" title="CORS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CORS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/04/framework/spring/Spring%20MVC/7.Spring%E5%AE%9A%E4%BD%8D%E5%94%AF%E4%B8%80%E7%9A%84%E5%A4%84%E7%90%86%E5%99%A8/" title="Spring定位唯一的处理器">
+                        <span class="hidden-mobile">Spring定位唯一的处理器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>Blog</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>
